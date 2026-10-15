@@ -163,7 +163,8 @@ h3 { font-size: var(--step-2); line-height: 1.15; font-variation-settings: 'SOFT
 .section-head { display: grid; gap: var(--space-2); margin-bottom: var(--space-5); max-width: 46rem; }
 
 /* ===== Motion helpers ===== */
-.js [data-reveal] { opacity: 0; transform: translateY(1.5rem); }
+/* Hidden only while JS is on and the motion script has not failed (see Base.astro failsafe) */
+.js:not(.motion-off) [data-reveal] { opacity: 0; transform: translateY(1.5rem); }
 .js.reduced [data-reveal] { opacity: 1; transform: none; }
 
 @view-transition { navigation: auto; }

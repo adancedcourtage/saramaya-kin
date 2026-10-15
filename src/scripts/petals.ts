@@ -2,25 +2,48 @@
  * Hero scene: Damask rose petals drifting through the blue night.
  * Petals scatter away from the pointer like a breath of wind.
  */
-import * as THREE from 'three';
+import {
+  ACESFilmicToneMapping,
+  Clock,
+  Color,
+  DirectionalLight,
+  DoubleSide,
+  DynamicDrawUsage,
+  Euler,
+  HemisphereLight,
+  InstancedMesh,
+  MathUtils,
+  Matrix4,
+  MeshPhysicalMaterial,
+  PerspectiveCamera,
+  Quaternion,
+  SRGBColorSpace,
+  Scene,
+  Shape,
+  ShapeGeometry,
+  Vector2,
+  Vector3,
+  WebGLRenderer,
+  type BufferAttribute,
+} from 'three';
 
 interface Petal {
-  pos: THREE.Vector3;
-  vel: THREE.Vector3;
-  rot: THREE.Euler;
-  spin: THREE.Vector3;
+  pos: Vector3;
+  vel: Vector3;
+  rot: Euler;
+  spin: Vector3;
   scale: number;
   phase: number;
 }
 
 function petalGeometry() {
-  const s = new THREE.Shape();
+  const s = new Shape();
   s.moveTo(0, -0.5);
   s.bezierCurveTo(0.42, -0.35, 0.55, 0.2, 0.18, 0.5);
   s.quadraticCurveTo(0, 0.42, -0.18, 0.5);
   s.bezierCurveTo(-0.55, 0.2, -0.42, -0.35, 0, -0.5);
-  const g = new THREE.ShapeGeometry(s, 14);
-  const p = g.attributes.position as THREE.BufferAttribute;
+  const g = new ShapeGeometry(s, 14);
+  const p = g.attributes.position as BufferAttribute;
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), y = p.getY(i);
     p.setZ(i, 0.35 * x * x + 0.12 * (y + 0.5) * (y + 0.5));
@@ -36,38 +59,38 @@ export function initPetals() {
   const mobile = innerWidth < 760;
   const count = mobile ? 40 : 90;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+  const renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.outputColorSpace = SRGBColorSpace;
+  renderer.toneMapping = ACESFilmicToneMapping;
   host.appendChild(renderer.domElement);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  const scene = new Scene();
+  const camera = new PerspectiveCamera(40, 1, 0.1, 100);
   camera.position.set(0, 0, 14);
 
-  scene.add(new THREE.HemisphereLight(0xc9d6ff, 0x3a0f2a, 1.1));
-  const key = new THREE.DirectionalLight(0xffd9e4, 2.6);
+  scene.add(new HemisphereLight(0xc9d6ff, 0x3a0f2a, 1.1));
+  const key = new DirectionalLight(0xffd9e4, 2.6);
   key.position.set(4, 6, 8);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x5b8cff, 1.4);
+  const rim = new DirectionalLight(0x5b8cff, 1.4);
   rim.position.set(-6, -2, -4);
   scene.add(rim);
 
-  const material = new THREE.MeshPhysicalMaterial({
-    side: THREE.DoubleSide,
+  const material = new MeshPhysicalMaterial({
+    side: DoubleSide,
     roughness: 0.55,
     sheen: 1,
     sheenRoughness: 0.4,
-    sheenColor: new THREE.Color('#ffd1de'),
+    sheenColor: new Color('#ffd1de'),
     transmission: 0.12,
     thickness: 0.2,
   });
-  const mesh = new THREE.InstancedMesh(petalGeometry(), material, count);
-  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  const mesh = new InstancedMesh(petalGeometry(), material, count);
+  mesh.instanceMatrix.setUsage(DynamicDrawUsage);
   scene.add(mesh);
 
-  const palette = ['#c8426e', '#b8325e', '#e8789b', '#f7c9d6', '#d9577f', '#8f2147'].map((c) => new THREE.Color(c));
+  const palette = ['#c8426e', '#b8325e', '#e8789b', '#f7c9d6', '#d9577f', '#8f2147'].map((c) => new Color(c));
   let bounds = { w: 10, h: 6 };
   const petals: Petal[] = [];
   const rand = (a: number, b: number) => a + Math.random() * (b - a);
@@ -77,25 +100,25 @@ export function initPetals() {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    const vh = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+    const vh = 2 * Math.tan(MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
     bounds = { w: (vh * camera.aspect) / 2 + 1.5, h: vh / 2 + 1.5 };
   }
   resize();
 
   for (let i = 0; i < count; i++) {
     petals.push({
-      pos: new THREE.Vector3(rand(-bounds.w, bounds.w), rand(-bounds.h, bounds.h), rand(-8, 3)),
-      vel: new THREE.Vector3(rand(-0.15, 0.15), rand(-0.5, -0.2), 0),
-      rot: new THREE.Euler(rand(0, 6.28), rand(0, 6.28), rand(0, 6.28)),
-      spin: new THREE.Vector3(rand(-0.8, 0.8), rand(-0.8, 0.8), rand(-0.5, 0.5)),
+      pos: new Vector3(rand(-bounds.w, bounds.w), rand(-bounds.h, bounds.h), rand(-8, 3)),
+      vel: new Vector3(rand(-0.15, 0.15), rand(-0.5, -0.2), 0),
+      rot: new Euler(rand(0, 6.28), rand(0, 6.28), rand(0, 6.28)),
+      spin: new Vector3(rand(-0.8, 0.8), rand(-0.8, 0.8), rand(-0.5, 0.5)),
       scale: rand(0.25, 0.7),
       phase: rand(0, 6.28),
     });
     mesh.setColorAt(i, palette[i % palette.length]);
   }
 
-  const pointer = new THREE.Vector3(999, 999, 0);
-  const pointerVel = new THREE.Vector2();
+  const pointer = new Vector3(999, 999, 0);
+  const pointerVel = new Vector2();
   let lastPointer = { x: 0, y: 0 };
   host.parentElement!.addEventListener('pointermove', (e) => {
     const r = host.getBoundingClientRect();
@@ -107,11 +130,11 @@ export function initPetals() {
   });
   host.parentElement!.addEventListener('pointerleave', () => pointer.set(999, 999, 0));
 
-  const m = new THREE.Matrix4();
-  const q = new THREE.Quaternion();
-  const sc = new THREE.Vector3();
-  const tmp = new THREE.Vector3();
-  const clock = new THREE.Clock();
+  const m = new Matrix4();
+  const q = new Quaternion();
+  const sc = new Vector3();
+  const tmp = new Vector3();
+  const clock = new Clock();
   let running = true;
   let scrollFade = 0;
 

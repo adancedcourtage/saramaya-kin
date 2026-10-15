@@ -1,6 +1,6 @@
 ---
 interface Props {
-  name: 'whatsapp' | 'bag' | 'close' | 'menu' | 'plus' | 'minus' | 'heart' | 'check';
+  name: 'whatsapp' | 'bag' | 'close' | 'menu' | 'plus' | 'minus' | 'heart' | 'check' | 'star' | 'truck' | 'tag' | 'return';
   class?: string;
 }
 const { name, class: className } = Astro.props;
@@ -14,6 +14,10 @@ const paths: Record<Props['name'], string> = {
   minus: 'M4 11h16v2H4z',
   heart: 'M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4h2c.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z',
   check: 'm9.5 16.2-4.2-4.2-1.4 1.4 5.6 5.6 11-11-1.4-1.4-9.6 9.6Z',
+  star: 'M12 2l2.4 4.2L19 5l-1.2 4.6L22 12l-4.2 2.4L19 19l-4.6-1.2L12 22l-2.4-4.2L5 19l1.2-4.6L2 12l4.2-2.4L5 5l4.6 1.2Z',
+  truck: 'M2 5h12v3h4l4 4.5V17h-2a3 3 0 0 1-6 0H9a3 3 0 0 1-6 0H2V5Zm12 5v3h6l-2.7-3H14ZM6 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm11 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z',
+  tag: 'M3 3h8.6l9.7 9.7-8.6 8.6L3 11.6V3Zm4.5 2.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z',
+  return: 'M12 4a8 8 0 1 1-7.7 10h2.1A6 6 0 1 0 12 6v3L7 5l5-4v3Z',
 };
 ---
 <svg class={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d={paths[name]} /></svg>

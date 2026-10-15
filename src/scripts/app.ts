@@ -5,6 +5,8 @@ import { initWishlist } from './wishlist';
 
 gsap.registerPlugin(ScrollTrigger);
 
+(window as Window & { __skMotion?: boolean }).__skMotion = true;
+
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -20,12 +22,18 @@ export const scroller = { stop: () => lenis?.stop(), start: () => lenis?.start()
 
 /* ---------- Header ---------- */
 const header = document.querySelector<HTMLElement>('[data-header]');
+const waFloat = document.querySelector<HTMLElement>('.wa-float');
+// The home hero has its own WhatsApp button: keep the floating one out of the way there.
+const hero = document.querySelector<HTMLElement>('.hero');
 if (header) {
   let last = 0;
   const onScroll = () => {
     const y = window.scrollY;
+    const goingDown = y > 400 && y > last;
     header.classList.toggle('is-scrolled', y > 40);
-    header.classList.toggle('is-hidden', y > 400 && y > last && !document.querySelector('.menu.is-open'));
+    header.classList.toggle('is-hidden', goingDown && !document.querySelector('.menu.is-open'));
+    const overHero = !!hero && y < hero.offsetHeight * 0.75;
+    waFloat?.classList.toggle('is-tucked', goingDown || overHero);
     last = y;
   };
   addEventListener('scroll', onScroll, { passive: true });

@@ -7,6 +7,7 @@ export const site = {
   // Public address, including the sub-path when served from <user>.github.io/<repo>/
   url: `${(import.meta.env.SITE ?? 'https://saramaya-kin.com').replace(/\/$/, '')}${import.meta.env.BASE_URL.replace(/\/$/, '')}`,
   tagline: 'De la nuit bleue à l’aube rose',
+  homeTitle: 'Saramaya-kin | Huile d’argan et eau de rose du Maroc',
   description:
     'Soins à l’huile d’argan et à la rose de Damas, façonnés au Maroc et livrés en France. Commande simple et conseillée sur WhatsApp.',
 

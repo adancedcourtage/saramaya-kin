@@ -68,14 +68,14 @@ const jsonLd = {
         </p>
 
         {p.soldOut ? (
-          <div class="product-actions">
+          <div class="product-actions" data-buy-anchor>
             <p class="soldout-note">Ce soin est momentanément épuisé.</p>
             <a class="btn" href={waLink(`prévenez-moi quand « ${p.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">
               <Icon name="whatsapp" /> Me prévenir de son retour
             </a>
           </div>
         ) : (
-          <div class="product-actions">
+          <div class="product-actions" data-buy-anchor>
             <button type="button" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={p.slug} data-magnetic>
               <Icon name="plus" /> Ajouter à ma sélection
             </button>
@@ -130,6 +130,18 @@ const jsonLd = {
     </div>
   </article>
 
+  <div class="buybar" data-buybar aria-hidden="true">
+    <div class="buybar-info">
+      <p class="buybar-name">{p.name}</p>
+      <p class="buybar-price">{formatPrice(p.price)}{p.compareAt && <s>{formatPrice(p.compareAt)}</s>}</p>
+    </div>
+    {p.soldOut ? (
+      <a class="btn" tabindex="-1" href={waLink(`prévenez-moi quand « ${p.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">Me prévenir</a>
+    ) : (
+      <button type="button" tabindex="-1" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={p.slug}><Icon name="plus" /> Ajouter</button>
+    )}
+  </div>
+
   {others.length > 0 && (
     <section class="section related" aria-labelledby="related-title">
       <div class="container">
@@ -142,7 +154,39 @@ const jsonLd = {
   )}
 </Base>
 
+<script>
+  // Mobile buy bar: shown once the main purchase buttons have scrolled out of view.
+  const bar = document.querySelector<HTMLElement>('[data-buybar]');
+  const anchor = document.querySelector<HTMLElement>('[data-buy-anchor]');
+  if (bar && anchor && 'IntersectionObserver' in window) {
+    const mq = matchMedia('(max-width: 900px)');
+    new IntersectionObserver(([entry]) => {
+      const show = mq.matches && !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      bar.classList.toggle('is-visible', show);
+      bar.setAttribute('aria-hidden', String(!show));
+      bar.querySelectorAll<HTMLElement>('a, button').forEach((el) => (el.tabIndex = show ? 0 : -1));
+      document.documentElement.classList.toggle('has-buybar', show);
+    }).observe(anchor);
+  }
+</script>
+
 <style>
+  .buybar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 55;
+    display: none; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom));
+    background: rgb(253 248 246 / 0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 -1px 0 rgb(14 26 60 / 0.1), 0 -12px 30px -18px rgb(14 26 60 / 0.4);
+    translate: 0 110%; transition: translate 0.45s var(--ease-out);
+  }
+  .buybar.is-visible { translate: 0 0; }
+  .buybar-info { min-width: 0; }
+  .buybar-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .buybar-price { font-family: var(--font-display); color: var(--damas); font-size: 1.15rem; }
+  .buybar-price s { font-family: var(--font-body); color: var(--ink-soft); font-size: 0.85rem; margin-left: 0.4rem; }
+  .buybar .btn { flex: none; min-height: 2.9rem; padding-inline: 1.2rem; }
+  @media (max-width: 900px) { .buybar { display: flex; } }
+
   .product { padding-block: 7.5rem var(--space-5); }
   .product--argan { background: linear-gradient(to bottom, var(--brume), var(--chaux) 60%); }
   .product--rose { background: linear-gradient(to bottom, var(--aube), var(--chaux) 60%); }

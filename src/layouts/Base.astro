@@ -16,7 +16,7 @@ interface Props {
   noindex?: boolean;
 }
 const { title, description = site.description, image, headerTone = 'light', jsonLd, noindex = false } = Astro.props;
-const fullTitle = title === site.name ? `${site.name}, ${site.tagline.toLowerCase()}` : `${title} | ${site.name}`;
+const fullTitle = title === site.name ? site.homeTitle : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL(image ?? `${import.meta.env.BASE_URL.replace(/\/$/, "")}/og.jpg`, site.url).href;
 
@@ -55,6 +55,8 @@ const ld = [organization, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd
     <script is:inline>
       document.documentElement.classList.replace('no-js', 'js');
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reduced');
+      // Failsafe: if the motion script never starts (blocked, network error), show all content.
+      setTimeout(function () { if (!window.__skMotion) document.documentElement.classList.add('motion-off'); }, 2500);
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     {site.goatcounterCode && (
@@ -87,9 +89,13 @@ const ld = [organization, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd
     position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: 60;
     width: 3.75rem; height: 3.75rem; border-radius: 999px; display: grid; place-items: center;
     background: var(--damas); color: var(--blanc); box-shadow: var(--shadow-lift);
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, translate 0.45s var(--ease-out), bottom 0.45s var(--ease-out);
   }
   .wa-float:hover { background: var(--damas-deep); }
+  .wa-float:global(.is-tucked) { translate: 0 calc(100% + 2.5rem); }
+  @media (max-width: 900px) {
+    :global(html.has-buybar) .wa-float { bottom: 5.75rem; }
+  }
   .wa-float svg { width: 1.7rem; height: 1.7rem; }
   .wa-float::after {
     content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 var(--damas);

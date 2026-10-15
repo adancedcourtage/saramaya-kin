@@ -17,6 +17,13 @@ const argan = byRange('argan');
 const rose = byRange('rose');
 const coffret = coffrets.find((c) => !c.soldOut) ?? coffrets[0];
 
+const assurances = [
+  { icon: 'star', text: 'Fabriqué au Maroc' },
+  { icon: 'truck', text: `Livraison en ${site.delivery.zone}` },
+  { icon: 'tag', text: `-${site.bundleDiscount.percent} % dès ${site.bundleDiscount.minItems} produits` },
+  { icon: 'return', text: 'Retours sous 14 jours' },
+] as const;
+
 const steps = [
   { title: 'Choisissez', text: 'Ajoutez vos soins à votre sélection, ou demandez conseil si vous hésitez.' },
   { title: 'Envoyez', text: 'Un clic ouvre WhatsApp avec votre liste, les prix et le total déjà rédigés.' },
@@ -43,7 +50,11 @@ const steps = [
         </a>
       </div>
     </div>
-    <a class="hero-scroll" href="#manifeste"><span class="visually-hidden">Faire défiler</span><span aria-hidden="true"></span></a>
+    <ul role="list" class="container assurances" aria-label="Nos engagements" data-reveal>
+      {assurances.map((a) => (
+        <li><Icon name={a.icon} /><span>{a.text}</span></li>
+      ))}
+    </ul>
   </section>
 
   <!-- The passage from night to dawn -->
@@ -103,6 +114,41 @@ const steps = [
       </ul>
     </div>
   </section>
+
+  <!-- How to order -->
+  <section class="section steps" aria-labelledby="steps-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="steps-title" data-split>Commander en quatre étapes</h2>
+        <p class="lede" data-reveal>Pas de compte à créer, pas de paiement en ligne. Une vraie conversation avec nous.</p>
+      </div>
+      <ol role="list" class="steps-list">
+        {steps.map((s, i) => (
+          <li data-reveal>
+            <span class="step-num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {reviews.length > 0 && (
+    <section class="section reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <h2 id="reviews-title" data-split>Elles et ils en parlent</h2>
+        <ul role="list" class="reviews-list">
+          {reviews.map((r) => (
+            <li data-reveal>
+              <blockquote><p>{r.text}</p></blockquote>
+              <p class="review-by">{r.name}, {r.city}{r.product && <>, {r.product}</>}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   {promo && (
     <section class="promo" data-promo aria-labelledby="promo-title">
@@ -176,41 +222,6 @@ const steps = [
     </div>
   </section>
 
-  <!-- How to order -->
-  <section class="section steps" aria-labelledby="steps-title">
-    <div class="container">
-      <div class="section-head">
-        <h2 id="steps-title" data-split>Commander en quatre étapes</h2>
-        <p class="lede" data-reveal>Pas de compte à créer, pas de paiement en ligne. Une vraie conversation avec nous.</p>
-      </div>
-      <ol role="list" class="steps-list">
-        {steps.map((s, i) => (
-          <li data-reveal>
-            <span class="step-num" aria-hidden="true">{i + 1}</span>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  {reviews.length > 0 && (
-    <section class="section reviews" aria-labelledby="reviews-title">
-      <div class="container">
-        <h2 id="reviews-title" data-split>Elles et ils en parlent</h2>
-        <ul role="list" class="reviews-list">
-          {reviews.map((r) => (
-            <li data-reveal>
-              <blockquote><p>{r.text}</p></blockquote>
-              <p class="review-by">{r.name}, {r.city}{r.product && <>, {r.product}</>}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )}
-
   <!-- Final call -->
   <section class="final" aria-labelledby="final-title">
     <div class="container final-inner">
@@ -226,13 +237,13 @@ const steps = [
 <style>
   /* ---------- Hero ---------- */
   .hero {
-    position: relative; min-height: 100svh; display: grid; align-items: end;
+    position: relative; min-height: 100svh; display: grid; align-content: end;
     background:
       radial-gradient(70% 55% at 75% 105%, rgb(184 50 94 / 0.55), transparent 70%),
       radial-gradient(60% 60% at 15% 10%, rgb(47 95 179 / 0.45), transparent 70%),
       var(--nuit);
     overflow: hidden; isolation: isolate;
-    padding-block: 8rem clamp(4rem, 10vh, 7rem);
+    padding-block: 7rem clamp(1.5rem, 4vh, 3rem);
   }
   .hero-sky { position: absolute; inset: 0; z-index: -1; }
   .hero :global(.hero-star) {
@@ -244,24 +255,33 @@ const steps = [
   .hero-petals:global(.is-live) { opacity: 1; }
   .hero-petals :global(canvas) { width: 100% !important; height: 100% !important; }
   .hero-inner { display: grid; gap: var(--space-3); }
+  @media (max-width: 760px) {
+    .hero { padding-top: 5.5rem; }
+    .hero-inner { gap: var(--space-2); }
+    .hero-lede { font-size: 1.05rem; }
+  }
   .hero-title {
     font-size: var(--step-6); line-height: 0.92; letter-spacing: -0.03em; max-width: 12ch;
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
   }
   .hero-lede { font-size: var(--step-1); max-width: 40ch; color: var(--brume); line-height: 1.5; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  .hero-scroll {
-    position: absolute; left: 50%; bottom: 1.5rem; translate: -50% 0;
-    width: 1.75rem; height: 2.75rem; border-radius: 999px; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.6);
+  .assurances {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem;
+    margin-top: clamp(2rem, 6vh, 4rem); padding-top: 1.25rem;
+    border-top: 1px solid rgb(214 226 245 / 0.22);
+    font-size: 0.95rem; color: var(--brume);
   }
-  .hero-scroll span { position: absolute; left: 50%; top: 0.55rem; width: 4px; height: 8px; margin-left: -2px; border-radius: 4px; background: var(--blanc); animation: scroll-cue 2s var(--ease-out) infinite; }
-  @keyframes scroll-cue { 0% { opacity: 0; transform: translateY(-4px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
-  @media (max-width: 700px) { .hero-scroll { display: none; } }
+  .assurances li { display: flex; align-items: center; gap: 0.6rem; }
+  .assurances :global(svg) { width: 1.25rem; height: 1.25rem; flex: none; color: var(--petale); }
+  @media (max-width: 760px) {
+    .assurances { grid-template-columns: 1fr 1fr; gap: 0.75rem 1rem; font-size: 0.85rem; }
+  }
 
   /* ---------- Dawn passage ---------- */
   .dawn {
     --sky-top: var(--nuit); --sky-bottom: var(--nuit-2); --p: 0;
-    height: 320vh; position: relative;
+    height: 220vh; position: relative;
   }
   .dawn-sticky {
     position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center;

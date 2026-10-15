@@ -3,7 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Icon from '../../components/Icon.astro';
-import { products, related, formatPrice, discountPercent, typeLabels, type Product } from '../../lib/catalog';
+import { products, related, formatPrice, discountPercent, typeLabels, variantsOf, lineName, type Product } from '../../lib/catalog';
 import { productImage } from '../../lib/images';
 import { waLink } from '../../lib/whatsapp';
 import { site } from '../../data/site';
@@ -13,12 +13,36 @@ export function getStaticPaths() {
 }
 
 const { product: p } = Astro.props as { product: Product };
-const off = discountPercent(p.price, p.compareAt);
+const variants = variantsOf(p);
+const v0 = variants[0];
+const multi = variants.length > 1;
 const others = related(p);
 const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' : 'argan';
 const rangeLinks = p.ranges.map((r) => ({ href: `/${r}`, label: r === 'argan' ? 'Gamme argan' : 'Gamme rose' }));
-const og = await getImage({ src: productImage(p.image), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const og = await getImage({ src: productImage(v0.image), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
 
+const orderText = (name: string, price: number) => `je souhaite commander : 1 × ${name} (${formatPrice(price)}).`;
+/** Data the client script needs to switch formats. */
+const variantData = variants.map((v) => ({
+  slug: v.slug,
+  price: formatPrice(v.price),
+  compareAt: v.compareAt ? formatPrice(v.compareAt) : '',
+  off: discountPercent(v.price, v.compareAt),
+  tagline: v.tagline,
+  composition: v.composition,
+  organic: v.organic,
+  name: lineName(p, v),
+  wa: waLink(orderText(lineName(p, v), v.price)),
+}));
+
+const offer = (price: number) => ({
+  '@type': 'Offer',
+  url: `${site.url}/produit/${p.slug}`,
+  priceCurrency: 'EUR',
+  price: (price / 100).toFixed(2),
+  availability: p.soldOut ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+  areaServed: 'FR',
+});
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -27,24 +51,28 @@ const jsonLd = {
   image: new URL(og.src, site.url).href,
   brand: { '@type': 'Brand', name: site.name },
   category: typeLabels[p.type],
-  offers: {
-    '@type': 'Offer',
-    url: `${site.url}/produit/${p.slug}`,
-    priceCurrency: 'EUR',
-    price: (p.price / 100).toFixed(2),
-    availability: p.soldOut ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
-    areaServed: 'FR',
-  },
+  offers: multi ? variants.map((v) => offer(v.price)) : offer(v0.price),
 };
 ---
-<Base title={p.name} description={`${p.tagline}. ${formatPrice(p.price)}, commande sur WhatsApp.`} image={og.src} jsonLd={jsonLd}>
-  <article class:list={['product', `product--${tone}`]}>
+<Base title={p.name} description={`${v0.tagline}. ${multi ? 'Dès ' : ''}${formatPrice(Math.min(...variants.map((v) => v.price)))}, commande sur WhatsApp.`} image={og.src} jsonLd={jsonLd}>
+  <article class:list={['product', `product--${tone}`]} data-product>
     <div class="container product-grid">
       <div class="product-media">
         <div class="product-arch arch" data-tilt>
-          <Image src={productImage(p.image)} alt={p.name} widths={[480, 800, 1100]} sizes="(max-width: 900px) 90vw, 45vw" loading="eager" fetchpriority="high" />
+          {variants.map((v, i) => (
+            <Image
+              src={productImage(v.image)}
+              alt={lineName(p, v)}
+              widths={[480, 800, 1100]}
+              sizes="(max-width: 900px) 90vw, 45vw"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
+              class:list={['product-img', i === 0 && 'is-active']}
+              data-variant-image={v.slug}
+            />
+          ))}
           {p.soldOut && <span class="product-flag">Épuisé</span>}
-          {!p.soldOut && off > 0 && <span class="product-flag product-flag--promo">-{off} %</span>}
+          <span class="product-flag product-flag--promo" data-v-off hidden={!discountPercent(v0.price, v0.compareAt)}>-{discountPercent(v0.price, v0.compareAt)} %</span>
         </div>
       </div>
 
@@ -57,13 +85,29 @@ const jsonLd = {
         <ul role="list" class="chips">
           {rangeLinks.map((r) => <li><a href={r.href}>{r.label}</a></li>)}
           <li><span>{typeLabels[p.type]}</span></li>
-          {p.organic && <li><span class="chip-bio">Certifié bio</span></li>}
+          <li data-v-organic hidden={!v0.organic}><span class="chip-bio">Certifié bio</span></li>
         </ul>
         <h1 data-split="load">{p.name}</h1>
-        <p class="lede">{p.tagline}</p>
+        <p class="lede" data-v-tagline>{v0.tagline}</p>
+
+        {multi && (
+          <fieldset class="formats">
+            <legend>Format</legend>
+            <div class="formats-list">
+              {variants.map((v, i) => (
+                <label class="format">
+                  <input type="radio" name="format" value={v.slug} checked={i === 0} />
+                  <span class="format-label">{v.label}</span>
+                  <span class="format-price">{formatPrice(v.price)}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
+
         <p class="product-price">
-          <span>{formatPrice(p.price)}</span>
-          {p.compareAt && <s>{formatPrice(p.compareAt)}</s>}
+          <span data-v-price>{formatPrice(v0.price)}</span>
+          <s data-v-compare hidden={!v0.compareAt}>{v0.compareAt ? formatPrice(v0.compareAt) : ''}</s>
           <small>prix TTC à l’unité</small>
         </p>
 
@@ -76,10 +120,10 @@ const jsonLd = {
           </div>
         ) : (
           <div class="product-actions" data-buy-anchor>
-            <button type="button" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={p.slug} data-magnetic>
-              <Icon name="plus" /> Ajouter à ma sélection
+            <button type="button" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={v0.slug} data-v-add data-magnetic>
+              <Icon name="plus" /> Ajouter au panier
             </button>
-            <a class="btn btn--ghost" href={waLink(`je souhaite commander : 1 × ${p.name} (${formatPrice(p.price)}).`)} target="_blank" rel="noopener">
+            <a class="btn btn--ghost" href={variantData[0].wa} target="_blank" rel="noopener" data-v-wa>
               <Icon name="whatsapp" /> Commander ce soin seul
             </a>
           </div>
@@ -106,7 +150,7 @@ const jsonLd = {
           </details>
           <details>
             <summary>Composition</summary>
-            <p>{p.composition}</p>
+            <p data-v-composition>{v0.composition}</p>
             <p class="small">Liste indicative. La liste INCI complète figure sur l’emballage du produit et fait foi.</p>
           </details>
           <details>
@@ -132,15 +176,17 @@ const jsonLd = {
 
   <div class="buybar" data-buybar aria-hidden="true">
     <div class="buybar-info">
-      <p class="buybar-name">{p.name}</p>
-      <p class="buybar-price">{formatPrice(p.price)}{p.compareAt && <s>{formatPrice(p.compareAt)}</s>}</p>
+      <p class="buybar-name" data-v-name>{lineName(p, v0)}</p>
+      <p class="buybar-price"><span data-v-price>{formatPrice(v0.price)}</span><s data-v-compare hidden={!v0.compareAt}>{v0.compareAt ? formatPrice(v0.compareAt) : ''}</s></p>
     </div>
     {p.soldOut ? (
       <a class="btn" tabindex="-1" href={waLink(`prévenez-moi quand « ${p.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">Me prévenir</a>
     ) : (
-      <button type="button" tabindex="-1" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={p.slug}><Icon name="plus" /> Ajouter</button>
+      <button type="button" tabindex="-1" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={v0.slug} data-v-add><Icon name="plus" /> Ajouter</button>
     )}
   </div>
+
+  <script type="application/json" id="variant-data" set:html={JSON.stringify(variantData)} />
 
   {others.length > 0 && (
     <section class="section related" aria-labelledby="related-title">
@@ -155,6 +201,29 @@ const jsonLd = {
 </Base>
 
 <script>
+  // Format selector: swaps photo, price, texts and the basket / WhatsApp targets.
+  const dataEl = document.getElementById('variant-data');
+  const formats = document.querySelector<HTMLFieldSetElement>('.formats');
+  if (dataEl && formats) {
+    type V = { slug: string; price: string; compareAt: string; off: number; tagline: string; composition: string; organic: boolean; name: string; wa: string };
+    const variants: V[] = JSON.parse(dataEl.textContent || '[]');
+    const all = <T extends HTMLElement>(sel: string) => document.querySelectorAll<T>(sel);
+    formats.addEventListener('change', (e) => {
+      const v = variants.find((x) => x.slug === (e.target as HTMLInputElement).value);
+      if (!v) return;
+      all('[data-variant-image]').forEach((img) => img.classList.toggle('is-active', img.dataset.variantImage === v.slug));
+      all('[data-v-price]').forEach((el) => (el.textContent = v.price));
+      all('[data-v-compare]').forEach((el) => { el.textContent = v.compareAt; el.hidden = !v.compareAt; });
+      all('[data-v-off]').forEach((el) => { el.textContent = `-${v.off} %`; el.hidden = !v.off; });
+      all('[data-v-tagline]').forEach((el) => (el.textContent = v.tagline));
+      all('[data-v-composition]').forEach((el) => (el.textContent = v.composition));
+      all('[data-v-name]').forEach((el) => (el.textContent = v.name));
+      all('[data-v-organic]').forEach((el) => (el.hidden = !v.organic));
+      all('[data-v-add]').forEach((el) => (el.dataset.add = v.slug));
+      all<HTMLAnchorElement>('[data-v-wa]').forEach((el) => (el.href = v.wa));
+    });
+  }
+
   // Mobile buy bar: shown once the main purchase buttons have scrolled out of view.
   const bar = document.querySelector<HTMLElement>('[data-buybar]');
   const anchor = document.querySelector<HTMLElement>('[data-buy-anchor]');
@@ -193,7 +262,25 @@ const jsonLd = {
   .product-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
   .product-media { position: sticky; top: 6.5rem; }
   .product-arch { position: relative; aspect-ratio: 4 / 5; background: var(--blanc); box-shadow: var(--shadow-lift); }
-  .product-arch :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .product-arch :global(.product-img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s var(--ease-out); }
+  .product-arch :global(.product-img.is-active) { opacity: 1; }
+  .product-flag[hidden] { display: none; }
+
+  .formats { border: 0; padding: 0; display: grid; gap: 0.6rem; }
+  .formats legend { font-weight: 700; margin-bottom: 0.6rem; }
+  .formats-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .format {
+    position: relative; display: grid; gap: 0.1rem; min-width: 9.5rem; padding: 0.7rem 1.1rem;
+    border-radius: 1.25rem; background: var(--blanc); cursor: pointer;
+    box-shadow: inset 0 0 0 1px rgb(14 26 60 / 0.18); transition: box-shadow 0.25s, background-color 0.25s;
+  }
+  .format:hover { box-shadow: inset 0 0 0 1px var(--nuit); }
+  .format input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+  .format-label { font-weight: 600; }
+  .format-price { font-size: 0.9rem; color: var(--damas); }
+  .format:has(input:checked) { background: var(--nuit); color: var(--blanc); box-shadow: none; }
+  .format:has(input:checked) .format-price { color: var(--petale); }
+  .format:has(input:focus-visible) { outline: 2px solid var(--damas); outline-offset: 3px; }
   .product-flag { position: absolute; left: 50%; bottom: 1.25rem; translate: -50% 0; background: var(--nuit); color: var(--blanc); padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; }
   .product-flag--promo { background: var(--damas); }
 

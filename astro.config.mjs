@@ -3,6 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import moved from './src/data/redirects.json' with { type: 'json' };
 
 // BASE_PATH is set by the GitHub Pages workflow ("" with a custom domain, "/<repo>" otherwise).
 const base = (process.env.BASE_PATH || '').replace(/\/$/, '');
@@ -37,6 +38,8 @@ export default defineConfig({
   site,
   base: base || undefined,
   trailingSlash: 'ignore',
+  // Old product addresses (merged formats, supplier names removed) keep working.
+  redirects: Object.fromEntries(Object.entries(moved).map(([from, to]) => [`/produit/${from}`, `${base}/produit/${to}`])),
   integrations: [sitemap(), prefixLinks],
   build: { format: 'directory' },
 });

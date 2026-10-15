@@ -1,13 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import { formatPrice, discountPercent, type Product } from '../lib/catalog';
+import { formatPrice, discountPercent, variantsOf, minPrice, type Product } from '../lib/catalog';
 import { productImage } from '../lib/images';
 import { waLink } from '../lib/whatsapp';
 
 interface Props { product: Product; eager?: boolean }
 const { product: p, eager = false } = Astro.props;
-const off = discountPercent(p.price, p.compareAt);
+const formats = variantsOf(p).length;
+const off = formats > 1 ? 0 : discountPercent(p.price, p.compareAt);
 const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' : 'argan';
 ---
 <article class="card" data-tone={tone} data-reveal>
@@ -23,14 +24,19 @@ const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' :
     <span class="card-glow" aria-hidden="true"></span>
     {p.soldOut && <span class="card-badge card-badge--out">Épuisé</span>}
     {!p.soldOut && off > 0 && <span class="card-badge">-{off} %</span>}
-    {!p.soldOut && !off && p.organic && <span class="card-badge card-badge--bio">Certifié bio</span>}
+    {!p.soldOut && !off && formats > 1 && <span class="card-badge card-badge--formats">{formats} formats</span>}
+    {!p.soldOut && !off && formats === 1 && p.organic && <span class="card-badge card-badge--bio">Certifié bio</span>}
   </a>
   <div class="card-body">
     <h3 class="card-title"><a href={`/produit/${p.slug}`}>{p.name}</a></h3>
     <p class="card-tagline">{p.tagline}</p>
     <div class="card-foot">
-      <p class="price">{formatPrice(p.price)}{p.compareAt && <s>{formatPrice(p.compareAt)}</s>}</p>
-      {p.soldOut ? (
+      {formats > 1
+        ? <p class="price"><small>dès</small> {formatPrice(minPrice(p))}</p>
+        : <p class="price">{formatPrice(p.price)}{p.compareAt && <s>{formatPrice(p.compareAt)}</s>}</p>}
+      {formats > 1 ? (
+        <a class="card-add" href={`/produit/${p.slug}`}>Choisir le format</a>
+      ) : p.soldOut ? (
         <a class="card-add card-add--notify" href={waLink(`prévenez-moi quand « ${p.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">
           Me prévenir
         </a>
@@ -70,6 +76,8 @@ const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' :
   }
   .card-badge--out { background: var(--nuit); }
   .card-badge--bio { background: var(--chaouen); }
+  .card-badge--formats { background: var(--blanc); color: var(--nuit); }
+  .price small { font-family: var(--font-body); font-size: 0.7em; color: var(--ink-soft); }
   .card:has(.card-badge--out) :global(.card-img) { filter: grayscale(0.6) opacity(0.75); }
 
   .card-body { display: grid; gap: 0.35rem; padding-inline: 0.25rem; }

@@ -1,14 +1,14 @@
 ---
 import Icon from './Icon.astro';
 import { getImage } from 'astro:assets';
-import { products, coffrets } from '../lib/catalog';
+import { basketItems } from '../lib/catalog';
 import { productImage } from '../lib/images';
 import { site } from '../data/site';
 
 const items = await Promise.all(
-  [...products, ...coffrets].map(async (p) => {
-    const img = await getImage({ src: productImage(p.image), width: 160, height: 160, format: 'webp' });
-    return { slug: p.slug, name: p.name, price: p.price, image: img.src, soldOut: p.soldOut };
+  basketItems().map(async (item) => {
+    const img = await getImage({ src: productImage(item.image), width: 160, height: 160, format: 'webp' });
+    return { ...item, image: img.src };
   }),
 );
 const config = { whatsapp: site.whatsapp, name: site.name, discount: site.bundleDiscount };
@@ -16,15 +16,15 @@ const config = { whatsapp: site.whatsapp, name: site.name, discount: site.bundle
 <dialog class="drawer" data-wishlist aria-labelledby="drawer-title">
   <div class="drawer-panel" data-lenis-prevent>
     <div class="drawer-head">
-      <h2 id="drawer-title">Ma sélection</h2>
+      <h2 id="drawer-title">Mon panier</h2>
       <button type="button" class="drawer-close" data-wishlist-close>
         <Icon name="close" /><span class="visually-hidden">Fermer</span>
       </button>
     </div>
 
     <div class="drawer-empty" data-wishlist-empty>
-      <p>Votre sélection est vide.</p>
-      <p>Ajoutez des soins depuis les gammes, puis envoyez la liste en un message WhatsApp.</p>
+      <p>Votre panier est vide.</p>
+      <p>Ajoutez des soins depuis les gammes, puis envoyez votre panier en un message WhatsApp.</p>
       <div class="drawer-empty-links">
         <a class="btn" href="/argan">Voir l’argan</a>
         <a class="btn btn--rose" href="/rose">Voir la rose</a>
@@ -44,9 +44,9 @@ const config = { whatsapp: site.whatsapp, name: site.name, discount: site.bundle
       <p class="drawer-note" data-wishlist-hint></p>
       <p class="drawer-note">Frais de livraison et paiement confirmés sur WhatsApp avant toute validation.</p>
       <a class="btn btn--rose drawer-send" data-wishlist-send href="#" target="_blank" rel="noopener">
-        <Icon name="whatsapp" /> Envoyer ma sélection sur WhatsApp
+        <Icon name="whatsapp" /> Envoyer mon panier sur WhatsApp
       </a>
-      <button type="button" class="drawer-clear" data-wishlist-clear>Vider la sélection</button>
+      <button type="button" class="drawer-clear" data-wishlist-clear>Vider le panier</button>
     </div>
   </div>
 </dialog>

@@ -3,12 +3,14 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Khatam from '../components/Khatam.astro';
-import { coffrets, products, formatPrice } from '../lib/catalog';
+import { coffrets, products, formatPrice, variantsOf, lineName } from '../lib/catalog';
 import { productImage } from '../lib/images';
 import { waLink } from '../lib/whatsapp';
 import { site } from '../data/site';
 
-const available = products.filter((p) => !p.soldOut);
+const available = products
+  .filter((p) => !p.soldOut)
+  .flatMap((p) => variantsOf(p).map((v) => ({ slug: v.slug, name: lineName(p, v), price: v.price, image: v.image, ranges: p.ranges })));
 const choices = await Promise.all(
   available.map(async (p) => ({
     ...p,
@@ -51,7 +53,7 @@ const MAX = 6;
               {c.soldOut ? (
                 <a class="btn btn--ghost" href={waLink(`prévenez-moi quand le « ${c.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">Me prévenir de son retour</a>
               ) : (
-                <button type="button" class="btn btn--rose" data-add={c.slug}><Icon name="plus" /> Ajouter à ma sélection</button>
+                <button type="button" class="btn btn--rose" data-add={c.slug}><Icon name="plus" /> Ajouter au panier</button>
               )}
             </div>
           </li>
@@ -148,7 +150,7 @@ const MAX = 6;
   .c-hero { position: relative; overflow: hidden; isolation: isolate; padding-block: 10rem var(--space-6); background: linear-gradient(170deg, var(--nuit) 30%, var(--chaouen) 75%, var(--damas)); }
   .c-hero :global(.c-star) { position: absolute; width: 50rem; right: -14rem; top: -10rem; color: rgb(247 201 214 / 0.14); z-index: -1; }
   .c-hero-inner { display: grid; gap: var(--space-3); justify-items: start; }
-  .c-hero h1 { font-size: var(--step-6); line-height: 0.95; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; max-width: 10ch; }
+  .c-hero h1 { font-size: var(--step-6); line-height: 0.95; max-width: 10ch; }
 
   .c-list { display: grid; gap: var(--space-6); }
   .c-item { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: center; }

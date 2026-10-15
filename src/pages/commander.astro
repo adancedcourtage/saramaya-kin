@@ -5,8 +5,8 @@ import { waLink } from '../lib/whatsapp';
 import { site } from '../data/site';
 
 const steps = [
-  { title: 'Choisissez vos soins', text: 'Sur les pages argan et rose, cliquez sur « Ajouter ». Votre sélection est gardée sur votre appareil.' },
-  { title: 'Envoyez votre sélection', text: 'Dans « Ma sélection », un clic ouvre WhatsApp avec la liste, les prix et le total déjà rédigés.' },
+  { title: 'Choisissez vos soins', text: 'Sur les pages argan et rose, cliquez sur « Ajouter ». Votre panier est gardé sur votre appareil.' },
+  { title: 'Envoyez votre panier', text: 'Dans « Mon panier », un clic ouvre WhatsApp avec la liste, les prix et le total déjà rédigés.' },
   { title: 'Validez le récapitulatif', text: 'Nous vous envoyons le total avec les frais de livraison et le moyen de paiement. Vous confirmez par écrit.' },
   { title: 'Recevez votre colis', text: `Après paiement, votre commande part sous suivi. Délai : ${site.delivery.delay}.` },
 ];
@@ -49,7 +49,7 @@ const faqLd = {
         ))}
       </ol>
       <div class="o-actions">
-        <button type="button" class="btn" data-wishlist-open>Ouvrir ma sélection</button>
+        <button type="button" class="btn" data-wishlist-open>Ouvrir mon panier</button>
         <a class="btn btn--rose" href={waLink('je souhaite commander.')} target="_blank" rel="noopener"><Icon name="whatsapp" /> Écrire sur WhatsApp</a>
       </div>
     </div>
@@ -72,7 +72,7 @@ const faqLd = {
 
 <style>
   .o-hero { padding-block: 9rem var(--space-4); background: linear-gradient(to bottom, var(--brume), var(--chaux)); }
-  .o-hero h1 { font-size: var(--step-6); line-height: 0.95; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; }
+  .o-hero h1 { font-size: var(--step-6); line-height: 0.95; }
   .o-hero .lede { margin-top: var(--space-3); }
   .o-list { display: grid; gap: var(--space-3); max-width: 52rem; }
   .o-list li { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); align-items: start; padding: var(--space-3); background: var(--blanc); border-radius: 2rem; }

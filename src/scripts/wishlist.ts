@@ -1,5 +1,5 @@
 /**
- * "Ma sélection": a lightweight, payment-free basket stored in localStorage.
+ * "Mon panier": a lightweight, payment-free basket stored in localStorage.
  * It turns the chosen products into a single pre-filled WhatsApp message.
  */
 interface Item { slug: string; name: string; price: number; image: string; soldOut: boolean }
@@ -116,7 +116,7 @@ export function initWishlist() {
     if (add) {
       const item = change(add.dataset.add!, 1);
       if (item) {
-        notify(`${item.name} ajouté à votre sélection`);
+        notify(`${item.name} ajouté au panier`);
         add.classList.add('is-added');
         setTimeout(() => add.classList.remove('is-added'), 1400);
       }

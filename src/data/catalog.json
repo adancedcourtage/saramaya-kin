@@ -2,7 +2,7 @@
   "products": [
     {
       "slug": "gommage-a-l-argan",
-      "name": "Gommage à l'Argan",
+      "name": "Gommage à l’Argan",
       "ranges": [
         "argan"
       ],
@@ -11,18 +11,40 @@
       "compareAt": null,
       "image": "gommage-argan.jpg",
       "tagline": "Exfoliation argan Face & Body, peau neuve et satinée",
-      "description": "Un gommage exfoliant double-action pour le visage et le corps. Enrichi en huile d'argan vierge pressée à froid, il libère la peau des impuretés tout en l'enveloppant d'une nutrition profonde.",
-      "composition": "Huile d'Argan vierge (Argania Spinosa), sel de mer naturel, beurre de karité, glycérine végétale, huiles essentielles naturelles.",
+      "description": "Un gommage exfoliant double-action pour le visage et le corps. Enrichi en huile d’argan vierge pressée à froid, il libère la peau des impuretés tout en l’enveloppant d’une nutrition profonde.",
+      "composition": "Huile d’Argan vierge (Argania Spinosa), sel de mer naturel, beurre de karité, glycérine végétale, huiles essentielles naturelles.",
       "benefits": [
         "Élimine les cellules mortes et purifie les pores",
-        "Nourrit grâce aux acides gras de l'huile d'argan",
+        "Nourrit grâce aux acides gras de l’huile d’argan",
         "Unifie le teint et estompe les irrégularités",
         "Peau satinée et lumineuse dès la première utilisation"
       ],
-      "usage": "Appliquer sur peau humide en mouvements circulaires. Laisser agir 2 minutes, rincer à l'eau tiède. 2 à 3 fois par semaine.",
+      "usage": "Appliquer sur peau humide en mouvements circulaires. Laisser agir 2 minutes, rincer à l’eau tiède. 2 à 3 fois par semaine.",
       "organic": false,
       "essentialOil": false,
-      "soldOut": true
+      "soldOut": false,
+      "variants": [
+        {
+          "slug": "gommage-a-l-argan",
+          "label": "Visage et corps",
+          "price": 790,
+          "compareAt": null,
+          "image": "gommage-argan.jpg",
+          "tagline": "Exfoliation argan Face & Body, peau neuve et satinée",
+          "composition": "Huile d’Argan vierge (Argania Spinosa), sel de mer naturel, beurre de karité, glycérine végétale, huiles essentielles naturelles.",
+          "organic": false
+        },
+        {
+          "slug": "gommage-a-l-argan-creme",
+          "label": "Texture crémeuse",
+          "price": 1100,
+          "compareAt": null,
+          "image": "choj-gommage-argan.png",
+          "tagline": "Gommage exfoliant à l’huile d’argan, peau renouvelée et satinée",
+          "composition": "Huile d’Argan vierge (Argania Spinosa), exfoliant naturel, beurre de karité, glycérine végétale.",
+          "organic": false
+        }
+      ]
     },
     {
       "slug": "huile-de-rose",
@@ -34,8 +56,8 @@
       "price": 890,
       "compareAt": null,
       "image": "huile-de-rose.jpg",
-      "tagline": "Sérum botanique à la rose, éclat, anti-âge, 30ml",
-      "description": "Sérum botanique d'exception extrait des pétales de rosa damascena. Régénère, éclaire et protège la peau. Anti-âge naturel.",
+      "tagline": "Sérum botanique à la rose, éclat, anti-âge, 30 ml",
+      "description": "Sérum botanique d’exception extrait des pétales de rosa damascena. Régénère, éclaire et protège la peau. Anti-âge naturel.",
       "composition": "Huile de Rose (Rosa Damascena Flower Oil), vitamine E naturelle, huile de jojoba, extrait de rosier sauvage. 30 ml.",
       "benefits": [
         "Action anti-âge intense dès 2 semaines",
@@ -46,7 +68,29 @@
       "usage": "Le soir, 2 à 4 gouttes sur visage et cou propres. Masser délicatement en mouvements ascendants.",
       "organic": false,
       "essentialOil": false,
-      "soldOut": true
+      "soldOut": false,
+      "variants": [
+        {
+          "slug": "huile-de-rose-30ml",
+          "label": "Sérum 30 ml",
+          "price": 890,
+          "compareAt": null,
+          "image": "huile-de-rose.jpg",
+          "tagline": "Sérum botanique à la rose, éclat, anti-âge, 30 ml",
+          "composition": "Huile de Rose (Rosa Damascena Flower Oil), vitamine E naturelle, huile de jojoba, extrait de rosier sauvage. 30 ml.",
+          "organic": false
+        },
+        {
+          "slug": "huile-de-rose",
+          "label": "Huile précieuse",
+          "price": 890,
+          "compareAt": null,
+          "image": "choj-huile-rose.png",
+          "tagline": "Huile de rose précieuse, anti-âge, éclat et réparation",
+          "composition": "Huile de Rose (Rosa Damascena Flower Oil), vitamine E, huile de jojoba.",
+          "organic": false
+        }
+      ]
     },
     {
       "slug": "creme-de-rose",
@@ -59,7 +103,7 @@
       "compareAt": null,
       "image": "creme-rose.jpg",
       "tagline": "Soin visage à la rose, éclat naturel et teint unifié",
-      "description": "La Crème de Rose Deltx est un soin visage à l'extrait de rose conçu pour illuminer le teint et redonner éclat et jeunesse. Sa texture légère et son parfum floral délicat en font un rituel beauté inoubliable qui sublime la peau au quotidien.",
+      "description": "La Crème de Rose est un soin visage à l’extrait de rose conçu pour illuminer le teint et redonner éclat et jeunesse. Sa texture légère et son parfum floral délicat en font un rituel beauté inoubliable qui sublime la peau au quotidien.",
       "composition": "Eau de rose distillée, extrait de rose (Rosa Damascena), huile de rose, beurre de karité, glycérine végétale, vitamine C, acide hyaluronique.",
       "benefits": [
         "Illumine et unifie le teint naturellement dès 2 semaines",
@@ -67,14 +111,14 @@
         "Hydratation légère et texture non grasse",
         "Parfum floral naturel délicat qui persiste sur la peau"
       ],
-      "usage": "Appliquer le matin et/ou le soir sur visage et cou propres. Effectuer de légers mouvements ascendants pour stimuler la microcirculation et optimiser l'absorption.",
+      "usage": "Appliquer le matin et/ou le soir sur visage et cou propres. Effectuer de légers mouvements ascendants pour stimuler la microcirculation et optimiser l’absorption.",
       "organic": false,
       "essentialOil": false,
       "soldOut": false
     },
     {
       "slug": "savon-a-l-argan",
-      "name": "Savon à l'Argan",
+      "name": "Savon à l’Argan",
       "ranges": [
         "argan"
       ],
@@ -82,23 +126,23 @@
       "price": 450,
       "compareAt": null,
       "image": "savon-argan.jpg",
-      "tagline": "Savon artisanal Assif, purifie et nourrit la peau",
-      "description": "Le Savon à l'Argan Assif est un savon artisanal authentique, fabriqué selon les méthodes traditionnelles marocaines. Enrichi en huile d'argan pure, il nettoie en profondeur tout en préservant le film hydrolipidique naturel de la peau pour un résultat doux et nourri.",
-      "composition": "Huile d'argan vierge, huile d'olive extra vierge, glycérine naturelle, soude végétale, parfum naturel d'argan.",
+      "tagline": "Savon artisanal, purifie et nourrit la peau",
+      "description": "Le Savon à l’Argan est un savon artisanal authentique, fabriqué selon les méthodes traditionnelles marocaines. Enrichi en huile d’argan pure, il nettoie en profondeur tout en préservant le film hydrolipidique naturel de la peau pour un résultat doux et nourri.",
+      "composition": "Huile d’argan vierge, huile d’olive extra vierge, glycérine naturelle, soude végétale, parfum naturel d’argan.",
       "benefits": [
         "Nettoyage doux respectant le pH naturel de la peau",
         "Nourrit et protège la peau lors du lavage quotidien",
         "Idéal pour le visage et le corps",
         "Formule artisanale, sans agent chimique agressif"
       ],
-      "usage": "Utiliser quotidiennement sous l'eau. Faire mousser entre les mains ou avec un gant de toilette. Rincer abondamment à l'eau claire.",
+      "usage": "Utiliser quotidiennement sous l’eau. Faire mousser entre les mains ou avec un gant de toilette. Rincer abondamment à l’eau claire.",
       "organic": false,
       "essentialOil": false,
       "soldOut": false
     },
     {
       "slug": "huile-d-argan",
-      "name": "Huile d'Argan",
+      "name": "Huile d’Argan",
       "ranges": [
         "argan"
       ],
@@ -106,9 +150,9 @@
       "price": 1200,
       "compareAt": null,
       "image": "huile-argan.jpg",
-      "tagline": "L'or liquide du Maroc, Bio, non torréfiée, multi-usages",
-      "description": "Notre Huile d'Argan Bio est extraite à froid de noix d'arganier des forêts du Souss au Maroc. Non torréfiée et 100% pure, elle préserve tous ses acides gras essentiels et sa richesse en vitamine E. L'or liquide du Maroc, un trésor multi-usages pour la peau, le visage et les cheveux.",
-      "composition": "100% Huile d'Argan Cosmétique (Argania Spinosa Kernel Oil), pressée à froid, non torréfiée. Certifiée Bio. Aucun additif.",
+      "tagline": "L’or liquide du Maroc, Bio, non torréfiée, multi-usages",
+      "description": "Notre Huile d’Argan Bio est extraite à froid de noix d’arganier des forêts du Souss au Maroc. Non torréfiée et 100% pure, elle préserve tous ses acides gras essentiels et sa richesse en vitamine E. L’or liquide du Maroc, un trésor multi-usages pour la peau, le visage et les cheveux.",
+      "composition": "100% Huile d’Argan Cosmétique (Argania Spinosa Kernel Oil), pressée à froid, non torréfiée. Certifiée Bio. Aucun additif.",
       "benefits": [
         "Nourrit intensément peau, visage et cheveux en profondeur",
         "Propriétés anti-âge et réparatrices naturelles",
@@ -119,7 +163,39 @@
       "usage": "Visage : 2 à 3 gouttes sur peau propre, masser doucement le soir. Cheveux : quelques gouttes sur les pointes sèches ou en masque avant shampooing. Corps : après la douche, sur peau légèrement humide.",
       "organic": false,
       "essentialOil": false,
-      "soldOut": false
+      "soldOut": false,
+      "variants": [
+        {
+          "slug": "huile-d-argan",
+          "label": "Flacon classique",
+          "price": 1200,
+          "compareAt": null,
+          "image": "huile-argan.jpg",
+          "tagline": "L’or liquide du Maroc, Bio, non torréfiée, multi-usages",
+          "composition": "100% Huile d’Argan Cosmétique (Argania Spinosa Kernel Oil), pressée à froid, non torréfiée. Certifiée Bio. Aucun additif.",
+          "organic": false
+        },
+        {
+          "slug": "huile-d-argan-250ml",
+          "label": "Grand format 250 ml",
+          "price": 2350,
+          "compareAt": null,
+          "image": "huile-argan-250.jpg",
+          "tagline": "Grand format 250 ml, l’or liquide du Maroc, famille et économique",
+          "composition": "100% Huile d’Argan Cosmétique (Argania Spinosa Kernel Oil) 250 ml, pressée à froid, non torréfiée. Certifiée Bio. Aucun additif.",
+          "organic": false
+        },
+        {
+          "slug": "huile-d-argan-bio-100ml",
+          "label": "Certifiée bio 100 ml",
+          "price": 960,
+          "compareAt": null,
+          "image": "huile-argan-bio-100ml.webp",
+          "tagline": "Bio, certifiée AB & Ecocert, 100 ml",
+          "composition": "100% Huile d’Argane Cosmétique (Argania Spinosa Kernel Oil), pressée à froid. Certifiée AB & Ecocert. Sans additif.",
+          "organic": true
+        }
+      ]
     },
     {
       "slug": "shampooing-argan",
@@ -131,9 +207,9 @@
       "price": 800,
       "compareAt": 990,
       "image": "shampooing-argan.jpg",
-      "tagline": "Derhum Professional, protéine + kératine, tous types de cheveux",
-      "description": "Le Shampooing Argan Derhum Professional est un soin capillaire enrichi en huile d'argan, protéines et kératine. Formulé pour tous les types de cheveux, il restaure la brillance, la douceur et la vitalité des cheveux abîmés ou ternes grâce à une synergie d'actifs réparateurs.",
-      "composition": "Huile d'Argan (Argania Spinosa), protéine de soie hydrolysée, kératine végétale, panthénol (Pro-vitamine B5), extraits de plantes nourrissants.",
+      "tagline": "protéine + kératine, tous types de cheveux",
+      "description": "Le Shampooing Argan est un soin capillaire enrichi en huile d’argan, protéines et kératine. Formulé pour tous les types de cheveux, il restaure la brillance, la douceur et la vitalité des cheveux abîmés ou ternes grâce à une synergie d’actifs réparateurs.",
+      "composition": "Huile d’Argan (Argania Spinosa), protéine de soie hydrolysée, kératine végétale, panthénol (Pro-vitamine B5), extraits de plantes nourrissants.",
       "benefits": [
         "Restaure la brillance et la douceur des cheveux ternes",
         "Renforce la fibre capillaire grâce à la kératine végétale",
@@ -148,7 +224,7 @@
     },
     {
       "slug": "masque-a-l-argan",
-      "name": "Masque à l'Argan",
+      "name": "Masque à l’Argan",
       "ranges": [
         "argan"
       ],
@@ -156,71 +232,23 @@
       "price": 1000,
       "compareAt": null,
       "image": "masque-argan.jpg",
-      "tagline": "Masque nourrissant à l'huile d'argan, éclat et douceur intense",
-      "description": "Le Masque à l'Argan est un soin concentré qui diffuse la richesse de l'huile d'argan au cœur de l'épiderme. Sa texture enveloppante fond sur la peau pour lui restituer souplesse, éclat et nutrition profonde en un seul geste. Idéal comme soin hebdomadaire pour booster l'hydratation.",
-      "composition": "Huile d'Argan vierge (Argania Spinosa), beurre de karité, argile blanche, aloe vera bio, vitamine E, extrait de rose.",
+      "tagline": "Masque nourrissant à l’huile d’argan, éclat et douceur intense",
+      "description": "Le Masque à l’Argan est un soin concentré qui diffuse la richesse de l’huile d’argan au cœur de l’épiderme. Sa texture enveloppante fond sur la peau pour lui restituer souplesse, éclat et nutrition profonde en un seul geste. Idéal comme soin hebdomadaire pour booster l’hydratation.",
+      "composition": "Huile d’Argan vierge (Argania Spinosa), beurre de karité, argile blanche, aloe vera bio, vitamine E, extrait de rose.",
       "benefits": [
         "Nutrition profonde et hydratation intense dès la 1ère application",
         "Peau lissée, adoucie et lumineuse après chaque masque",
         "Régénère les peaux fatiguées et ternes",
         "Convient à tous types de peau, visage et décolleté"
       ],
-      "usage": "Appliquer une couche généreuse sur le visage propre, éviter le contour des yeux. Laisser poser 15 à 20 minutes. Rincer à l'eau tiède. Utiliser 1 à 2 fois par semaine.",
+      "usage": "Appliquer une couche généreuse sur le visage propre, éviter le contour des yeux. Laisser poser 15 à 20 minutes. Rincer à l’eau tiède. Utiliser 1 à 2 fois par semaine.",
       "organic": false,
-      "essentialOil": false,
-      "soldOut": false
-    },
-    {
-      "slug": "huile-d-argan-250ml",
-      "name": "Huile d'Argan 250ml",
-      "ranges": [
-        "argan"
-      ],
-      "type": "huile",
-      "price": 2350,
-      "compareAt": null,
-      "image": "huile-argan-250.jpg",
-      "tagline": "Grand format 250ml, l'or liquide du Maroc, famille et économique",
-      "description": "Notre Huile d'Argan Bio en grand format 250ml est idéale pour une utilisation quotidienne en famille. Extraite à froid des noix d'arganier du Souss au Maroc, 100% pure et non torréfiée, elle conserve tous ses acides gras essentiels et sa richesse en vitamine E pour des soins complets.",
-      "composition": "100% Huile d'Argan Cosmétique (Argania Spinosa Kernel Oil) 250ml, pressée à froid, non torréfiée. Certifiée Bio. Aucun additif.",
-      "benefits": [
-        "Grand format économique pour toute la famille",
-        "Nourrit intensément peau, visage et cheveux",
-        "Propriétés anti-âge et réparatrices naturelles",
-        "Multi-usages : corps, visage, ongles, pointes, barbe"
-      ],
-      "usage": "Visage : 2 à 3 gouttes sur peau propre, masser le soir. Cheveux : quelques gouttes sur les pointes ou en masque avant shampooing. Corps : après la douche sur peau légèrement humide.",
-      "organic": false,
-      "essentialOil": false,
-      "soldOut": false
-    },
-    {
-      "slug": "huile-d-argane-bio-100ml",
-      "name": "Huile d'Argane Bio 100ml",
-      "ranges": [
-        "argan"
-      ],
-      "type": "huile",
-      "price": 960,
-      "compareAt": null,
-      "image": "huile-argan-bio-100ml.webp",
-      "tagline": "Argan Life Bio, certifiée AB & Ecocert, 100ml",
-      "description": "L'Huile d'Argane Bio Argan Life est extraite artisanalement à partir des fruits de l'arganier. Certifiée AB et Ecocert, 100% pure et naturelle, elle préserve tous ses actifs précieux pour nourrir et régénérer la peau, le visage et les cheveux en profondeur.",
-      "composition": "100% Huile d'Argane Cosmétique (Argania Spinosa Kernel Oil), pressée à froid. Certifiée AB & Ecocert. Sans additif.",
-      "benefits": [
-        "Certifiée Bio AB & Ecocert",
-        "Extraction artisanale préservant tous les actifs",
-        "Nourrit et régénère peau, visage et cheveux",
-        "Format pratique 100ml, idéal voyage et quotidien"
-      ],
-      "usage": "Visage : 2 à 3 gouttes sur peau propre, le soir. Cheveux : quelques gouttes sur les pointes ou en masque avant shampooing. Corps : après la douche sur peau légèrement humide.",
-      "organic": true,
       "essentialOil": false,
       "soldOut": false
     },
     {
       "slug": "lait-corporel-argan-250ml",
-      "name": "Lait Corporel Argan 250ml",
+      "name": "Lait Corporel Argan 250 ml",
       "ranges": [
         "argan"
       ],
@@ -228,16 +256,16 @@
       "price": 1190,
       "compareAt": null,
       "image": "lait-argan-250.jpg",
-      "tagline": "Grand format 250ml, lait corps à l'argan, peau veloutée toute la journée",
-      "description": "Le Lait Corporel à l'Argan en format généreux 250ml est un soin hydratant quotidien enrichi en huile d'argan précieuse. Sa texture légère et fondante pénètre rapidement pour nourrir, assouplir et protéger la peau en profondeur, laissant un toucher velouté et soyeux.",
-      "composition": "Eau, huile d'argan (Argania Spinosa), beurre de karité, aloe vera bio, glycérine végétale, vitamine E, parfum naturel.",
+      "tagline": "Grand format 250 ml, lait corps à l’argan, peau veloutée toute la journée",
+      "description": "Le Lait Corporel à l’Argan en format généreux 250 ml est un soin hydratant quotidien enrichi en huile d’argan précieuse. Sa texture légère et fondante pénètre rapidement pour nourrir, assouplir et protéger la peau en profondeur, laissant un toucher velouté et soyeux.",
+      "composition": "Eau, huile d’argan (Argania Spinosa), beurre de karité, aloe vera bio, glycérine végétale, vitamine E, parfum naturel.",
       "benefits": [
-        "Hydratation longue durée grâce à l'huile d'argan",
-        "Grand format 250ml économique pour un usage quotidien",
+        "Hydratation longue durée grâce à l’huile d’argan",
+        "Grand format 250 ml économique pour un usage quotidien",
         "Texture fondante non collante, absorption rapide",
         "Peau veloutée, nourrie et protégée toute la journée"
       ],
-      "usage": "Appliquer après la douche sur peau légèrement humide. Masser jusqu'à absorption complète en insistant sur les zones sèches. Utiliser quotidiennement matin et/ou soir.",
+      "usage": "Appliquer après la douche sur peau légèrement humide. Masser jusqu’à absorption complète en insistant sur les zones sèches. Utiliser quotidiennement matin et/ou soir.",
       "organic": false,
       "essentialOil": false,
       "soldOut": false
@@ -253,46 +281,22 @@
       "compareAt": null,
       "image": "savon-rose.jpg",
       "tagline": "Savon artisanal à la rose, douceur florale et peau apaisée, 100g",
-      "description": "Le Savon à la Rose est un savon artisanal délicat fabriqué à partir d'extraits de rose de Damas. Sa mousse douce et parfumée nettoie la peau tout en la nourrissant et en lui laissant un parfum floral naturel envoûtant. Idéal pour les peaux sensibles et les amateurs de douceur.",
-      "composition": "Huile d'olive extra vierge, extrait de rose (Rosa Damascena), huile de rose, glycérine naturelle, soude végétale, parfum naturel de rose.",
+      "description": "Le Savon à la Rose est un savon artisanal délicat fabriqué à partir d’extraits de rose de Damas. Sa mousse douce et parfumée nettoie la peau tout en la nourrissant et en lui laissant un parfum floral naturel envoûtant. Idéal pour les peaux sensibles et les amateurs de douceur.",
+      "composition": "Huile d’olive extra vierge, extrait de rose (Rosa Damascena), huile de rose, glycérine naturelle, soude végétale, parfum naturel de rose.",
       "benefits": [
         "Nettoie délicatement en respectant le pH naturel de la peau",
         "Parfum naturel de rose persistant après le lavage",
         "Idéal pour les peaux sensibles et réactives",
         "Formule artisanale, sans agent chimique agressif"
       ],
-      "usage": "Utiliser quotidiennement sous l'eau. Faire mousser entre les mains ou avec un gant de toilette. Rincer abondamment. Convient au visage et au corps.",
+      "usage": "Utiliser quotidiennement sous l’eau. Faire mousser entre les mains ou avec un gant de toilette. Rincer abondamment. Convient au visage et au corps.",
       "organic": false,
       "essentialOil": false,
       "soldOut": false
     },
     {
-      "slug": "gommage-argan-chojairate",
-      "name": "Gommage Argan Chojairate",
-      "ranges": [
-        "argan"
-      ],
-      "type": "corps",
-      "price": 1100,
-      "compareAt": null,
-      "image": "choj-gommage-argan.png",
-      "tagline": "Gommage exfoliant à l'huile d'argan, peau renouvelée et satinée",
-      "description": "Un gommage purifiant enrichi en huile d'argan pure qui débarrasse la peau des impuretés et cellules mortes tout en la nourrissant intensément. Sa texture crémeuse laisse la peau lisse, douce et lumineuse dès la première application.",
-      "composition": "Huile d'Argan vierge (Argania Spinosa), exfoliant naturel, beurre de karité, glycérine végétale.",
-      "benefits": [
-        "Exfoliation douce et purifiante en profondeur",
-        "Peau satinée et lumineuse dès la 1ère utilisation",
-        "Nourrit et protège grâce à l'argan",
-        "Convient visage et corps"
-      ],
-      "usage": "Appliquer sur peau humide en mouvements circulaires. Laisser agir 2 min puis rincer. Utiliser 2 fois par semaine.",
-      "organic": false,
-      "essentialOil": false,
-      "soldOut": false
-    },
-    {
-      "slug": "creme-argan-chojairate",
-      "name": "Crème Argan Chojairate",
+      "slug": "creme-a-l-argan",
+      "name": "Crème à l’Argan",
       "ranges": [
         "argan"
       ],
@@ -300,16 +304,16 @@
       "price": 1060,
       "compareAt": null,
       "image": "choj-creme-argan.png",
-      "tagline": "Crème hydratante à l'huile d'argan, nutrition et éclat",
-      "description": "Crème hydratante enrichie en huile d'argan pure qui nourrit, répare et protège la peau en profondeur. Sa texture fondante s'absorbe rapidement sans film gras et convient à tous les types de peau.",
-      "composition": "Huile d'Argan (Argania Spinosa), eau florale, beurre de karité, aloe vera, vitamine E.",
+      "tagline": "Crème hydratante à l’huile d’argan, nutrition et éclat",
+      "description": "Crème hydratante enrichie en huile d’argan pure qui nourrit, répare et protège la peau en profondeur. Sa texture fondante s’absorbe rapidement sans film gras et convient à tous les types de peau.",
+      "composition": "Huile d’Argan (Argania Spinosa), eau florale, beurre de karité, aloe vera, vitamine E.",
       "benefits": [
         "Hydratation intense et longue durée",
         "Nourrit les peaux sèches et déshydratées",
         "Propriétés anti-âge naturelles",
         "Texture légère, absorption rapide"
       ],
-      "usage": "Appliquer matin et/ou soir sur peau propre, masser jusqu'à absorption complète.",
+      "usage": "Appliquer matin et/ou soir sur peau propre, masser jusqu’à absorption complète.",
       "organic": false,
       "essentialOil": false,
       "soldOut": false
@@ -326,15 +330,15 @@
       "compareAt": null,
       "image": "choj-masque-argan-rose.png",
       "tagline": "Masque nourrissant argan & rose, soin hebdomadaire éclat",
-      "description": "Un masque soin concentré alliant la puissance de l'huile d'argan à la douceur de la rose pour révéler une peau éclatante, nourrie et lissée. Idéal en soin hebdomadaire pour toutes peaux.",
-      "composition": "Huile d'Argan, extrait de rose (Rosa Damascena), argile blanche, aloe vera bio, beurre de karité.",
+      "description": "Un masque soin concentré alliant la puissance de l’huile d’argan à la douceur de la rose pour révéler une peau éclatante, nourrie et lissée. Idéal en soin hebdomadaire pour toutes peaux.",
+      "composition": "Huile d’Argan, extrait de rose (Rosa Damascena), argile blanche, aloe vera bio, beurre de karité.",
       "benefits": [
         "Nutrition profonde et hydratation intense",
         "Peau lissée et lumineuse après chaque masque",
         "Double action argan + rose",
         "Pour tous types de peau"
       ],
-      "usage": "Appliquer en couche généreuse sur peau propre. Laisser poser 15–20 min. Rincer à l'eau tiède. 1–2 fois par semaine.",
+      "usage": "Appliquer en couche généreuse sur peau propre. Laisser poser 15–20 min. Rincer à l’eau tiède. 1–2 fois par semaine.",
       "organic": false,
       "essentialOil": false,
       "soldOut": false
@@ -349,9 +353,9 @@
       "price": 1500,
       "compareAt": null,
       "image": "choj-serum-encens.png",
-      "tagline": "Sérum cutané à l'encens et argan, anti-âge et régénérant",
-      "description": "Un sérum concentré alliant l'action régénérante de l'encens aux propriétés anti-âge de l'huile d'argan. Pénètre rapidement pour lisser, réparer et redensifier la peau dès les premières applications.",
-      "composition": "Extrait d'encens (Boswellia Sacra), huile d'argan, acide hyaluronique, vitamine C, aloe vera bio.",
+      "tagline": "Sérum cutané à l’encens et argan, anti-âge et régénérant",
+      "description": "Un sérum concentré alliant l’action régénérante de l’encens aux propriétés anti-âge de l’huile d’argan. Pénètre rapidement pour lisser, réparer et redensifier la peau dès les premières applications.",
+      "composition": "Extrait d’encens (Boswellia Sacra), huile d’argan, acide hyaluronique, vitamine C, aloe vera bio.",
       "benefits": [
         "Action anti-âge et régénérante intense",
         "Lisse et redensifie la peau en profondeur",
@@ -364,8 +368,8 @@
       "soldOut": false
     },
     {
-      "slug": "eau-de-rose-chojairate",
-      "name": "Eau de Rose Chojairate",
+      "slug": "eau-de-rose",
+      "name": "Eau de Rose",
       "ranges": [
         "rose"
       ],
@@ -388,30 +392,6 @@
       "soldOut": false
     },
     {
-      "slug": "huile-de-rose-chojairate",
-      "name": "Huile de Rose Chojairate",
-      "ranges": [
-        "rose"
-      ],
-      "type": "huile",
-      "price": 890,
-      "compareAt": null,
-      "image": "choj-huile-rose.png",
-      "tagline": "Huile de rose précieuse, anti-âge, éclat et réparation",
-      "description": "Huile précieuse extraite des pétales de rose de Damas. Ce sérum botanique concentré régénère, éclaire et protège la peau des agressions extérieures.",
-      "composition": "Huile de Rose (Rosa Damascena Flower Oil), vitamine E, huile de jojoba.",
-      "benefits": [
-        "Action anti-âge et régénératrice",
-        "Éclat et luminosité naturels",
-        "Répare les peaux sèches et abîmées",
-        "Parfum naturel de rose pure"
-      ],
-      "usage": "Le soir, appliquer 2–4 gouttes sur peau propre. Masser en mouvements ascendants.",
-      "organic": false,
-      "essentialOil": false,
-      "soldOut": false
-    },
-    {
       "slug": "huile-essentielle-rose",
       "name": "Huile Essentielle Rose",
       "ranges": [
@@ -421,8 +401,8 @@
       "price": 1600,
       "compareAt": null,
       "image": "choj-he-rose.png",
-      "tagline": "Huile essentielle de rose, l'élixir floral précieux",
-      "description": "L'une des huiles essentielles les plus précieuses au monde, extraite des pétales de rose de Damas. Parfum floral enivrant, propriétés anti-âge, réconfortantes et apaisantes.",
+      "tagline": "Huile essentielle de rose, l’élixir floral précieux",
+      "description": "L’une des huiles essentielles les plus précieuses au monde, extraite des pétales de rose de Damas. Parfum floral enivrant, propriétés anti-âge, réconfortantes et apaisantes.",
       "composition": "Huile essentielle de Rosa Damascena 100% pure et naturelle.",
       "benefits": [
         "Parfum floral exceptionnel",
@@ -444,55 +424,55 @@
       "price": 1700,
       "compareAt": 1890,
       "image": "collection-coffret-argan.jpg",
-      "contents": "Crème à l'Argan + Huile d'Argan",
-      "contentsDetail": "Crème à l'Argan Deltx (Argania Spinosa, acide hyaluronique végétal, beurre de karité, vitamine E) · Huile d'Argan Bio 100% pure pressée à froid (Argania Spinosa Kernel Oil), certifiée Bio, origine forêts du Souss, Maroc. Sans additifs.",
-      "description": "Le Coffret Argan réunit les deux soins phares à l'huile d'argan pour un rituel de beauté complet. Ce duo associe les bienfaits hydratants de la Crème à l'Argan et les propriétés régénérantes de l'Huile d'Argan Bio, pour une peau nourrie et sublimée de la tête aux pieds. Idéal comme cadeau ou pour initier une routine argan authentique.",
+      "contents": "Crème à l’Argan + Huile d’Argan",
+      "contentsDetail": "Crème à l’Argan (Argania Spinosa, acide hyaluronique végétal, beurre de karité, vitamine E) · Huile d’Argan Bio 100% pure pressée à froid (Argania Spinosa Kernel Oil), certifiée Bio, origine forêts du Souss, Maroc. Sans additifs.",
+      "description": "Le Coffret Argan réunit les deux soins phares à l’huile d’argan pour un rituel de beauté complet. Ce duo associe les bienfaits hydratants de la Crème à l’Argan et les propriétés régénérantes de l’Huile d’Argan Bio, pour une peau nourrie et sublimée de la tête aux pieds. Idéal comme cadeau ou pour initier une routine argan authentique.",
       "benefits": [
         "Hydratation intense et nutrition profonde en duo synergique",
         "Peau visiblement plus lisse, ferme et éclatante",
         "Rituel complet visage + corps en deux gestes simples",
         "Formules 100% naturelles, sans parabènes ni agents agressifs",
-        "Économie sur l'achat séparé des deux produits"
+        "Économie sur l’achat séparé des deux produits"
       ],
-      "usage": "Matin : appliquer la Crème à l'Argan sur visage et cou propres en massant doucement jusqu'à absorption. Soir : déposer 2 à 3 gouttes d'Huile d'Argan sur peau propre en soin de nuit régénérant. L'huile peut également être utilisée en soin capillaire sur les pointes.",
+      "usage": "Matin : appliquer la Crème à l’Argan sur visage et cou propres en massant doucement jusqu’à absorption. Soir : déposer 2 à 3 gouttes d’Huile d’Argan sur peau propre en soin de nuit régénérant. L’huile peut également être utilisée en soin capillaire sur les pointes.",
       "soldOut": false
     },
     {
       "slug": "lot-soins-a-la-rose",
       "name": "Lot Soins à la Rose",
-      "subtitle": "L'Écrin Floral de la Vallée des Roses",
+      "subtitle": "L’Écrin Floral de la Vallée des Roses",
       "price": 1400,
       "compareAt": 1580,
       "image": "collection-gamme-rose.jpg",
       "contents": "Crème de Rose + Huile de Rose",
-      "contentsDetail": "Crème de Rose Deltx (eau de rose distillée, Rosa Damascena, huile de rose, vitamine C, acide hyaluronique, beurre de karité) · Huile de Rose (Rosa Damascena Flower Oil, vitamine E naturelle, huile de jojoba, extrait de rosier sauvage – 30 ml).",
-      "description": "Duo floral précieux qui capture l'essence de la rose de Damas. Rituel anti-âge complet qui unifie le teint, illumine et protège la peau.",
+      "contentsDetail": "Crème de Rose (eau de rose distillée, Rosa Damascena, huile de rose, vitamine C, acide hyaluronique, beurre de karité) · Huile de Rose (Rosa Damascena Flower Oil, vitamine E naturelle, huile de jojoba, extrait de rosier sauvage – 30 ml).",
+      "description": "Duo floral précieux qui capture l’essence de la rose de Damas. Rituel anti-âge complet qui unifie le teint, illumine et protège la peau.",
       "benefits": [
         "Synergie anti-âge complète jour et nuit",
         "Teint unifié, lumineux et naturellement rosé",
         "Propriétés antioxydantes et régénérantes de la rose de Damas"
       ],
-      "usage": "Matin : Crème de Rose sur visage et cou nets. Soir : 2 à 4 gouttes d'Huile de Rose sur peau propre.",
-      "soldOut": true
+      "usage": "Matin : Crème de Rose sur visage et cou nets. Soir : 2 à 4 gouttes d’Huile de Rose sur peau propre.",
+      "soldOut": false
     },
     {
       "slug": "gamme-argan-complete",
       "name": "Gamme Argan Complète",
-      "subtitle": "Le Rituel Intégral de l'Or du Souss",
+      "subtitle": "Le Rituel Intégral de l’Or du Souss",
       "price": 2800,
       "compareAt": 3130,
       "image": "collection-gamme-argan.jpg",
-      "contents": "Savon + Crème + Huile d'Argan + Gommage Argan",
-      "contentsDetail": "Savon à l'Argan Assif · Gommage à l'Argan · Crème à l'Argan Deltx · Huile d'Argan Bio 100% pure pressée à froid.",
-      "description": "Rituel ultime pour les amoureux de l'huile d'argan. 4 étapes : purifier, exfolier, hydrater, nourrir.",
+      "contents": "Savon + Crème + Huile d’Argan + Gommage Argan",
+      "contentsDetail": "Savon à l’Argan · Gommage à l’Argan · Crème à l’Argan · Huile d’Argan Bio 100% pure pressée à froid.",
+      "description": "Rituel ultime pour les amoureux de l’huile d’argan. 4 étapes : purifier, exfolier, hydrater, nourrir.",
       "benefits": [
         "Rituel complet en 4 étapes",
         "Peau transformée et lumineuse",
-        "Économie sur l'achat séparé",
+        "Économie sur l’achat séparé",
         "100% naturel, sans parabènes"
       ],
       "usage": "Savon quotidien · Gommage 2–3×/sem · Crème matin/soir · Huile le soir.",
-      "soldOut": true
+      "soldOut": false
     }
   ]
 }

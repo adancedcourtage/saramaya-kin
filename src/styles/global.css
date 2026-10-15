@@ -1,5 +1,5 @@
-@import '@fontsource-variable/fraunces/full.css';
-@import '@fontsource-variable/fraunces/full-italic.css';
+@import '@fontsource-variable/bodoni-moda/opsz.css';
+@import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 @import '@fontsource-variable/manrope';
 
 /* ===== Tokens ===== */
@@ -21,7 +21,7 @@
   --ink-soft: #46527a;
   --surface: var(--chaux);
 
-  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-display: 'Bodoni Moda Variable', 'Bodoni 72', Didot, Georgia, serif;
   --font-body: 'Manrope Variable', system-ui, -apple-system, sans-serif;
 
   /* Major-third type scale */
@@ -75,15 +75,17 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  font-feature-settings: 'kern', 'liga', 'dlig';
   text-wrap: balance;
 }
-h1 { font-size: var(--step-5); }
+h1 { font-size: var(--step-5); font-weight: 450; }
 h2 { font-size: var(--step-4); }
-h3 { font-size: var(--step-2); line-height: 1.15; font-variation-settings: 'SOFT' 50, 'opsz' 48; }
+h3 { font-size: var(--step-2); line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; }
 
 :focus-visible {
   outline: 2px solid var(--damas);
@@ -155,7 +157,7 @@ h3 { font-size: var(--step-2); line-height: 1.15; font-variation-settings: 'SOFT
 }
 
 /* ===== Price ===== */
-.price { font-family: var(--font-display); font-variation-settings: 'opsz' 36; font-size: var(--step-1); color: var(--damas); }
+.price { font-family: var(--font-display); font-weight: 600; font-variant-numeric: lining-nums; font-size: var(--step-1); color: var(--damas); }
 .price s { font-family: var(--font-body); font-size: 0.75em; color: var(--ink-soft); margin-left: 0.4em; }
 
 /* ===== Section rhythm ===== */

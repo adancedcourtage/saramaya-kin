@@ -1,7 +1,7 @@
 ---
 /**
  * Saramaya-kin mark: a khatam (eight-pointed zellige star) holding a rose bud,
- * followed by the wordmark set in Fraunces italic.
+ * followed by the wordmark set in Bodoni Moda italic.
  */
 interface Props {
   wordmark?: boolean;
@@ -38,12 +38,12 @@ const star = Array.from({ length: 16 }, (_, i) => {
   .logo-word {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: 1.55rem;
+    font-weight: 500;
+    font-size: 1.6rem;
     line-height: 1;
-    letter-spacing: -0.01em;
-    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+    letter-spacing: -0.005em;
   }
-  .logo-kin { font-style: normal; font-variation-settings: 'SOFT' 0, 'opsz' 72; color: var(--damas); }
+  .logo-kin { font-style: normal; font-weight: 600; font-size: 0.82em; letter-spacing: 0.04em; color: var(--damas); }
   :global(.on-dark) .logo-kin { color: var(--petale); }
 
   :global(.js) .logo--draw .logo-star { stroke-dasharray: 1; stroke-dashoffset: 1; animation: logo-draw 1.6s var(--ease-out) 0.2s forwards; }

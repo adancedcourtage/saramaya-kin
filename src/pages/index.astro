@@ -10,7 +10,7 @@ import { waLink } from '../lib/whatsapp';
 import { site } from '../data/site';
 import { reviews } from '../data/reviews';
 
-const featuredSlugs = ['huile-d-argan', 'huile-de-rose-chojairate', 'creme-argan-chojairate', 'eau-de-rose-chojairate', 'masque-argan-et-rose', 'serum-encens-et-argan', 'savon-a-la-rose', 'lait-corporel-argan-250ml'];
+const featuredSlugs = ['huile-d-argan', 'huile-de-rose', 'creme-a-l-argan', 'eau-de-rose', 'masque-argan-et-rose', 'serum-encens-et-argan', 'savon-a-la-rose', 'lait-corporel-argan-250ml'];
 const featured = featuredSlugs.map((s) => products.find((p) => p.slug === s)).filter((p) => p && !p.soldOut);
 const promo = promoProduct();
 const argan = byRange('argan');
@@ -25,7 +25,7 @@ const assurances = [
 ] as const;
 
 const steps = [
-  { title: 'Choisissez', text: 'Ajoutez vos soins à votre sélection, ou demandez conseil si vous hésitez.' },
+  { title: 'Choisissez', text: 'Ajoutez vos soins au panier, ou demandez conseil si vous hésitez.' },
   { title: 'Envoyez', text: 'Un clic ouvre WhatsApp avec votre liste, les prix et le total déjà rédigés.' },
   { title: 'Confirmez', text: 'Nous vous répondons avec les frais de livraison et le moyen de paiement. Rien n’est validé sans votre accord écrit.' },
   { title: 'Recevez', text: 'Votre colis part après paiement, avec un suivi envoyé sur WhatsApp.' },
@@ -106,7 +106,7 @@ const steps = [
   <section class="section favourites" aria-labelledby="fav-title">
     <div class="container fav-head">
       <h2 id="fav-title" data-split>Les soins qu’on nous redemande</h2>
-      <p class="lede" data-reveal>Faites glisser pour parcourir. Dès {site.bundleDiscount.minItems} produits, {site.bundleDiscount.percent} % de remise s’appliquent à votre sélection.</p>
+      <p class="lede" data-reveal>Faites glisser pour parcourir. Dès {site.bundleDiscount.minItems} produits, {site.bundleDiscount.percent} % de remise s’appliquent à votre panier.</p>
     </div>
     <div class="rail" tabindex="0" role="region" aria-label="Produits favoris">
       <ul role="list" class="rail-track">
@@ -168,7 +168,7 @@ const steps = [
             <div><span data-seconds>00</span><small>secondes</small></div>
           </div>
           <div class="promo-actions">
-            <button type="button" class="btn btn--rose" data-add={promo.slug} data-magnetic>Ajouter à ma sélection</button>
+            <button type="button" class="btn btn--rose" data-add={promo.slug} data-magnetic>Ajouter au panier</button>
             <a class="link-underline" href={`/produit/${promo.slug}`}>Voir le détail</a>
           </div>
         </div>
@@ -262,7 +262,6 @@ const steps = [
   }
   .hero-title {
     font-size: var(--step-6); line-height: 0.92; letter-spacing: -0.03em; max-width: 12ch;
-    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
   }
   .hero-lede { font-size: var(--step-1); max-width: 40ch; color: var(--brume); line-height: 1.5; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
@@ -301,7 +300,6 @@ const steps = [
   .dawn-text p {
     grid-area: 1 / 1; max-width: 22ch;
     font-family: var(--font-display); font-size: var(--step-5); line-height: 1.05; letter-spacing: -0.02em;
-    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
     opacity: 0; transform: translateY(2rem) scale(0.98); filter: blur(8px);
     transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out);
   }
@@ -396,7 +394,7 @@ const steps = [
   /* ---------- Steps ---------- */
   .steps-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
   .steps-list li { display: grid; gap: 0.5rem; align-content: start; padding: var(--space-5) var(--space-3) var(--space-3); border-radius: 999px 999px 1.5rem 1.5rem; background: var(--blanc); text-align: center; justify-items: center; }
-  .step-num { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--damas); font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; font-style: italic; }
+  .step-num { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--damas); font-style: italic; }
   .steps-list p { color: var(--ink-soft); font-size: 0.97rem; }
   @media (max-width: 960px) { .steps-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 520px) { .steps-list { grid-template-columns: 1fr; } }

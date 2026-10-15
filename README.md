@@ -29,12 +29,15 @@ Tout le catalogue est dans `src/data/catalog.json` :
 | `price`, `compareAt` | Prix en centimes (`1200` = 12,00 €). `compareAt` = prix barré, ou `null` |
 | `image` | Nom du fichier dans `src/assets/products/` |
 | `soldOut` | `true` affiche « Épuisé » et remplace le bouton par « Me prévenir » |
+| `variants` | Facultatif. Liste de formats (`slug`, `label`, `price`, `compareAt`, `image`, `tagline`, `composition`, `organic`) : la fiche affiche un sélecteur de format |
 | `organic` | `true` affiche le badge « Certifié bio » (uniquement avec une certification réelle) |
 | `essentialOil` | `true` ajoute les précautions spécifiques aux huiles essentielles |
 
 Pour ajouter une photo, déposez-la dans `src/assets/products/` : elle est compressée automatiquement au build.
 
 Le produit du mois et la date de fin de promotion se règlent dans `site.ts` (`promo`). La remise multi-produits aussi (`bundleDiscount`).
+
+Si vous renommez ou fusionnez un produit, ajoutez l’ancienne adresse dans `src/data/redirects.json` pour que les anciens liens continuent de fonctionner.
 
 Les avis clients se mettent dans `src/data/reviews.ts`. La section reste masquée tant que la liste est vide. N’y mettez que de vrais avis, avec l’accord des clients.
 

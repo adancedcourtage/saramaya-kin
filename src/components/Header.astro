@@ -31,7 +31,7 @@ const nav = [
     <div class="site-actions">
       <button class="selection-btn" type="button" data-wishlist-open aria-haspopup="dialog">
         <Icon name="bag" />
-        <span>Ma sélection</span>
+        <span>Mon panier</span>
         <span class="selection-count" data-wishlist-count aria-label="0 produit">0</span>
       </button>
       <button class="menu-btn" type="button" data-menu-open aria-expanded="false" aria-controls="menu">
@@ -127,8 +127,7 @@ const nav = [
   .menu-list a {
     font-family: var(--font-display); font-size: clamp(2.5rem, 9vw, 4.5rem); line-height: 1.1;
     text-decoration: none; display: inline-block;
-    font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
-    transition: font-variation-settings 0.5s var(--ease-out), color 0.3s;
+    transition: color 0.3s, letter-spacing 0.5s var(--ease-out);
   }
-  .menu-list a:hover { color: var(--petale); font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; font-style: italic; }
+  .menu-list a:hover { color: var(--petale); font-style: italic; }
 </style>

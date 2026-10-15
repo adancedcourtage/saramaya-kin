@@ -39,7 +39,8 @@ export function initDawn({ reduced }: { reduced: boolean }) {
       section.style.setProperty('--sky-bottom', bottom(progress));
       section.style.setProperty('--hills', ground(progress));
       section.style.setProperty('--p', progress.toFixed(4));
-      const active = Math.min(lines.length - 1, Math.floor(progress * lines.length));
+      // Line changes match the scene: night, sunrise over the roses, then the argan workshop.
+      const active = progress < 0.12 ? 0 : progress < 0.42 ? 1 : 2;
       lines.forEach((l, i) => l.classList.toggle('is-active', i === active));
       section.classList.toggle('is-day', progress > 0.78);
     },

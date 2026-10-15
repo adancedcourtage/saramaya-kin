@@ -141,8 +141,8 @@ export function initScene({ reduced }: { reduced: boolean }) {
     const heroP = Math.min(1, Math.max(0, scrollY / hero.offsetHeight));
     const r = dawn.getBoundingClientRect();
     const dawnP = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
-    state.night = 1 - gsap.parseEase('power2.inOut')(Math.min(1, Math.max(0, (dawnP - 0.28) / 0.32)));
-    state.mix = Math.min(1, Math.max(0, (dawnP - 0.6) / 0.25));
+    state.night = 1 - gsap.parseEase('power2.inOut')(Math.min(1, Math.max(0, (dawnP - 0.1) / 0.18)));
+    state.mix = Math.min(1, Math.max(0, (dawnP - 0.36) / 0.14));
     state.zoom = 1.06 + heroP * 0.04 + dawnP * 0.1;
   };
   addEventListener('scroll', update, { passive: true });

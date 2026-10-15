@@ -10,6 +10,9 @@ import { waLink } from '../lib/whatsapp';
 import { site } from '../data/site';
 import { reviews } from '../data/reviews';
 
+/** Public asset path that also works when the site is served from a sub-path. */
+const asset = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${path}`;
+
 const featuredSlugs = ['huile-d-argan', 'huile-de-rose', 'creme-a-l-argan', 'eau-de-rose', 'masque-argan-et-rose', 'serum-encens-et-argan', 'savon-a-la-rose', 'lait-corporel-argan-250ml'];
 const featured = featuredSlugs.map((s) => products.find((p) => p.slug === s)).filter((p) => p && !p.soldOut);
 const promo = promoProduct();
@@ -32,6 +35,20 @@ const steps = [
 ];
 ---
 <Base title={site.name} headerTone="dark">
+  <!-- Story: hero + night-to-dawn passage share one 3D backdrop (rose valley, then argan workshop) -->
+  <div class="story" data-story>
+  <div class="story-bg" aria-hidden="true">
+    <img class="story-fallback" src={asset('/scene/rose-maroc.webp')} alt="" width="1600" height="1067" fetchpriority="high" decoding="async" />
+    <div
+      class="story-scene"
+      data-scene
+      data-a={asset('/scene/rose-maroc.webp')}
+      data-ad={asset('/scene/rose-maroc-depth.png')}
+      data-b={asset('/scene/argan-maroc.webp')}
+      data-bd={asset('/scene/argan-maroc-depth.png')}
+    ></div>
+  </div>
+
   <!-- Hero: the blue night, petals drifting -->
   <section class="hero on-dark" aria-labelledby="hero-title">
     <div class="hero-sky" aria-hidden="true">
@@ -60,7 +77,6 @@ const steps = [
   <!-- The passage from night to dawn -->
   <section class="dawn" id="manifeste" data-dawn aria-label="Notre manifeste">
     <div class="dawn-sticky">
-      <div class="dawn-sun" aria-hidden="true"></div>
       <div class="dawn-hills" aria-hidden="true">
         <svg viewBox="0 0 1440 260" preserveAspectRatio="none"><path d="M0 170c120-40 220-70 340-50s200 70 330 60 210-90 360-100 260 40 410 70v150H0Z" /></svg>
       </div>
@@ -71,6 +87,7 @@ const steps = [
       </div>
     </div>
   </section>
+  </div>
 
   <!-- Two worlds -->
   <section class="worlds" id="mondes" aria-labelledby="mondes-title">
@@ -235,20 +252,36 @@ const steps = [
 </Base>
 
 <style>
+  /* ---------- Story backdrop (shared by hero + dawn) ---------- */
+  .story { position: relative; isolation: isolate; }
+  .story-bg {
+    position: sticky; top: 0; height: 100svh; margin-bottom: -100svh; z-index: -1;
+    overflow: hidden; background: var(--nuit);
+  }
+  .story-fallback {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 50%;
+    filter: brightness(0.4) saturate(0.6) hue-rotate(-12deg) contrast(1.05);
+    transition: opacity 1.4s var(--ease-out);
+  }
+  .story-bg::after { content: ''; position: absolute; inset: 0; background: rgb(23 40 90 / 0.45); mix-blend-mode: multiply; transition: opacity 1.4s; }
+  .story-scene { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s var(--ease-out); }
+  .story-scene:global(.is-live) { opacity: 1; }
+  .story-scene :global(canvas) { width: 100% !important; height: 100% !important; display: block; }
+  .story-bg:has(:global(.is-live))::after, .story-bg:has(:global(.is-live)) .story-fallback { opacity: 0; }
+
   /* ---------- Hero ---------- */
   .hero {
     position: relative; min-height: 100svh; display: grid; align-content: end;
     background:
-      radial-gradient(70% 55% at 75% 105%, rgb(184 50 94 / 0.55), transparent 70%),
-      radial-gradient(60% 60% at 15% 10%, rgb(47 95 179 / 0.45), transparent 70%),
-      var(--nuit);
+      radial-gradient(60% 45% at 80% 110%, rgb(184 50 94 / 0.35), transparent 70%),
+      linear-gradient(to top, rgb(14 26 60 / 0.9) 0%, rgb(14 26 60 / 0.35) 55%, rgb(14 26 60 / 0.6) 100%);
     overflow: hidden; isolation: isolate;
     padding-block: 7rem clamp(1.5rem, 4vh, 3rem);
   }
   .hero-sky { position: absolute; inset: 0; z-index: -1; }
   .hero :global(.hero-star) {
     position: absolute; width: min(95vmin, 60rem); right: -12vmin; top: 50%; translate: 0 -50%;
-    color: rgb(214 226 245 / 0.22); animation: spin 140s linear infinite;
+    color: rgb(214 226 245 / 0.12); animation: spin 140s linear infinite;
   }
   @keyframes spin { to { rotate: 360deg; } }
   .hero-petals { position: absolute; inset: 0; opacity: 0; transition: opacity 2s var(--ease-out); }
@@ -284,18 +317,17 @@ const steps = [
   }
   .dawn-sticky {
     position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center;
-    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
-    color: var(--blanc); transition: color 0.8s;
+    /* light veil tinted by the sky colour, the 3D scene shows through */
+    background:
+      radial-gradient(65% 50% at 50% 50%, rgb(14 26 60 / 0.62), transparent 78%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--sky-top) 40%, transparent), transparent 50%);
+    color: var(--blanc);
   }
-  .dawn:global(.is-day) .dawn-sticky { color: var(--nuit); }
-  .dawn-sun {
-    position: absolute; left: 50%; width: min(70vmin, 34rem); aspect-ratio: 1; border-radius: 50%;
-    translate: -50% 0; bottom: calc(-40% + var(--p) * 62%);
-    background: radial-gradient(circle at 50% 40%, #fff3f6 0%, var(--petale) 35%, var(--damas) 70%, transparent 71%);
-    filter: blur(calc(18px - var(--p) * 14px)); opacity: calc(0.25 + var(--p) * 0.75);
-  }
+  .dawn-text p { text-shadow: 0 2px 30px rgb(14 26 60 / 0.6), 0 1px 3px rgb(14 26 60 / 0.4); }
   .dawn-hills { position: absolute; inset: auto 0 0; height: 30vh; }
-  .dawn-hills svg { width: 100%; height: 100%; fill: var(--hills, #0a1430); }
+  /* the hills only rise at the very end, to hand over to the light sections below */
+  .dawn-hills { opacity: clamp(0, calc((var(--p) - 0.72) * 4), 1); translate: 0 calc((1 - clamp(0, calc((var(--p) - 0.72) * 4), 1)) * 40%); }
+  .dawn-hills svg { width: 100%; height: 100%; fill: var(--chaux); }
   .dawn-text { position: relative; display: grid; text-align: center; justify-items: center; }
   .dawn-text p {
     grid-area: 1 / 1; max-width: 22ch;
@@ -308,7 +340,6 @@ const steps = [
   .dawn:global(.is-static) .dawn-sticky { position: relative; height: auto; padding-block: var(--space-6); background: linear-gradient(var(--nuit), var(--chaouen) 60%, var(--damas)); }
   .dawn:global(.is-static) .dawn-text { gap: var(--space-3); }
   .dawn:global(.is-static) .dawn-text p { grid-area: auto; opacity: 1; transform: none; filter: none; font-size: var(--step-4); }
-  .dawn:global(.is-static) .dawn-sun { display: none; }
   :global(.no-js) .dawn { height: auto; }
   :global(.no-js) .dawn-sticky { position: relative; height: auto; padding-block: var(--space-6); }
   :global(.no-js) .dawn-text { gap: var(--space-3); }

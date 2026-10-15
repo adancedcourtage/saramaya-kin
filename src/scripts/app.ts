@@ -162,3 +162,4 @@ document.querySelectorAll<HTMLElement>('[data-countdown]').forEach((el) => {
 initWishlist();
 if (document.querySelector('[data-petals]') && !reduced) import('./petals').then((m) => m.initPetals());
 if (document.querySelector('[data-dawn]')) import('./dawn').then((m) => m.initDawn({ reduced }));
+if (document.querySelector('[data-scene]')) import('./scene').then((m) => m.initScene({ reduced }));

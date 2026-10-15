@@ -45,14 +45,32 @@ npm install
 npm run dev          # aperçu local sur http://localhost:4321
 npm run build        # génère le site dans dist/
 npm run check:links  # vérifie liens internes, ancres et liens WhatsApp
+npm run deploy       # publie sur GitHub Pages
 ```
 
 ## Mise en ligne sur GitHub Pages
 
-1. Créez un dépôt GitHub et poussez ce dossier sur la branche `main`.
-2. Dans le dépôt : Settings > Pages > Source : « GitHub Actions ».
-3. Chaque push sur `main` construit, vérifie et publie le site (`.github/workflows/deploy.yml`).
-4. Domaine : le fichier `public/CNAME` contient `saramaya-kin.com`. Chez votre registraire, créez les enregistrements DNS indiqués par GitHub (4 enregistrements `A` vers les IP de GitHub Pages et un `CNAME` `www` vers `<utilisateur>.github.io`), puis cochez « Enforce HTTPS ».
+Dépôt : https://github.com/adancedcourtage/saramaya-kin
+
+Le site est publié sur la branche `gh-pages` (Settings > Pages > « Deploy from a branch », branche `gh-pages`, dossier `/`).
+
+```bash
+npm run deploy
+```
+
+La commande construit le site, vérifie les liens et publie sur https://adancedcourtage.github.io/saramaya-kin/.
+
+### Brancher le domaine saramaya-kin.com
+
+1. Achetez le domaine (il n'était pas enregistré au 15 octobre 2026).
+2. Chez le registraire, créez 4 enregistrements `A` vers `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, et un `CNAME` `www` vers `adancedcourtage.github.io`.
+3. Publiez avec le domaine :
+
+```bash
+CUSTOM_DOMAIN=saramaya-kin.com npm run deploy
+```
+
+4. Dans Settings > Pages, cochez « Enforce HTTPS » dès que GitHub le propose.
 
 ## Structure
 

@@ -143,6 +143,7 @@ h3 { font-size: var(--step-2); line-height: 1.15; font-weight: 600; letter-spaci
 .btn[disabled], .btn[aria-disabled='true'] { opacity: 0.45; pointer-events: none; }
 
 .link-underline {
+  display: inline-flex; align-items: center; min-height: 2.75rem;
   font-weight: 600; text-decoration: underline; text-decoration-color: var(--petale);
   text-decoration-thickness: 2px; text-underline-offset: 0.3em;
   transition: text-decoration-color 0.3s;

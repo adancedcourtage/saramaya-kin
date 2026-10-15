@@ -117,5 +117,13 @@ const itemList = {
   .filters button[aria-pressed='true'] { background: var(--nuit); color: var(--blanc); box-shadow: none; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: var(--space-5) clamp(1rem, 2.5vw, 2.5rem); }
   .grid > li { view-transition-name: none; }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 0.75rem; }
+    .grid :global(.card-tagline) { display: none; }
+    .grid :global(.card-title) { font-size: 1.05rem; }
+    .grid :global(.card-foot) { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+    .grid :global(.card-add) { min-height: 2.75rem; font-size: 0.85rem; padding-inline: 0.75rem; }
+    .grid :global(.card-badge) { font-size: 0.72rem; padding: 0.25rem 0.6rem; bottom: 0.6rem; }
+  }
   .range-other { display: flex; justify-content: center; margin-top: var(--space-6); }
 </style>

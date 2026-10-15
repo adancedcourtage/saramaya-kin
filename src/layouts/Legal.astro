@@ -45,6 +45,13 @@ const path = Astro.url.pathname.replace(/\/$/, '');
   .legal-body :global(.box) { background: var(--blanc); border-radius: 1.25rem; padding: var(--space-3); border-left: 4px solid var(--damas); }
   .legal-body :global(.todo) { background: #fff3c4; padding: 0 0.25em; border-radius: 4px; }
   .legal-body :global(table) { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+  @media (max-width: 640px) {
+    /* stack table rows as cards on phones */
+    .legal-body :global(thead) { display: none; }
+    .legal-body :global(tr) { display: grid; gap: 0.25rem; padding: 0.9rem 0; border-bottom: 1px solid rgb(14 26 60 / 0.14); }
+    .legal-body :global(td) { border: 0; padding: 0; }
+    .legal-body :global(td:first-child) { font-weight: 700; }
+  }
   .legal-body :global(th), .legal-body :global(td) { text-align: left; padding: 0.6rem; border-bottom: 1px solid rgb(14 26 60 / 0.14); vertical-align: top; }
-  @media (max-width: 860px) { .legal-grid { grid-template-columns: 1fr; } .legal-nav { position: static; } .legal-nav ul { display: flex; flex-wrap: wrap; } }
+  @media (max-width: 860px) { .legal-grid { grid-template-columns: minmax(0, 1fr); } .legal-nav { position: static; } .legal-nav ul { display: flex; flex-wrap: wrap; } }
 </style>

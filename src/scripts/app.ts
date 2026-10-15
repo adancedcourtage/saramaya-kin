@@ -25,6 +25,18 @@ const header = document.querySelector<HTMLElement>('[data-header]');
 const waFloat = document.querySelector<HTMLElement>('.wa-float');
 // The home hero has its own WhatsApp button: keep the floating one out of the way there.
 const hero = document.querySelector<HTMLElement>('.hero');
+// Pages already end with a WhatsApp call-to-action and a footer: no need for the floating button there.
+let endInView = false;
+const ends = document.querySelectorAll<HTMLElement>('.final, .site-footer');
+if ('IntersectionObserver' in window && ends.length) {
+  const seen = new Set<Element>();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)));
+    endInView = seen.size > 0;
+    waFloat?.classList.toggle('is-tucked', endInView || waFloat.classList.contains('is-tucked') && window.scrollY > 400);
+  }, { rootMargin: '0px 0px -20% 0px' });
+  ends.forEach((el) => io.observe(el));
+}
 if (header) {
   let last = 0;
   const onScroll = () => {
@@ -33,7 +45,7 @@ if (header) {
     header.classList.toggle('is-scrolled', y > 40);
     header.classList.toggle('is-hidden', goingDown && !document.querySelector('.menu.is-open'));
     const overHero = !!hero && y < hero.offsetHeight * 0.75;
-    waFloat?.classList.toggle('is-tucked', goingDown || overHero);
+    waFloat?.classList.toggle('is-tucked', goingDown || overHero || endInView);
     last = y;
   };
   addEventListener('scroll', onScroll, { passive: true });
@@ -62,6 +74,7 @@ function setMenu(open: boolean) {
 }
 menuOpen?.addEventListener('click', () => setMenu(true));
 menuClose?.addEventListener('click', () => setMenu(false));
+document.querySelectorAll('[data-menu-close-on-click]').forEach((el) => el.addEventListener('click', () => setMenu(false)));
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && menu?.classList.contains('is-open')) setMenu(false);
 });

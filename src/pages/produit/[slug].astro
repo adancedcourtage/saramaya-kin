@@ -230,7 +230,7 @@ const jsonLd = {
   if (bar && anchor && 'IntersectionObserver' in window) {
     const mq = matchMedia('(max-width: 900px)');
     new IntersectionObserver(([entry]) => {
-      const show = mq.matches && !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      const show = mq.matches && !entry.isIntersecting;
       bar.classList.toggle('is-visible', show);
       bar.setAttribute('aria-hidden', String(!show));
       bar.querySelectorAll<HTMLElement>('a, button').forEach((el) => (el.tabIndex = show ? 0 : -1));
@@ -288,7 +288,7 @@ const jsonLd = {
   .crumbs { font-size: 0.9rem; color: var(--ink-soft); }
   .crumbs a { color: inherit; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .chips a, .chips span { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: var(--blanc); text-decoration: none; }
+  .chips a, .chips span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0.3rem 0.95rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: var(--blanc); text-decoration: none; }
   .chips a:hover { background: var(--petale); }
   .chips .chip-bio { background: var(--chaouen); color: var(--blanc); }
   .product-info h1 { font-size: var(--step-5); }
@@ -326,5 +326,7 @@ const jsonLd = {
   @media (max-width: 900px) {
     .product-grid { grid-template-columns: 1fr; }
     .product-media { position: static; max-width: 30rem; }
+    .product-arch { aspect-ratio: 1; max-height: 52vh; margin-inline: auto; }
+    .product { padding-top: 5.5rem; }
   }
 </style>

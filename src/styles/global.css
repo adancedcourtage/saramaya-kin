@@ -1,0 +1,184 @@
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/fraunces/full-italic.css';
+@import '@fontsource-variable/manrope';
+
+/* ===== Tokens ===== */
+:root {
+  /* Blue: Chefchaouen at night and by day */
+  --nuit: #0e1a3c;
+  --nuit-2: #17285a;
+  --chaouen: #2f5fb3;
+  --brume: #d6e2f5;
+  --chaux: #eef3fb;
+  /* Rose: Damask rose at dawn */
+  --damas: #b8325e;
+  --damas-deep: #8f2147;
+  --petale: #f7c9d6;
+  --aube: #fbecf1;
+  --blanc: #ffffff;
+
+  --ink: var(--nuit);
+  --ink-soft: #46527a;
+  --surface: var(--chaux);
+
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Manrope Variable', system-ui, -apple-system, sans-serif;
+
+  /* Major-third type scale */
+  --step--1: 0.8125rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3125rem;
+  --step-2: 1.625rem;
+  --step-3: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  --step-4: clamp(2.25rem, 1.6rem + 3vw, 3.75rem);
+  --step-5: clamp(2.75rem, 1.6rem + 5.5vw, 6rem);
+  --step-6: clamp(3.25rem, 1rem + 10vw, 10.5rem);
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: clamp(4.5rem, 3rem + 7vw, 9rem);
+
+  --gutter: clamp(1rem, 0.5rem + 3vw, 3rem);
+  --max: 82rem;
+  --radius-arch: 999px 999px 1.25rem 1.25rem;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-lift: 0 1.5rem 3rem -1.5rem rgb(14 26 60 / 0.35);
+}
+
+/* ===== Reset & base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 6rem; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+img, picture, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+p, li { text-wrap: pretty; }
+ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
+  text-wrap: balance;
+}
+h1 { font-size: var(--step-5); }
+h2 { font-size: var(--step-4); }
+h3 { font-size: var(--step-2); line-height: 1.15; font-variation-settings: 'SOFT' 50, 'opsz' 48; }
+
+:focus-visible {
+  outline: 2px solid var(--damas);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.on-dark :focus-visible { outline-color: var(--petale); }
+
+::selection { background: var(--petale); color: var(--nuit); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: var(--gutter); top: -4rem; z-index: 200;
+  background: var(--nuit); color: var(--blanc); padding: 0.75rem 1.25rem; border-radius: 999px;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ===== Layout ===== */
+.container { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
+.prose { max-width: 66ch; }
+.prose > * + * { margin-top: 1em; }
+.prose h2 { font-size: var(--step-3); margin-top: 2.2em; }
+.prose h3 { font-size: var(--step-1); margin-top: 1.8em; font-family: var(--font-body); font-weight: 700; letter-spacing: 0; }
+.prose ul, .prose ol { padding-left: 1.2em; }
+.prose li + li { margin-top: 0.35em; }
+.prose a { color: var(--chaouen); }
+.lede { font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); max-width: 52ch; }
+.on-dark { color: var(--blanc); }
+.on-dark .lede { color: var(--brume); }
+
+/* ===== Buttons ===== */
+.btn {
+  --btn-bg: var(--nuit);
+  --btn-fg: var(--blanc);
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  min-height: 3.25rem; padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  background: var(--btn-bg); color: var(--btn-fg);
+  font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.2;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.4s var(--ease-out);
+  will-change: transform;
+}
+.btn:hover { --btn-bg: var(--chaouen); }
+.btn svg { width: 1.25em; height: 1.25em; flex: none; }
+.btn--rose { --btn-bg: var(--damas); }
+.btn--rose:hover { --btn-bg: var(--damas-deep); }
+.btn--light { --btn-bg: var(--blanc); --btn-fg: var(--nuit); }
+.btn--light:hover { --btn-bg: var(--petale); }
+.btn--ghost { --btn-bg: transparent; --btn-fg: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+.btn--ghost:hover { --btn-bg: rgb(255 255 255 / 0.08); }
+.btn[disabled], .btn[aria-disabled='true'] { opacity: 0.45; pointer-events: none; }
+
+.link-underline {
+  font-weight: 600; text-decoration: underline; text-decoration-color: var(--petale);
+  text-decoration-thickness: 2px; text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.3s;
+}
+.link-underline:hover { text-decoration-color: var(--damas); }
+
+/* ===== Arch frame (Chefchaouen doorways) ===== */
+.arch {
+  border-radius: var(--radius-arch);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ===== Price ===== */
+.price { font-family: var(--font-display); font-variation-settings: 'opsz' 36; font-size: var(--step-1); color: var(--damas); }
+.price s { font-family: var(--font-body); font-size: 0.75em; color: var(--ink-soft); margin-left: 0.4em; }
+
+/* ===== Section rhythm ===== */
+.section { padding-block: var(--space-6); }
+.section-head { display: grid; gap: var(--space-2); margin-bottom: var(--space-5); max-width: 46rem; }
+
+/* ===== Motion helpers ===== */
+.js [data-reveal] { opacity: 0; transform: translateY(1.5rem); }
+.js.reduced [data-reveal] { opacity: 1; transform: none; }
+
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 0.35s var(--ease-out) both vt-out; }
+::view-transition-new(root) { animation: 0.55s var(--ease-out) both vt-in; }
+@keyframes vt-out { to { opacity: 0; filter: blur(6px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .js [data-reveal] { opacity: 1; transform: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* Word-split wrappers created by scripts/app.ts */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.wi { display: inline-block; will-change: transform; }
+[data-scrub-words] .w { overflow: visible; }

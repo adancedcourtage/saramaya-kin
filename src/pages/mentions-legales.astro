@@ -1,0 +1,40 @@
+---
+import Legal from '../layouts/Legal.astro';
+import Todo from '../components/Todo.astro';
+import { site } from '../data/site';
+const l = site.legal;
+---
+<Legal title="Mentions légales" description="Éditeur, hébergeur et informations réglementaires du site Saramaya-kin.">
+  <p>Conformément à l’article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique (LCEN), voici les informations relatives à l’éditeur et à l’hébergeur du site {site.url.replace('https://', '')}.</p>
+
+  <h2>Éditeur du site</h2>
+  <ul>
+    <li>Nom ou raison sociale : <Todo value={l.owner} /></li>
+    <li>Statut : <Todo value={l.status} /></li>
+    <li>SIRET : <Todo value={l.siret} /></li>
+    <li>Adresse : <Todo value={l.address} /></li>
+    <li>Téléphone (WhatsApp) : <Todo value={site.whatsappDisplay === '06 00 00 00 00' ? 'À COMPLÉTER' : site.whatsappDisplay} /></li>
+    <li>E-mail : <a href={`mailto:${site.email}`}>{site.email}</a></li>
+    <li>TVA : <Todo value={l.vat} /></li>
+    <li>Directeur de la publication : <Todo value={l.publicationDirector} /></li>
+  </ul>
+
+  <h2>Hébergement</h2>
+  <p>{l.host.name}, {l.host.address}. Site : <a href={l.host.url}>{l.host.url.replace('https://', '')}</a>.</p>
+
+  <h2>Produits cosmétiques</h2>
+  <p>Les produits proposés sont des cosmétiques fabriqués au Maroc et mis sur le marché de l’Union européenne conformément au règlement (CE) n° 1223/2009 relatif aux produits cosmétiques.</p>
+  <ul>
+    <li>Personne responsable au sens de l’article 4 du règlement : <Todo value={l.euResponsiblePerson} /></li>
+    <li>Les informations obligatoires (liste des ingrédients INCI, précautions d’emploi, numéro de lot, durée d’utilisation après ouverture, contenance) figurent sur l’emballage de chaque produit.</li>
+  </ul>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>La marque Saramaya-kin, le logo, les textes et la mise en page de ce site sont protégés. Les photographies de produits sont utilisées avec l’autorisation de leurs auteurs. Toute reproduction sans autorisation écrite est interdite.</p>
+
+  <h2>Médiation de la consommation</h2>
+  <p>En cas de litige non résolu avec nous, vous pouvez recourir gratuitement au médiateur de la consommation : <Todo value={l.mediator.name} />. Voir aussi les <a href="/cgv#mediation">conditions générales de vente</a>.</p>
+
+  <h2>Données personnelles</h2>
+  <p>Le traitement de vos données est décrit dans notre <a href="/confidentialite">politique de confidentialité</a>. Ce site ne dépose aucun cookie publicitaire : voir la page <a href="/cookies">cookies et traceurs</a>.</p>
+</Legal>

@@ -1,0 +1,7 @@
+---
+/** Highlights a legal value that still contains a placeholder ("À COMPLÉTER"). */
+interface Props { value: string }
+const { value } = Astro.props;
+const pending = /À COMPLÉTER|À VÉRIFIER/.test(value);
+---
+{pending ? <span class="todo">{value}</span> : <>{value}</>}

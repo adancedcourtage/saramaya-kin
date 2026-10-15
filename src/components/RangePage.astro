@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProductCard from './ProductCard.astro';
+import Khatam from './Khatam.astro';
+import { byRange, typeLabels, type Range, type ProductType } from '../lib/catalog';
+import { productImage } from '../lib/images';
+
+interface Props { range: Range }
+const { range } = Astro.props;
+
+const copy = {
+  argan: {
+    title: 'L’or du Souss',
+    seo: 'Gamme argan',
+    intro: 'Huile d’argan pressée à froid, crèmes, masques, gommages et soins capillaires. L’argan nourrit en profondeur et laisse la peau souple, les cheveux brillants.',
+    image: 'collection-gamme-argan.jpg',
+    other: { href: '/rose', label: 'Découvrir la gamme rose' },
+  },
+  rose: {
+    title: 'La rose de Damas',
+    seo: 'Gamme rose',
+    intro: 'Eau florale, huiles, crèmes et savons à la rose de Kelaat M’Gouna. La rose apaise, rafraîchit et redonne de l’éclat au teint.',
+    image: 'collection-gamme-rose.jpg',
+    other: { href: '/argan', label: 'Découvrir la gamme argan' },
+  },
+}[range];
+
+const list = byRange(range).sort((a, b) => Number(a.soldOut) - Number(b.soldOut));
+const types = (Object.keys(typeLabels) as ProductType[]).filter((t) => list.some((p) => p.type === t));
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: copy.seo,
+  itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://saramaya-kin.com/produit/${p.slug}`, name: p.name })),
+};
+---
+<Base title={copy.seo} description={copy.intro} headerTone="dark" jsonLd={itemList}>
+  <section class:list={['range-hero', 'on-dark', `range-hero--${range}`]}>
+    <Khatam class="range-star" />
+    <div class="container range-hero-grid">
+      <div class="range-hero-copy">
+        <nav aria-label="Fil d’Ariane" class="crumbs"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">{copy.seo}</span></nav>
+        <h1 data-split="load">{copy.title}</h1>
+        <p class="lede" data-reveal>{copy.intro}</p>
+        <p class="range-count" data-reveal>{list.length} soins</p>
+      </div>
+      <div class="range-hero-media arch" data-reveal>
+        <Image src={productImage(copy.image)} alt="" widths={[500, 800]} sizes="(max-width: 800px) 80vw, 35vw" loading="eager" data-parallax="6" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section range-list" aria-label={`Produits de la ${copy.seo.toLowerCase()}`}>
+    <div class="container">
+      <div class="filters" role="group" aria-label="Filtrer par type de soin" data-filters>
+        <button type="button" aria-pressed="true" data-filter="all">Tout</button>
+        {types.map((t) => <button type="button" aria-pressed="false" data-filter={t}>{typeLabels[t]}</button>)}
+      </div>
+      <p class="visually-hidden" aria-live="polite" data-filter-status></p>
+      <ul role="list" class="grid" data-grid>
+        {list.map((p, i) => <li data-type={p.type}><ProductCard product={p} eager={i < 3} /></li>)}
+      </ul>
+      <div class="range-other">
+        <a class="btn btn--ghost" href={copy.other.href}>{copy.other.label}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const group = document.querySelector<HTMLElement>('[data-filters]');
+  const items = document.querySelectorAll<HTMLElement>('[data-grid] > li');
+  const status = document.querySelector<HTMLElement>('[data-filter-status]');
+  group?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+    if (!btn) return;
+    const f = btn.dataset.filter!;
+    group.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    let shown = 0;
+    const apply = () => items.forEach((li) => {
+      const show = f === 'all' || li.dataset.type === f;
+      li.hidden = !show;
+      if (show) shown++;
+      li.querySelector<HTMLElement>('[data-reveal]')?.style.setProperty('opacity', '1');
+      li.querySelector<HTMLElement>('[data-reveal]')?.style.setProperty('transform', 'none');
+    });
+    if ('startViewTransition' in document && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(apply);
+    } else apply();
+    if (status) status.textContent = `${shown} produit${shown > 1 ? 's' : ''} affiché${shown > 1 ? 's' : ''}`;
+  });
+</script>
+
+<style>
+  .range-hero { position: relative; overflow: hidden; isolation: isolate; padding-block: 9rem var(--space-5); }
+  .range-hero--argan { background: radial-gradient(60% 70% at 85% 30%, rgb(47 95 179 / 0.6), transparent 70%), var(--nuit); }
+  .range-hero--rose { background: radial-gradient(60% 70% at 85% 30%, rgb(232 120 155 / 0.45), transparent 70%), linear-gradient(160deg, var(--nuit-2), var(--damas-deep)); }
+  .range-hero :global(.range-star) { position: absolute; width: 46rem; left: -16rem; top: -14rem; color: rgb(247 201 214 / 0.12); z-index: -1; }
+  .range-hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-5); align-items: end; }
+  .range-hero-copy { display: grid; gap: var(--space-3); }
+  .range-hero h1 { font-size: var(--step-6); line-height: 0.95; letter-spacing: -0.03em; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; }
+  .range-count { font-weight: 600; color: var(--petale); }
+  .range-hero-media { aspect-ratio: 3 / 4; max-height: 70vh; }
+  .range-hero-media :global(img) { width: 100%; height: 115%; object-fit: cover; }
+  .crumbs { font-size: 0.92rem; color: var(--brume); }
+  .crumbs a { color: inherit; }
+  @media (max-width: 800px) { .range-hero-grid { grid-template-columns: 1fr; } .range-hero-media { max-width: 22rem; } }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: var(--space-4); }
+  .filters button {
+    min-height: 2.75rem; padding: 0 1.2rem; border-radius: 999px; font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgb(14 26 60 / 0.25); transition: background-color 0.3s, color 0.3s;
+  }
+  .filters button:hover { background: var(--brume); }
+  .filters button[aria-pressed='true'] { background: var(--nuit); color: var(--blanc); box-shadow: none; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: var(--space-5) clamp(1rem, 2.5vw, 2.5rem); }
+  .grid > li { view-transition-name: none; }
+  .range-other { display: flex; justify-content: center; margin-top: var(--space-6); }
+</style>

@@ -1,0 +1,26 @@
+---
+import Legal from '../layouts/Legal.astro';
+import Todo from '../components/Todo.astro';
+import { site } from '../data/site';
+const d = site.delivery;
+---
+<Legal title="Livraison et retours" description="Zones, délais et frais de livraison, retours et remboursements Saramaya-kin.">
+  <h2>Livraison</h2>
+  <ul>
+    <li>Zone : {d.zone}.</li>
+    <li>Délai : <Todo value={d.delay} />.</li>
+    <li>Frais : <Todo value={d.fee} />.</li>
+    <li>Suivi : le numéro de suivi vous est envoyé sur WhatsApp à l’expédition.</li>
+  </ul>
+  <p>Vérifiez votre colis à la réception. En cas de produit cassé ou de colis abîmé, envoyez-nous une photo sur WhatsApp : nous remplaçons ou remboursons le produit.</p>
+
+  <h2>Changer d’avis</h2>
+  <p>Vous disposez de 14 jours après réception pour vous rétracter, sans justification. Prévenez-nous par WhatsApp ou à {site.email}, puis renvoyez les produits dans les 14 jours. Les frais de retour sont à votre charge. Nous vous remboursons sous 14 jours, frais de livraison initiaux inclus.</p>
+  <div class="box">
+    <p>Pour des raisons d’hygiène, un produit ouvert (flacon, pot ou opercule descellé) ne peut être ni repris ni remboursé, sauf s’il est défectueux. Pensez au test de tolérance sur une petite zone de peau avant la première utilisation.</p>
+  </div>
+  <p>Toutes les conditions figurent à l’article 7 des <a href="/cgv#retractation">conditions générales de vente</a>.</p>
+
+  <h2>Produit défectueux</h2>
+  <p>Vous bénéficiez de la garantie légale de conformité (2 ans) et de la garantie des vices cachés. Contactez-nous avec une photo du produit et votre numéro de commande.</p>
+</Legal>

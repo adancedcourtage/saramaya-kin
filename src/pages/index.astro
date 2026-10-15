@@ -1,0 +1,395 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Icon from '../components/Icon.astro';
+import Khatam from '../components/Khatam.astro';
+import { products, byRange, coffrets, promoProduct, formatPrice, discountPercent } from '../lib/catalog';
+import { productImage } from '../lib/images';
+import { waLink } from '../lib/whatsapp';
+import { site } from '../data/site';
+import { reviews } from '../data/reviews';
+
+const featuredSlugs = ['huile-d-argan', 'huile-de-rose-chojairate', 'creme-argan-chojairate', 'eau-de-rose-chojairate', 'masque-argan-et-rose', 'serum-encens-et-argan', 'savon-a-la-rose', 'lait-corporel-argan-250ml'];
+const featured = featuredSlugs.map((s) => products.find((p) => p.slug === s)).filter((p) => p && !p.soldOut);
+const promo = promoProduct();
+const argan = byRange('argan');
+const rose = byRange('rose');
+const coffret = coffrets.find((c) => !c.soldOut) ?? coffrets[0];
+
+const steps = [
+  { title: 'Choisissez', text: 'Ajoutez vos soins à votre sélection, ou demandez conseil si vous hésitez.' },
+  { title: 'Envoyez', text: 'Un clic ouvre WhatsApp avec votre liste, les prix et le total déjà rédigés.' },
+  { title: 'Confirmez', text: 'Nous vous répondons avec les frais de livraison et le moyen de paiement. Rien n’est validé sans votre accord écrit.' },
+  { title: 'Recevez', text: 'Votre colis part après paiement, avec un suivi envoyé sur WhatsApp.' },
+];
+---
+<Base title={site.name} headerTone="dark">
+  <!-- Hero: the blue night, petals drifting -->
+  <section class="hero on-dark" aria-labelledby="hero-title">
+    <div class="hero-sky" aria-hidden="true">
+      <Khatam class="hero-star" />
+      <div class="hero-petals" data-petals></div>
+    </div>
+    <div class="container hero-inner">
+      <h1 id="hero-title" class="hero-title" data-split="load">De la nuit bleue à l’aube rose</h1>
+      <p class="hero-lede" data-reveal>
+        Huile d’argan du Souss, rose de Damas de Kelaat M’Gouna. Des soins façonnés au Maroc pour celles et ceux qui avancent, chaque jour, un peu plus loin.
+      </p>
+      <div class="hero-actions" data-reveal>
+        <a class="btn btn--light" href="#mondes" data-magnetic>Découvrir les soins</a>
+        <a class="btn btn--ghost" href={waLink('je souhaite commander.')} target="_blank" rel="noopener" data-magnetic>
+          <Icon name="whatsapp" /> Commander sur WhatsApp
+        </a>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#manifeste"><span class="visually-hidden">Faire défiler</span><span aria-hidden="true"></span></a>
+  </section>
+
+  <!-- The passage from night to dawn -->
+  <section class="dawn" id="manifeste" data-dawn aria-label="Notre manifeste">
+    <div class="dawn-sticky">
+      <div class="dawn-sun" aria-hidden="true"></div>
+      <div class="dawn-hills" aria-hidden="true">
+        <svg viewBox="0 0 1440 260" preserveAspectRatio="none"><path d="M0 170c120-40 220-70 340-50s200 70 330 60 210-90 360-100 260 40 410 70v150H0Z" /></svg>
+      </div>
+      <div class="container dawn-text">
+        <p data-dawn-line class="is-active">La nuit, Chefchaouen se drape de bleu.</p>
+        <p data-dawn-line>À l’aube, la Vallée des Roses s’éveille.</p>
+        <p data-dawn-line>Entre les deux, un geste transmis de main en main : prendre soin de soi pour aller plus loin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two worlds -->
+  <section class="worlds" id="mondes" aria-labelledby="mondes-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="mondes-title" data-split>Deux gammes, un même rituel</h2>
+        <p class="lede" data-reveal>L’argan nourrit et répare, la rose apaise et illumine. Choisissez votre point de départ.</p>
+      </div>
+    </div>
+    <div class="worlds-split">
+      <a class="world world--argan on-dark" href="/argan">
+        <Image src={productImage('collection-gamme-argan.jpg')} alt="" widths={[600, 900, 1200]} sizes="(max-width: 800px) 100vw, 60vw" class="world-img" />
+        <div class="world-copy">
+          <p class="world-count">{argan.length} soins</p>
+          <h3>L’or du Souss</h3>
+          <p>Huiles pressées à froid, crèmes, masques et gommages à l’argan.</p>
+          <span class="world-cta">Explorer la gamme argan</span>
+        </div>
+      </a>
+      <a class="world world--rose on-dark" href="/rose">
+        <Image src={productImage('collection-gamme-rose.jpg')} alt="" widths={[600, 900, 1200]} sizes="(max-width: 800px) 100vw, 60vw" class="world-img" />
+        <div class="world-copy">
+          <p class="world-count">{rose.length} soins</p>
+          <h3>La rose de Damas</h3>
+          <p>Eau florale, huiles, crèmes et savons aux pétales de Kelaat M’Gouna.</p>
+          <span class="world-cta">Explorer la gamme rose</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Favourites rail -->
+  <section class="section favourites" aria-labelledby="fav-title">
+    <div class="container fav-head">
+      <h2 id="fav-title" data-split>Les soins qu’on nous redemande</h2>
+      <p class="lede" data-reveal>Faites glisser pour parcourir. Dès {site.bundleDiscount.minItems} produits, {site.bundleDiscount.percent} % de remise s’appliquent à votre sélection.</p>
+    </div>
+    <div class="rail" tabindex="0" role="region" aria-label="Produits favoris">
+      <ul role="list" class="rail-track">
+        {featured.map((p, i) => <li><ProductCard product={p!} eager={i < 2} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  {promo && (
+    <section class="promo" data-promo aria-labelledby="promo-title">
+      <div class="container promo-grid">
+        <a href={`/produit/${promo.slug}`} class="promo-media arch" data-tilt>
+          <Image src={productImage(promo.image)} alt={promo.name} widths={[400, 700]} sizes="(max-width: 800px) 90vw, 40vw" />
+        </a>
+        <div class="promo-copy">
+          <p class="promo-tag">Soin du mois, -{discountPercent(promo.price, promo.compareAt)} %</p>
+          <h2 id="promo-title">{promo.name}</h2>
+          <p class="lede">{promo.tagline}</p>
+          <p class="promo-price"><span>{formatPrice(promo.price)}</span> <s>{formatPrice(promo.compareAt!)}</s></p>
+          <div class="countdown" data-countdown={site.promo.endsAt} role="timer" aria-label="Temps restant avant la fin de l’offre">
+            <div><span data-days>00</span><small>jours</small></div>
+            <div><span data-hours>00</span><small>heures</small></div>
+            <div><span data-minutes>00</span><small>minutes</small></div>
+            <div><span data-seconds>00</span><small>secondes</small></div>
+          </div>
+          <div class="promo-actions">
+            <button type="button" class="btn btn--rose" data-add={promo.slug} data-magnetic>Ajouter à ma sélection</button>
+            <a class="link-underline" href={`/produit/${promo.slug}`}>Voir le détail</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Coffrets -->
+  <section class="section coffret-teaser" aria-labelledby="coffret-title">
+    <div class="container coffret-grid">
+      <div class="coffret-copy">
+        <h2 id="coffret-title" data-split>Offrir un rituel, ou composer le vôtre</h2>
+        <p class="lede" data-reveal>Coffrets prêts à offrir, ou coffret sur mesure : choisissez vos soins, nous l’assemblons à la main.</p>
+        <div class="coffret-actions" data-reveal>
+          <a class="btn" href="/coffrets" data-magnetic>Voir les coffrets</a>
+          <a class="link-underline" href="/coffrets#composer">Composer mon coffret</a>
+        </div>
+      </div>
+      <a class="coffret-media arch" href="/coffrets" data-reveal>
+        <Image src={productImage(coffret.image)} alt={coffret.name} widths={[400, 700, 1000]} sizes="(max-width: 800px) 90vw, 45vw" data-parallax="8" />
+        <span class="coffret-label">{coffret.name}, {formatPrice(coffret.price)}</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Origins route -->
+  <section class="section origins on-dark" aria-labelledby="origins-title">
+    <Khatam class="origins-star" />
+    <div class="container origins-grid">
+      <div class="section-head">
+        <h2 id="origins-title" data-split>Du nord au sud du Maroc</h2>
+        <p class="lede" data-reveal>Trois lieux, trois lumières. Chaque soin raconte une partie de ce voyage.</p>
+      </div>
+      <ol role="list" class="route">
+        <li data-reveal>
+          <h3>Chefchaouen</h3>
+          <p class="route-where">Montagnes du Rif</p>
+          <p>La ville bleue nous a donné notre couleur : celle de la nuit, du calme, du temps qu’on prend pour soi.</p>
+        </li>
+        <li data-reveal>
+          <h3>Kelaat M’Gouna</h3>
+          <p class="route-where">Vallée des Roses, Haut Atlas</p>
+          <p>Chaque printemps, les roses de Damas y sont cueillies à l’aube, avant que le soleil n’emporte leur parfum.</p>
+        </li>
+        <li data-reveal>
+          <h3>Le Souss</h3>
+          <p class="route-where">Forêts d’arganiers, sud-ouest</p>
+          <p>L’arganier ne pousse presque nulle part ailleurs. Ses noix sont concassées puis pressées à froid pour garder leurs acides gras et leur vitamine E.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- How to order -->
+  <section class="section steps" aria-labelledby="steps-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="steps-title" data-split>Commander en quatre étapes</h2>
+        <p class="lede" data-reveal>Pas de compte à créer, pas de paiement en ligne. Une vraie conversation avec nous.</p>
+      </div>
+      <ol role="list" class="steps-list">
+        {steps.map((s, i) => (
+          <li data-reveal>
+            <span class="step-num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {reviews.length > 0 && (
+    <section class="section reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <h2 id="reviews-title" data-split>Elles et ils en parlent</h2>
+        <ul role="list" class="reviews-list">
+          {reviews.map((r) => (
+            <li data-reveal>
+              <blockquote><p>{r.text}</p></blockquote>
+              <p class="review-by">{r.name}, {r.city}{r.product && <>, {r.product}</>}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- Final call -->
+  <section class="final" aria-labelledby="final-title">
+    <div class="container final-inner">
+      <h2 id="final-title" data-split>Votre rituel commence par un message</h2>
+      <p class="lede" data-reveal>Une question sur un soin, un conseil pour votre peau ou vos cheveux ? Nous répondons personnellement.</p>
+      <a class="btn btn--rose" href={waLink('je souhaite des conseils pour choisir mes soins.')} target="_blank" rel="noopener" data-magnetic data-reveal>
+        <Icon name="whatsapp" /> Parler avec nous sur WhatsApp
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; min-height: 100svh; display: grid; align-items: end;
+    background:
+      radial-gradient(70% 55% at 75% 105%, rgb(184 50 94 / 0.55), transparent 70%),
+      radial-gradient(60% 60% at 15% 10%, rgb(47 95 179 / 0.45), transparent 70%),
+      var(--nuit);
+    overflow: hidden; isolation: isolate;
+    padding-block: 8rem clamp(4rem, 10vh, 7rem);
+  }
+  .hero-sky { position: absolute; inset: 0; z-index: -1; }
+  .hero :global(.hero-star) {
+    position: absolute; width: min(95vmin, 60rem); right: -12vmin; top: 50%; translate: 0 -50%;
+    color: rgb(214 226 245 / 0.22); animation: spin 140s linear infinite;
+  }
+  @keyframes spin { to { rotate: 360deg; } }
+  .hero-petals { position: absolute; inset: 0; opacity: 0; transition: opacity 2s var(--ease-out); }
+  .hero-petals:global(.is-live) { opacity: 1; }
+  .hero-petals :global(canvas) { width: 100% !important; height: 100% !important; }
+  .hero-inner { display: grid; gap: var(--space-3); }
+  .hero-title {
+    font-size: var(--step-6); line-height: 0.92; letter-spacing: -0.03em; max-width: 12ch;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  }
+  .hero-lede { font-size: var(--step-1); max-width: 40ch; color: var(--brume); line-height: 1.5; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .hero-scroll {
+    position: absolute; left: 50%; bottom: 1.5rem; translate: -50% 0;
+    width: 1.75rem; height: 2.75rem; border-radius: 999px; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.6);
+  }
+  .hero-scroll span { position: absolute; left: 50%; top: 0.55rem; width: 4px; height: 8px; margin-left: -2px; border-radius: 4px; background: var(--blanc); animation: scroll-cue 2s var(--ease-out) infinite; }
+  @keyframes scroll-cue { 0% { opacity: 0; transform: translateY(-4px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
+  @media (max-width: 700px) { .hero-scroll { display: none; } }
+
+  /* ---------- Dawn passage ---------- */
+  .dawn {
+    --sky-top: var(--nuit); --sky-bottom: var(--nuit-2); --p: 0;
+    height: 320vh; position: relative;
+  }
+  .dawn-sticky {
+    position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center;
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+    color: var(--blanc); transition: color 0.8s;
+  }
+  .dawn:global(.is-day) .dawn-sticky { color: var(--nuit); }
+  .dawn-sun {
+    position: absolute; left: 50%; width: min(70vmin, 34rem); aspect-ratio: 1; border-radius: 50%;
+    translate: -50% 0; bottom: calc(-40% + var(--p) * 62%);
+    background: radial-gradient(circle at 50% 40%, #fff3f6 0%, var(--petale) 35%, var(--damas) 70%, transparent 71%);
+    filter: blur(calc(18px - var(--p) * 14px)); opacity: calc(0.25 + var(--p) * 0.75);
+  }
+  .dawn-hills { position: absolute; inset: auto 0 0; height: 30vh; }
+  .dawn-hills svg { width: 100%; height: 100%; fill: var(--hills, #0a1430); }
+  .dawn-text { position: relative; display: grid; text-align: center; justify-items: center; }
+  .dawn-text p {
+    grid-area: 1 / 1; max-width: 22ch;
+    font-family: var(--font-display); font-size: var(--step-5); line-height: 1.05; letter-spacing: -0.02em;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+    opacity: 0; transform: translateY(2rem) scale(0.98); filter: blur(8px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out);
+  }
+  .dawn-text p:global(.is-active) { opacity: 1; transform: none; filter: none; }
+  .dawn:global(.is-static) { height: auto; }
+  .dawn:global(.is-static) .dawn-sticky { position: relative; height: auto; padding-block: var(--space-6); background: linear-gradient(var(--nuit), var(--chaouen) 60%, var(--damas)); }
+  .dawn:global(.is-static) .dawn-text { gap: var(--space-3); }
+  .dawn:global(.is-static) .dawn-text p { grid-area: auto; opacity: 1; transform: none; filter: none; font-size: var(--step-4); }
+  .dawn:global(.is-static) .dawn-sun { display: none; }
+  :global(.no-js) .dawn { height: auto; }
+  :global(.no-js) .dawn-sticky { position: relative; height: auto; padding-block: var(--space-6); }
+  :global(.no-js) .dawn-text { gap: var(--space-3); }
+  :global(.no-js) .dawn-text p { grid-area: auto; opacity: 1; transform: none; filter: none; }
+
+  /* ---------- Two worlds ---------- */
+  .worlds { padding-top: var(--space-6); }
+  .worlds-split { display: flex; gap: 0.75rem; padding-inline: var(--gutter); height: min(80vh, 46rem); }
+  .world {
+    position: relative; flex: 1; display: flex; align-items: flex-end; overflow: hidden; text-decoration: none;
+    border-radius: 999px 999px 1.5rem 1.5rem; isolation: isolate;
+    transition: flex-grow 0.9s var(--ease-out);
+  }
+  .world:hover, .world:focus-visible { flex-grow: 1.7; }
+  .world :global(.world-img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.4s var(--ease-out); }
+  .world:hover :global(.world-img) { transform: scale(1.05); }
+  .world::after { content: ''; position: absolute; inset: 0; z-index: -1; }
+  .world--argan::after { background: linear-gradient(to top, rgb(14 26 60 / 0.92) 10%, rgb(23 40 90 / 0.35) 55%, transparent); }
+  .world--rose::after { background: linear-gradient(to top, rgb(143 33 71 / 0.92) 10%, rgb(184 50 94 / 0.3) 55%, transparent); }
+  .world-copy { padding: clamp(1.5rem, 4vw, 3rem); display: grid; gap: 0.5rem; max-width: 30rem; }
+  .world-copy h3 { font-size: var(--step-4); }
+  .world-count { font-weight: 600; color: var(--petale); }
+  .world-cta { margin-top: 0.5rem; font-weight: 600; text-decoration: underline; text-underline-offset: 0.3em; text-decoration-color: var(--petale); }
+  @media (max-width: 800px) {
+    .worlds-split { flex-direction: column; height: auto; }
+    .world { min-height: 70vh; }
+    .world:hover { flex-grow: 1; }
+  }
+
+  /* ---------- Favourites rail ---------- */
+  .fav-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-3); margin-bottom: var(--space-4); }
+  .fav-head h2 { max-width: 14ch; }
+  .fav-head .lede { max-width: 34ch; }
+  .rail { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-block: 1rem 2rem; }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail:focus-visible { outline-offset: -4px; }
+  .rail-track {
+    display: grid; grid-auto-flow: column; grid-auto-columns: clamp(15rem, 26vw, 21rem); gap: clamp(1rem, 2vw, 2rem);
+    padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
+  }
+  .rail-track > li { scroll-snap-align: start; scroll-margin-inline: var(--gutter); }
+  .rail-track > li:nth-child(even) { margin-top: 3rem; }
+
+  /* ---------- Promo ---------- */
+  .promo { padding-block: var(--space-6); background: linear-gradient(160deg, var(--aube), var(--petale)); }
+  .promo-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-5); align-items: center; }
+  .promo-media { aspect-ratio: 4 / 5; display: block; background: var(--blanc); box-shadow: var(--shadow-lift); }
+  .promo-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .promo-copy { display: grid; gap: var(--space-2); justify-items: start; }
+  .promo-tag { font-weight: 700; color: var(--damas-deep); }
+  .promo-price span { font-family: var(--font-display); font-size: var(--step-4); color: var(--damas); }
+  .promo-price s { color: var(--ink-soft); font-size: var(--step-1); }
+  .countdown { display: flex; gap: 0.5rem; }
+  .countdown div { display: grid; justify-items: center; min-width: 4.5rem; padding: 0.75rem 0.5rem; border-radius: 999px 999px 1rem 1rem; background: var(--nuit); color: var(--blanc); }
+  .countdown span { font-family: var(--font-display); font-size: var(--step-3); line-height: 1; font-variant-numeric: tabular-nums; }
+  .countdown small { font-size: 0.75rem; color: var(--brume); }
+  .promo-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-top: var(--space-1); }
+  @media (max-width: 800px) { .promo-grid { grid-template-columns: 1fr; } .promo-media { max-width: 24rem; } .countdown div { min-width: 0; flex: 1; } }
+
+  /* ---------- Coffret teaser ---------- */
+  .coffret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); align-items: center; }
+  .coffret-copy { display: grid; gap: var(--space-3); }
+  .coffret-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .coffret-media { position: relative; display: block; aspect-ratio: 3 / 4; }
+  .coffret-media :global(img) { width: 100%; height: 120%; object-fit: cover; }
+  .coffret-label { position: absolute; left: 1.25rem; bottom: 1.25rem; background: var(--blanc); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 600; }
+  @media (max-width: 800px) { .coffret-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Origins ---------- */
+  .origins { position: relative; overflow: hidden; background: linear-gradient(to bottom, var(--nuit), var(--nuit-2)); isolation: isolate; }
+  .origins :global(.origins-star) { position: absolute; width: 50rem; left: -18rem; bottom: -20rem; color: rgb(247 201 214 / 0.1); z-index: -1; }
+  .origins-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--space-5); align-items: start; }
+  .origins .section-head { position: sticky; top: 8rem; }
+  .route { position: relative; display: grid; gap: var(--space-5); padding-left: 2.5rem; }
+  .route::before { content: ''; position: absolute; left: 0.45rem; top: 0.6rem; bottom: 0.6rem; width: 2px; background: linear-gradient(var(--chaouen), var(--damas) 50%, var(--petale)); }
+  .route li { position: relative; display: grid; gap: 0.4rem; max-width: 44ch; }
+  .route li::before { content: ''; position: absolute; left: -2.5rem; top: 0.45rem; width: 1rem; height: 1rem; border-radius: 50%; background: var(--nuit); box-shadow: 0 0 0 3px var(--petale); }
+  .route h3 { font-size: var(--step-3); }
+  .route-where { color: var(--petale); font-weight: 600; }
+  .route li p:last-child { color: var(--brume); }
+  @media (max-width: 800px) { .origins-grid { grid-template-columns: 1fr; } .origins .section-head { position: static; } }
+
+  /* ---------- Steps ---------- */
+  .steps-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+  .steps-list li { display: grid; gap: 0.5rem; align-content: start; padding: var(--space-5) var(--space-3) var(--space-3); border-radius: 999px 999px 1.5rem 1.5rem; background: var(--blanc); text-align: center; justify-items: center; }
+  .step-num { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--damas); font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; font-style: italic; }
+  .steps-list p { color: var(--ink-soft); font-size: 0.97rem; }
+  @media (max-width: 960px) { .steps-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 520px) { .steps-list { grid-template-columns: 1fr; } }
+
+  /* ---------- Reviews ---------- */
+  .reviews-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
+  .reviews-list li { background: var(--blanc); padding: var(--space-3); border-radius: 1.5rem; display: grid; gap: var(--space-2); }
+  .reviews-list blockquote p { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.4; }
+  .review-by { color: var(--ink-soft); font-size: 0.92rem; }
+
+  /* ---------- Final ---------- */
+  .final { padding-block: var(--space-6) calc(var(--space-6) + 4rem); background: linear-gradient(to bottom, var(--chaux), var(--aube) 40%, var(--petale)); }
+  .final-inner { display: grid; justify-items: center; text-align: center; gap: var(--space-3); }
+  .final-inner h2 { font-size: var(--step-5); max-width: 16ch; }
+  .final .lede { margin-inline: auto; }
+</style>

@@ -1,0 +1,50 @@
+---
+import Base from './Base.astro';
+import { site } from '../data/site';
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+const pages = [
+  { href: '/mentions-legales', label: 'Mentions légales' },
+  { href: '/cgv', label: 'Conditions générales de vente' },
+  { href: '/livraison-retours', label: 'Livraison et retours' },
+  { href: '/confidentialite', label: 'Confidentialité' },
+  { href: '/cookies', label: 'Cookies et traceurs' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '');
+---
+<Base title={title} description={description}>
+  <div class="legal">
+    <div class="container legal-grid">
+      <aside class="legal-nav">
+        <nav aria-label="Pages légales">
+          <ul role="list">
+            {pages.map((p) => <li><a href={p.href} aria-current={path === p.href ? 'page' : undefined}>{p.label}</a></li>)}
+          </ul>
+        </nav>
+      </aside>
+      <article class="prose legal-body">
+        <h1>{title}</h1>
+        <p class="legal-date">Dernière mise à jour : {site.legal.lastUpdated}</p>
+        <slot />
+      </article>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .legal { padding-block: 8rem var(--space-6); background: linear-gradient(to bottom, var(--brume), var(--chaux) 30rem); }
+  .legal-grid { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+  .legal-nav { position: sticky; top: 6.5rem; }
+  .legal-nav ul { display: grid; gap: 0.25rem; }
+  .legal-nav a { display: block; padding: 0.55rem 0.9rem; border-radius: 999px; text-decoration: none; font-size: 0.95rem; }
+  .legal-nav a:hover { background: var(--blanc); }
+  .legal-nav a[aria-current='page'] { background: var(--nuit); color: var(--blanc); }
+  .legal-body h1 { font-size: var(--step-4); }
+  .legal-date { color: var(--ink-soft); font-size: 0.92rem; }
+  .legal-body :global(.box) { background: var(--blanc); border-radius: 1.25rem; padding: var(--space-3); border-left: 4px solid var(--damas); }
+  .legal-body :global(.todo) { background: #fff3c4; padding: 0 0.25em; border-radius: 4px; }
+  .legal-body :global(table) { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+  .legal-body :global(th), .legal-body :global(td) { text-align: left; padding: 0.6rem; border-bottom: 1px solid rgb(14 26 60 / 0.14); vertical-align: top; }
+  @media (max-width: 860px) { .legal-grid { grid-template-columns: 1fr; } .legal-nav { position: static; } .legal-nav ul { display: flex; flex-wrap: wrap; } }
+</style>

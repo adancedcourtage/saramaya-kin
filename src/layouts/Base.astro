@@ -1,0 +1,99 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WishlistDrawer from '../components/WishlistDrawer.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import { waLink } from '../lib/whatsapp';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  headerTone?: 'light' | 'dark';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description = site.description, image, headerTone = 'light', jsonLd, noindex = false } = Astro.props;
+const fullTitle = title === site.name ? `${site.name}, ${site.tagline.toLowerCase()}` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(image ?? '/og.jpg', site.url).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: site.url,
+  logo: `${site.url}/favicon.svg`,
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', url: waLink(), availableLanguage: 'French' },
+};
+const ld = [organization, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+---
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0e1a3c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>
+      document.documentElement.classList.replace('no-js', 'js');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reduced');
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    {site.goatcounterCode && (
+      <script is:inline async data-goatcounter={`https://${site.goatcounterCode}.goatcounter.com/count`} src="//gc.zgo.at/count.js"></script>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <Header tone={headerTone} />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+    <WishlistDrawer />
+
+    <a class="wa-float" href={waLink('je souhaite des conseils pour choisir mes soins.')} target="_blank" rel="noopener" data-magnetic>
+      <Icon name="whatsapp" />
+      <span class="visually-hidden">Écrire sur WhatsApp</span>
+    </a>
+
+    <script>
+      import '../scripts/app';
+    </script>
+  </body>
+</html>
+
+<style>
+  body { min-height: 100dvh; display: flex; flex-direction: column; }
+  .wa-float {
+    position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: 60;
+    width: 3.75rem; height: 3.75rem; border-radius: 999px; display: grid; place-items: center;
+    background: var(--damas); color: var(--blanc); box-shadow: var(--shadow-lift);
+    transition: background-color 0.3s;
+  }
+  .wa-float:hover { background: var(--damas-deep); }
+  .wa-float svg { width: 1.7rem; height: 1.7rem; }
+  .wa-float::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 var(--damas);
+    animation: wa-pulse 3s var(--ease-out) 4s 3;
+  }
+  @keyframes wa-pulse { 0% { box-shadow: 0 0 0 0 rgb(184 50 94 / 0.55); } 100% { box-shadow: 0 0 0 1.2rem rgb(184 50 94 / 0); } }
+</style>

@@ -1,0 +1,79 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import { waLink } from '../lib/whatsapp';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer on-dark">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <Logo size={40} />
+      <p>Soins à l’argan et à la rose de Damas, façonnés au Maroc, livrés en {site.delivery.zone}.</p>
+      <a class="btn btn--light" href={waLink('j’ai une question.')} target="_blank" rel="noopener">
+        <Icon name="whatsapp" /> Écrire sur WhatsApp
+      </a>
+    </div>
+    <nav aria-label="Boutique">
+      <h2>Boutique</h2>
+      <ul role="list">
+        <li><a href="/argan">Gamme argan</a></li>
+        <li><a href="/rose">Gamme rose</a></li>
+        <li><a href="/coffrets">Coffrets</a></li>
+        <li><a href="/commander">Comment commander</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Informations">
+      <h2>Informations</h2>
+      <ul role="list">
+        <li><a href="/notre-histoire">Notre histoire</a></li>
+        <li><a href="/livraison-retours">Livraison et retours</a></li>
+        <li><a href="/commander#faq">Questions fréquentes</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Informations légales">
+      <h2>Légal</h2>
+      <ul role="list">
+        <li><a href="/mentions-legales">Mentions légales</a></li>
+        <li><a href="/cgv">Conditions générales de vente</a></li>
+        <li><a href="/confidentialite">Confidentialité</a></li>
+        <li><a href="/cookies">Cookies et traceurs</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <p>© {year} {site.name}. Cosmétiques à usage externe uniquement.</p>
+    <p>Paiement et livraison confirmés par écrit sur WhatsApp avant chaque commande.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--nuit);
+    padding-block: var(--space-6) var(--space-3);
+    margin-top: auto;
+    position: relative;
+  }
+  .site-footer::before {
+    content: ''; position: absolute; inset: -4rem 0 auto; height: 4rem;
+    background: var(--nuit);
+    mask: radial-gradient(60% 100% at 50% 100%, #000 70%, transparent 71%);
+    -webkit-mask: radial-gradient(60% 100% at 50% 100%, #000 70%, transparent 71%);
+  }
+  .footer-grid { display: grid; gap: var(--space-4); grid-template-columns: 1.6fr repeat(3, 1fr); }
+  .footer-brand { display: grid; gap: var(--space-3); justify-items: start; max-width: 26rem; }
+  .footer-brand p { color: var(--brume); }
+  .site-footer h2 { font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; letter-spacing: 0; margin-bottom: var(--space-2); color: var(--petale); }
+  .site-footer ul { display: grid; gap: 0.5rem; }
+  .site-footer nav a { text-decoration: none; color: var(--brume); }
+  .site-footer nav a:hover { color: var(--blanc); text-decoration: underline; }
+  .footer-bottom {
+    margin-top: var(--space-5); padding-top: var(--space-3);
+    border-top: 1px solid rgb(214 226 245 / 0.18);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2);
+    font-size: var(--step--1); color: var(--brume);
+  }
+  @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+  @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>

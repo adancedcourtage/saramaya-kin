@@ -1,0 +1,29 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+---
+<Legal title="Cookies et traceurs" description="Saramaya-kin n’utilise aucun cookie publicitaire ni traceur soumis à consentement.">
+  <p>Ce site n’utilise aucun cookie publicitaire, de réseau social ou de suivi. C’est pourquoi aucun bandeau de consentement ne vous est présenté.</p>
+
+  <h2>Ce que le site enregistre sur votre appareil</h2>
+  <table>
+    <thead><tr><th>Nom</th><th>Type</th><th>Rôle</th><th>Durée</th></tr></thead>
+    <tbody>
+      <tr><td><code>saramaya-selection</code></td><td>Stockage local du navigateur</td><td>Mémoriser les produits ajoutés à « Ma sélection », à votre demande</td><td>Jusqu’à ce que vous vidiez la sélection ou les données du site</td></tr>
+    </tbody>
+  </table>
+  <p>Ce stockage est strictement nécessaire à un service que vous demandez expressément. Il est donc exempté de consentement (article 82 de la loi Informatique et Libertés). Il n’est jamais lu par un tiers.</p>
+
+  <h2>Mesure d’audience</h2>
+  {site.goatcounterCode ? (
+    <p>Nous utilisons GoatCounter, un outil de mesure d’audience qui ne dépose aucun cookie et ne collecte aucun identifiant personnel. Les statistiques sont agrégées et anonymes. Cet usage respecte les conditions d’exemption de consentement définies par la CNIL.</p>
+  ) : (
+    <p>Aucun outil de mesure d’audience n’est actif actuellement. Si nous en activons un, il s’agira d’un outil sans cookie respectant les conditions d’exemption de la CNIL, et cette page sera mise à jour.</p>
+  )}
+
+  <h2>Liens vers WhatsApp</h2>
+  <p>Les boutons « Commander sur WhatsApp » ouvrent l’application ou le site WhatsApp. Aucun traceur WhatsApp n’est chargé sur nos pages ; une fois sur WhatsApp, c’est la politique de WhatsApp qui s’applique.</p>
+
+  <h2>Supprimer ces données</h2>
+  <p>Vous pouvez effacer à tout moment les données du site via les réglages de votre navigateur (rubrique « Confidentialité » ou « Données de sites »).</p>
+</Legal>

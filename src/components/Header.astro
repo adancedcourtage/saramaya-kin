@@ -1,0 +1,134 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+interface Props { tone?: 'light' | 'dark' }
+const { tone = 'light' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const nav = [
+  { href: '/argan', label: 'Argan' },
+  { href: '/rose', label: 'Rose' },
+  { href: '/coffrets', label: 'Coffrets' },
+  { href: '/notre-histoire', label: 'Notre histoire' },
+  { href: '/commander', label: 'Commander' },
+];
+---
+<header class="site-header" data-tone={tone} data-header>
+  <div class="container site-header-inner">
+    <a href="/" class="site-logo" aria-label="Saramaya-kin, accueil">
+      <Logo class="logo--draw" size={34} />
+    </a>
+
+    <nav class="site-nav" aria-label="Navigation principale">
+      <ul role="list">
+        {nav.map((item) => (
+          <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-actions">
+      <button class="selection-btn" type="button" data-wishlist-open aria-haspopup="dialog">
+        <Icon name="bag" />
+        <span>Ma sélection</span>
+        <span class="selection-count" data-wishlist-count aria-label="0 produit">0</span>
+      </button>
+      <button class="menu-btn" type="button" data-menu-open aria-expanded="false" aria-controls="menu">
+        <Icon name="menu" />
+        <span class="visually-hidden">Ouvrir le menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu on-dark" id="menu" data-menu data-lenis-prevent hidden>
+  <div class="container menu-inner">
+    <div class="menu-top">
+      <Logo size={34} />
+      <button class="menu-close" type="button" data-menu-close>
+        <Icon name="close" />
+        <span class="visually-hidden">Fermer le menu</span>
+      </button>
+    </div>
+    <nav aria-label="Menu">
+      <ul role="list" class="menu-list">
+        <li><a href="/">Accueil</a></li>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    color: var(--nuit);
+    transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out), transform 0.5s var(--ease-out), box-shadow 0.4s;
+  }
+  .site-header[data-tone='dark'] { color: var(--blanc); }
+  .site-header.is-scrolled {
+    color: var(--nuit);
+    background: rgb(238 243 251 / 0.82);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: 0 1px 0 rgb(14 26 60 / 0.08);
+  }
+  .site-header.is-hidden { transform: translateY(-100%); }
+  .site-header-inner { display: flex; align-items: center; gap: var(--space-3); min-height: 4.75rem; }
+  .site-logo { text-decoration: none; margin-right: auto; }
+
+  .site-nav ul { display: flex; gap: 0.25rem; }
+  .site-nav a {
+    display: block; padding: 0.55rem 0.9rem; border-radius: 999px;
+    text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    transition: background-color 0.3s;
+  }
+  .site-nav a:hover { background: rgb(127 140 180 / 0.16); }
+  .site-nav a[aria-current='page'] { background: var(--petale); color: var(--nuit); }
+
+  .site-actions { display: flex; gap: 0.5rem; align-items: center; }
+  .selection-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0.4rem 0.6rem 0.4rem 1rem; border-radius: 999px;
+    box-shadow: inset 0 0 0 1px currentColor; font-weight: 600; font-size: 0.95rem; white-space: nowrap;
+  }
+  .selection-btn svg { width: 1.15rem; height: 1.15rem; }
+  .selection-count {
+    min-width: 1.75rem; height: 1.75rem; display: grid; place-items: center;
+    border-radius: 999px; background: var(--damas); color: var(--blanc); font-size: 0.8rem;
+  }
+  .selection-count.is-bump { animation: bump 0.5s var(--ease-out); }
+  @keyframes bump { 40% { transform: scale(1.35); } }
+  .menu-btn { display: none; width: 2.75rem; height: 2.75rem; place-items: center; border-radius: 999px; box-shadow: inset 0 0 0 1px currentColor; }
+  .menu-btn svg, .menu-close svg { width: 1.4rem; height: 1.4rem; }
+
+  @media (max-width: 960px) {
+    .site-nav { display: none; }
+    .menu-btn { display: grid; }
+  }
+  @media (max-width: 480px) {
+    .selection-btn > span:not(.selection-count) { display: none; }
+    .selection-btn { padding: 0.4rem; }
+  }
+
+  .menu {
+    position: fixed; inset: 0; z-index: 120;
+    background: radial-gradient(120% 80% at 80% 110%, var(--damas) 0%, transparent 55%), var(--nuit);
+    clip-path: circle(0% at calc(100% - 3rem) 2.5rem);
+    transition: clip-path 0.7s var(--ease-out);
+    overflow-y: auto;
+  }
+  .menu.is-open { clip-path: circle(150% at calc(100% - 3rem) 2.5rem); }
+  .menu-inner { min-height: 100%; display: flex; flex-direction: column; }
+  .menu-top { display: flex; justify-content: space-between; align-items: center; min-height: 4.75rem; }
+  .menu-close { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 999px; box-shadow: inset 0 0 0 1px currentColor; }
+  .menu-list { padding-block: var(--space-5); display: grid; gap: 0.25rem; }
+  .menu-list a {
+    font-family: var(--font-display); font-size: clamp(2.5rem, 9vw, 4.5rem); line-height: 1.1;
+    text-decoration: none; display: inline-block;
+    font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
+    transition: font-variation-settings 0.5s var(--ease-out), color 0.3s;
+  }
+  .menu-list a:hover { color: var(--petale); font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; font-style: italic; }
+</style>

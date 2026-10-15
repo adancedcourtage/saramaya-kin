@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Khatam from '../components/Khatam.astro';
+import Icon from '../components/Icon.astro';
+import { productImage } from '../lib/images';
+import { waLink } from '../lib/whatsapp';
+
+const values = [
+  { title: 'Fabriqué au Maroc', text: 'Nos soins sont produits localement, près des lieux où poussent l’arganier et la rose de Damas.' },
+  { title: 'Importé par nos soins', text: 'Nous choisissons et rapportons nous-mêmes chaque produit en France. Pas d’intermédiaire inutile.' },
+  { title: 'Conseillé personnellement', text: 'Chaque commande commence par une conversation. On prend le temps de vous orienter vers le bon soin.' },
+];
+---
+<Base title="Notre histoire" description="Saramaya-kin : soins à l’argan et à la rose fabriqués au Maroc, importés et conseillés personnellement en France." headerTone="dark">
+  <section class="s-hero on-dark">
+    <Khatam class="s-star" />
+    <div class="container s-hero-inner">
+      <h1 data-split="load">Un nom, une lignée, un geste</h1>
+      <p class="lede" data-reveal>Saramaya-kin réunit deux idées : la lumière qui se lève et les liens qui nous portent. « Kin », ce sont les nôtres, celles et ceux qui transmettent.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container s-story">
+      <div class="s-media arch" data-reveal>
+        <Image src={productImage('collection-coffret-argan.jpg')} alt="Coffret à l’huile d’argan posé sur un zellige" widths={[500, 800]} sizes="(max-width: 800px) 90vw, 40vw" data-parallax="6" />
+      </div>
+      <div class="s-text prose">
+        <p data-scrub-words class="s-big">Au Maroc, prendre soin de soi n’est pas un luxe. C’est un rituel qui se transmet, des mains de nos mères aux nôtres.</p>
+        <p>L’huile d’argan du Souss, l’eau de rose de Kelaat M’Gouna : ces soins ont accompagné notre enfance. Nous avons voulu les faire découvrir en France, tels qu’ils sont fabriqués là-bas.</p>
+        <p>Le bleu de Saramaya-kin vient de Chefchaouen, la ville bleue. Le rose vient de la Vallée des Roses. Entre la nuit et l’aube, il y a ce moment où l’on décide d’aller un peu plus loin. C’est ce moment que nos soins veulent accompagner.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section s-values on-dark">
+    <div class="container">
+      <h2 data-split>Ce qui ne changera pas</h2>
+      <ul role="list" class="values">
+        {values.map((v) => (
+          <li data-reveal>
+            <h3>{v.title}</h3>
+            <p>{v.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section s-cta">
+    <div class="container s-cta-inner">
+      <h2 data-split>Faisons connaissance</h2>
+      <p class="lede">Posez-nous vos questions, sur un soin ou sur notre histoire.</p>
+      <a class="btn btn--rose" href={waLink('je souhaite en savoir plus sur vos soins.')} target="_blank" rel="noopener" data-magnetic>
+        <Icon name="whatsapp" /> Nous écrire sur WhatsApp
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .s-hero { position: relative; overflow: hidden; isolation: isolate; padding-block: 10rem var(--space-6); background: linear-gradient(175deg, var(--nuit) 40%, var(--chaouen)); }
+  .s-hero :global(.s-star) { position: absolute; width: 56rem; right: -20rem; bottom: -24rem; color: rgb(247 201 214 / 0.15); z-index: -1; animation: spin 180s linear infinite; }
+  @keyframes spin { to { rotate: 360deg; } }
+  .s-hero-inner { display: grid; gap: var(--space-3); }
+  .s-hero h1 { font-size: var(--step-6); line-height: 0.95; max-width: 11ch; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; }
+  .s-story { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+  .s-media { aspect-ratio: 3 / 4; }
+  .s-media :global(img) { width: 100%; height: 115%; object-fit: cover; }
+  .s-big { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.25; }
+  .s-values { background: var(--nuit); }
+  .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
+  .values li { padding: var(--space-5) var(--space-3) var(--space-3); border-radius: 999px 999px 1.5rem 1.5rem; background: var(--nuit-2); display: grid; gap: 0.5rem; text-align: center; }
+  .values p { color: var(--brume); }
+  .s-cta { background: linear-gradient(var(--chaux), var(--aube)); }
+  .s-cta-inner { display: grid; justify-items: center; text-align: center; gap: var(--space-3); }
+  @media (max-width: 800px) { .s-story, .values { grid-template-columns: 1fr; } .s-media { max-width: 24rem; } }
+</style>

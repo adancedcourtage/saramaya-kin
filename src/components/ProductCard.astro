@@ -1,0 +1,96 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { formatPrice, discountPercent, type Product } from '../lib/catalog';
+import { productImage } from '../lib/images';
+import { waLink } from '../lib/whatsapp';
+
+interface Props { product: Product; eager?: boolean }
+const { product: p, eager = false } = Astro.props;
+const off = discountPercent(p.price, p.compareAt);
+const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' : 'argan';
+---
+<article class="card" data-tone={tone} data-reveal>
+  <a href={`/produit/${p.slug}`} class="card-media arch" data-tilt>
+    <Image
+      src={productImage(p.image)}
+      alt={p.name}
+      widths={[320, 480, 720]}
+      sizes="(max-width: 600px) 80vw, (max-width: 1100px) 40vw, 24vw"
+      loading={eager ? 'eager' : 'lazy'}
+      class="card-img"
+    />
+    <span class="card-glow" aria-hidden="true"></span>
+    {p.soldOut && <span class="card-badge card-badge--out">Épuisé</span>}
+    {!p.soldOut && off > 0 && <span class="card-badge">-{off} %</span>}
+    {!p.soldOut && !off && p.organic && <span class="card-badge card-badge--bio">Certifié bio</span>}
+  </a>
+  <div class="card-body">
+    <h3 class="card-title"><a href={`/produit/${p.slug}`}>{p.name}</a></h3>
+    <p class="card-tagline">{p.tagline}</p>
+    <div class="card-foot">
+      <p class="price">{formatPrice(p.price)}{p.compareAt && <s>{formatPrice(p.compareAt)}</s>}</p>
+      {p.soldOut ? (
+        <a class="card-add card-add--notify" href={waLink(`prévenez-moi quand « ${p.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">
+          Me prévenir
+        </a>
+      ) : (
+        <button type="button" class="card-add" data-add={p.slug}>
+          <span class="card-add-label"><Icon name="plus" /> Ajouter</span>
+          <span class="card-add-done"><Icon name="check" /> Ajouté</span>
+        </button>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .card { display: grid; gap: var(--space-2); align-content: start; }
+  .card-media {
+    position: relative; display: block; aspect-ratio: 4 / 5;
+    background: var(--brume); box-shadow: inset 0 0 0 1px rgb(14 26 60 / 0.06);
+    transform-style: preserve-3d;
+  }
+  .card[data-tone='rose'] .card-media { background: var(--aube); }
+  .card-media :global(.card-img) {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 1.2s var(--ease-out), filter 0.6s;
+  }
+  .card-media:hover :global(.card-img) { transform: scale(1.06); }
+  .card-glow {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background: radial-gradient(40% 35% at var(--gx, 50%) var(--gy, 30%), rgb(255 255 255 / 0.55), transparent 70%);
+    mix-blend-mode: soft-light; transition: opacity 0.4s;
+  }
+  .card-media:hover .card-glow { opacity: 1; }
+  .card-badge {
+    position: absolute; left: 50%; bottom: 1rem; translate: -50% 0;
+    padding: 0.35rem 0.85rem; border-radius: 999px;
+    background: var(--damas); color: var(--blanc); font-size: 0.82rem; font-weight: 700; white-space: nowrap;
+  }
+  .card-badge--out { background: var(--nuit); }
+  .card-badge--bio { background: var(--chaouen); }
+  .card:has(.card-badge--out) :global(.card-img) { filter: grayscale(0.6) opacity(0.75); }
+
+  .card-body { display: grid; gap: 0.35rem; padding-inline: 0.25rem; }
+  .card-title { font-size: var(--step-1); line-height: 1.2; }
+  .card-title a { text-decoration: none; }
+  .card-title a:hover { text-decoration: underline; text-decoration-color: var(--petale); text-decoration-thickness: 2px; }
+  .card-tagline { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 0.35rem; }
+  .card-add {
+    position: relative; display: inline-grid; min-height: 2.75rem; padding: 0 1.1rem; border-radius: 999px;
+    background: var(--nuit); color: var(--blanc); font-weight: 600; font-size: 0.92rem; overflow: hidden;
+    text-decoration: none; place-items: center;
+    transition: background-color 0.3s;
+  }
+  .card-add:hover { background: var(--chaouen); }
+  .card[data-tone='rose'] .card-add { background: var(--damas); }
+  .card[data-tone='rose'] .card-add:hover { background: var(--damas-deep); }
+  .card-add--notify { background: transparent !important; color: var(--nuit); box-shadow: inset 0 0 0 1px currentColor; }
+  .card-add > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 0.35rem; transition: transform 0.5s var(--ease-out), opacity 0.3s; }
+  .card-add :global(svg) { width: 1rem; height: 1rem; }
+  .card-add-done { transform: translateY(120%); opacity: 0; }
+  .card-add:global(.is-added) .card-add-label { transform: translateY(-120%); opacity: 0; }
+  .card-add:global(.is-added) .card-add-done { transform: none; opacity: 1; }
+</style>

@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { waLink } from '../lib/whatsapp';
+import { site } from '../data/site';
+
+const steps = [
+  { title: 'Choisissez vos soins', text: 'Sur les pages argan et rose, cliquez sur « Ajouter ». Votre sélection est gardée sur votre appareil.' },
+  { title: 'Envoyez votre sélection', text: 'Dans « Ma sélection », un clic ouvre WhatsApp avec la liste, les prix et le total déjà rédigés.' },
+  { title: 'Validez le récapitulatif', text: 'Nous vous envoyons le total avec les frais de livraison et le moyen de paiement. Vous confirmez par écrit.' },
+  { title: 'Recevez votre colis', text: `Après paiement, votre commande part sous suivi. Délai : ${site.delivery.delay}.` },
+];
+
+const faq = [
+  { q: 'Pourquoi commander sur WhatsApp ?', a: 'Pour vous conseiller personnellement et confirmer chaque commande avec vous. Pas de compte à créer, pas de carte bancaire à saisir sur un site.' },
+  { q: 'Quels moyens de paiement acceptez-vous ?', a: `Le paiement se fait par ${site.delivery.paymentMethods}. Nous ne demandons jamais votre numéro de carte bancaire par message.` },
+  { q: 'Comment fonctionne la remise ?', a: `Dès ${site.bundleDiscount.minItems} produits commandés ensemble, ${site.bundleDiscount.percent} % sont déduits automatiquement du total.` },
+  { q: 'Où livrez-vous ?', a: `Nous livrons en ${site.delivery.zone}. Les frais sont ${site.delivery.fee}.` },
+  { q: 'Puis-je retourner un produit ?', a: 'Oui, sous 14 jours après réception, à condition que le produit soit fermé et intact. Pour des raisons d’hygiène, un produit ouvert ne peut pas être repris, sauf défaut.' },
+  { q: 'Les produits sont-ils bio ?', a: 'Les produits fabriqués localement au Maroc sont d’origine naturelle. Seuls les produits portant le badge « Certifié bio » disposent d’une certification biologique officielle, indiquée sur leur emballage.' },
+  { q: 'Ces soins conviennent-ils aux peaux sensibles ?', a: 'Faites toujours un test sur une petite zone de peau 48 h avant la première utilisation. En cas de doute, écrivez-nous : nous vous orientons vers le soin le plus doux.' },
+  { q: 'Puis-je offrir un coffret avec un mot ?', a: 'Oui. Composez votre coffret sur la page coffrets et ajoutez votre message : nous le glissons dans l’écrin.' },
+];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base title="Comment commander" description="Commandez vos soins Saramaya-kin sur WhatsApp en quatre étapes. Paiement, livraison, retours : toutes les réponses." jsonLd={faqLd}>
+  <section class="o-hero">
+    <div class="container">
+      <h1 data-split="load">Comment commander</h1>
+      <p class="lede" data-reveal>Une commande Saramaya-kin, c’est une conversation. Voici comment elle se déroule.</p>
+    </div>
+  </section>
+
+  <section class="section o-steps">
+    <div class="container">
+      <ol role="list" class="o-list">
+        {steps.map((s, i) => (
+          <li data-reveal>
+            <span class="o-num" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h2>{s.title}</h2>
+              <p>{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div class="o-actions">
+        <button type="button" class="btn" data-wishlist-open>Ouvrir ma sélection</button>
+        <a class="btn btn--rose" href={waLink('je souhaite commander.')} target="_blank" rel="noopener"><Icon name="whatsapp" /> Écrire sur WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="container faq-grid">
+      <h2 id="faq-title" data-split>Questions fréquentes</h2>
+      <div class="faq-list">
+        {faq.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .o-hero { padding-block: 9rem var(--space-4); background: linear-gradient(to bottom, var(--brume), var(--chaux)); }
+  .o-hero h1 { font-size: var(--step-6); line-height: 0.95; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; }
+  .o-hero .lede { margin-top: var(--space-3); }
+  .o-list { display: grid; gap: var(--space-3); max-width: 52rem; }
+  .o-list li { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); align-items: start; padding: var(--space-3); background: var(--blanc); border-radius: 2rem; }
+  .o-num { display: grid; place-items: center; width: 5rem; aspect-ratio: 4 / 5; border-radius: 999px 999px 0.75rem 0.75rem; background: var(--nuit); color: var(--petale); font-family: var(--font-display); font-size: var(--step-3); font-style: italic; }
+  .o-list h2 { font-size: var(--step-2); margin-bottom: 0.35rem; }
+  .o-list p { color: var(--ink-soft); }
+  .o-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: var(--space-4); }
+  .faq { background: var(--aube); }
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: var(--space-5); align-items: start; }
+  .faq-list details { border-bottom: 1px solid rgb(14 26 60 / 0.14); }
+  .faq-list summary { cursor: pointer; list-style: none; padding: 1.25rem 0; font-weight: 700; font-size: 1.08rem; display: flex; justify-content: space-between; gap: 1rem; }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after { content: '+'; font-family: var(--font-display); font-size: 1.6rem; font-weight: 300; line-height: 1; transition: rotate 0.4s var(--ease-out); flex: none; }
+  .faq-list details[open] summary::after { rotate: 45deg; }
+  .faq-list p { padding-bottom: 1.25rem; color: var(--ink-soft); max-width: 60ch; }
+  @media (max-width: 800px) { .faq-grid { grid-template-columns: 1fr; } .o-list li { grid-template-columns: 1fr; } }
+</style>

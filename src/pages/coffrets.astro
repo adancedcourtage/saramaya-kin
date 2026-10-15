@@ -1,0 +1,204 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Khatam from '../components/Khatam.astro';
+import { coffrets, products, formatPrice } from '../lib/catalog';
+import { productImage } from '../lib/images';
+import { waLink } from '../lib/whatsapp';
+import { site } from '../data/site';
+
+const available = products.filter((p) => !p.soldOut);
+const choices = await Promise.all(
+  available.map(async (p) => ({
+    ...p,
+    thumb: (await getImage({ src: productImage(p.image), width: 200, height: 200, fit: 'cover', format: 'webp' })).src,
+  })),
+);
+const MAX = 6;
+---
+<Base title="Coffrets et rituels" description="Coffrets cadeaux à l’argan et à la rose, ou coffret sur mesure composé à la main. Commande sur WhatsApp." headerTone="dark">
+  <section class="c-hero on-dark">
+    <Khatam class="c-star" />
+    <div class="container c-hero-inner">
+      <h1 data-split="load">Coffrets et rituels</h1>
+      <p class="lede" data-reveal>Des duos et des rituels complets, assemblés à la main. Ou votre coffret à vous, soin par soin.</p>
+      <a class="btn btn--light" href="#composer" data-reveal>Composer mon coffret</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <ul role="list" class="c-list">
+        {coffrets.map((c) => (
+          <li class="c-item" data-reveal>
+            <div class="c-media arch">
+              <Image src={productImage(c.image)} alt={c.name} widths={[400, 700]} sizes="(max-width: 800px) 90vw, 30vw" />
+              {c.soldOut && <span class="c-flag">Épuisé</span>}
+            </div>
+            <div class="c-body">
+              <h2>{c.name}</h2>
+              <p class="c-sub">{c.subtitle}</p>
+              <p class="c-contents">{c.contents}</p>
+              <p class="price">{formatPrice(c.price)}{c.compareAt && <s>{formatPrice(c.compareAt)}</s>}</p>
+              {c.compareAt && <p class="c-save">Vous économisez {formatPrice(c.compareAt - c.price)} par rapport à l’achat séparé.</p>}
+              <details>
+                <summary>Détail du coffret</summary>
+                <p>{c.description}</p>
+                <p>{c.contentsDetail}</p>
+                <p><strong>Rituel :</strong> {c.usage}</p>
+              </details>
+              {c.soldOut ? (
+                <a class="btn btn--ghost" href={waLink(`prévenez-moi quand le « ${c.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">Me prévenir de son retour</a>
+              ) : (
+                <button type="button" class="btn btn--rose" data-add={c.slug}><Icon name="plus" /> Ajouter à ma sélection</button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section composer" id="composer" aria-labelledby="composer-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="composer-title" data-split>Composer mon coffret</h2>
+        <p class="lede">Choisissez jusqu’à {MAX} soins. Nous les assemblons dans un écrin, avec un mot si vous le souhaitez. La remise de {site.bundleDiscount.percent} % s’applique dès {site.bundleDiscount.minItems} soins.</p>
+      </div>
+      <form class="composer-grid" data-composer data-max={MAX} data-wa={site.whatsapp} data-brand={site.name} data-discount={site.bundleDiscount.percent} data-min={site.bundleDiscount.minItems}>
+        <fieldset class="picks">
+          <legend class="visually-hidden">Soins à inclure</legend>
+          {choices.map((p) => (
+            <label class="pick" data-tone={p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' : 'argan'}>
+              <input type="checkbox" name="soin" value={p.slug} data-name={p.name} data-price={p.price} />
+              <img src={p.thumb} alt="" width="100" height="100" loading="lazy" />
+              <span class="pick-name">{p.name}</span>
+              <span class="pick-price">{formatPrice(p.price)}</span>
+              <span class="pick-check" aria-hidden="true"><Icon name="check" /></span>
+            </label>
+          ))}
+        </fieldset>
+        <aside class="summary" aria-live="polite">
+          <h3>Votre coffret</h3>
+          <ol class="summary-list" data-summary-list><li class="summary-empty">Aucun soin choisi pour l’instant.</li></ol>
+          <p class="summary-count" data-summary-count>0 / {MAX} soins</p>
+          <dl class="summary-totals">
+            <div><dt>Sous-total</dt><dd data-summary-sub>0,00 €</dd></div>
+            <div data-summary-off-row hidden><dt>Remise {site.bundleDiscount.percent} %</dt><dd data-summary-off></dd></div>
+            <div class="summary-total"><dt>Total estimé</dt><dd data-summary-total>0,00 €</dd></div>
+          </dl>
+          <label class="summary-note">
+            <span>Mot à glisser dans le coffret (facultatif)</span>
+            <textarea name="mot" rows="3" maxlength="240" placeholder="Joyeux anniversaire, prends soin de toi…"></textarea>
+          </label>
+          <a class="btn btn--rose" href={waLink('je souhaite composer un coffret sur mesure.')} target="_blank" rel="noopener" data-summary-send aria-disabled="true">
+            <Icon name="whatsapp" /> Envoyer mon coffret sur WhatsApp
+          </a>
+          <p class="summary-hint">Choisissez au moins 2 soins pour envoyer votre coffret.</p>
+        </aside>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-composer]');
+  if (form) {
+    const max = Number(form.dataset.max);
+    const pct = Number(form.dataset.discount);
+    const min = Number(form.dataset.min);
+    const fmt = (c: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c / 100);
+    const boxes = [...form.querySelectorAll<HTMLInputElement>('input[name="soin"]')];
+    const note = form.querySelector<HTMLTextAreaElement>('textarea')!;
+    const $ = (s: string) => form.querySelector<HTMLElement>(s)!;
+    const send = $('[data-summary-send]') as HTMLAnchorElement;
+
+    const update = () => {
+      const picked = boxes.filter((b) => b.checked);
+      boxes.forEach((b) => (b.disabled = !b.checked && picked.length >= max));
+      const sub = picked.reduce((s, b) => s + Number(b.dataset.price), 0);
+      const off = picked.length >= min ? Math.round((sub * pct) / 100) : 0;
+      $('[data-summary-list]').innerHTML = picked.length
+        ? picked.map((b) => `<li>${b.dataset.name}</li>`).join('')
+        : '<li class="summary-empty">Aucun soin choisi pour l’instant.</li>';
+      $('[data-summary-count]').textContent = `${picked.length} / ${max} soins`;
+      $('[data-summary-sub]').textContent = fmt(sub);
+      $('[data-summary-off-row]').hidden = !off;
+      $('[data-summary-off]').textContent = `-${fmt(off)}`;
+      $('[data-summary-total]').textContent = fmt(sub - off);
+      const ok = picked.length >= 2;
+      send.setAttribute('aria-disabled', String(!ok));
+      const text = [
+        `Bonjour ${form.dataset.brand}, je souhaite composer un coffret sur mesure :`,
+        ...picked.map((b) => `• ${b.dataset.name} (${fmt(Number(b.dataset.price))})`),
+        '',
+        `Total estimé : ${fmt(sub - off)}${off ? ` (remise ${pct} % incluse)` : ''}, hors livraison`,
+        ...(note.value.trim() ? ['', `Mot à glisser : « ${note.value.trim()} »`] : []),
+      ].join('\n');
+      send.href = `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`;
+    };
+    form.addEventListener('change', update);
+    note.addEventListener('input', update);
+    update();
+  }
+</script>
+
+<style>
+  .c-hero { position: relative; overflow: hidden; isolation: isolate; padding-block: 10rem var(--space-6); background: linear-gradient(170deg, var(--nuit) 30%, var(--chaouen) 75%, var(--damas)); }
+  .c-hero :global(.c-star) { position: absolute; width: 50rem; right: -14rem; top: -10rem; color: rgb(247 201 214 / 0.14); z-index: -1; }
+  .c-hero-inner { display: grid; gap: var(--space-3); justify-items: start; }
+  .c-hero h1 { font-size: var(--step-6); line-height: 0.95; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; max-width: 10ch; }
+
+  .c-list { display: grid; gap: var(--space-6); }
+  .c-item { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: center; }
+  .c-item:nth-child(even) .c-media { order: 2; }
+  .c-media { position: relative; aspect-ratio: 3 / 4; background: var(--brume); }
+  .c-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .c-flag { position: absolute; left: 50%; bottom: 1rem; translate: -50% 0; background: var(--nuit); color: var(--blanc); padding: 0.35rem 0.9rem; border-radius: 999px; font-weight: 700; }
+  .c-body { display: grid; gap: var(--space-2); justify-items: start; max-width: 36rem; }
+  .c-body h2 { font-size: var(--step-4); }
+  .c-sub { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--ink-soft); }
+  .c-contents { font-weight: 600; }
+  .c-save { color: var(--damas-deep); font-size: 0.95rem; }
+  .c-body details { width: 100%; border-block: 1px solid rgb(14 26 60 / 0.14); padding-block: 0.75rem; }
+  .c-body summary { cursor: pointer; font-weight: 700; }
+  .c-body details p { margin-top: 0.75rem; color: var(--ink-soft); }
+  @media (max-width: 800px) { .c-item { grid-template-columns: 1fr; } .c-item:nth-child(even) .c-media { order: 0; } .c-media { max-width: 24rem; } }
+
+  .composer { background: linear-gradient(to bottom, var(--chaux), var(--aube)); }
+  .composer-grid { display: grid; grid-template-columns: minmax(0, 1fr) 22rem; gap: var(--space-4); align-items: start; }
+  .picks { border: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.75rem; }
+  .pick {
+    position: relative; display: grid; gap: 0.35rem; padding: 0.75rem; border-radius: 999px 999px 1.25rem 1.25rem;
+    background: var(--blanc); cursor: pointer; text-align: center; justify-items: center;
+    box-shadow: inset 0 0 0 2px transparent; transition: box-shadow 0.3s, transform 0.4s var(--ease-out);
+  }
+  .pick:hover { transform: translateY(-3px); }
+  .pick input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .pick img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 999px 999px 0.75rem 0.75rem; }
+  .pick-name { font-weight: 600; font-size: 0.92rem; line-height: 1.3; }
+  .pick-price { color: var(--damas); font-size: 0.9rem; }
+  .pick-check { position: absolute; top: 0.6rem; right: 0.6rem; width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center; background: var(--damas); color: var(--blanc); scale: 0; transition: scale 0.4s var(--ease-out); }
+  .pick-check :global(svg) { width: 1.1rem; height: 1.1rem; }
+  .pick:has(input:checked) { box-shadow: inset 0 0 0 2px var(--damas); }
+  .pick:has(input:checked) .pick-check { scale: 1; }
+  .pick:has(input:focus-visible) { outline: 2px solid var(--damas); outline-offset: 3px; }
+  .pick:has(input:disabled) { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .summary { position: sticky; top: 6.5rem; background: var(--nuit); color: var(--blanc); border-radius: 2rem; padding: var(--space-3); display: grid; gap: var(--space-2); }
+  .summary h3 { font-size: var(--step-2); }
+  .summary-list { padding-left: 1.2rem; display: grid; gap: 0.25rem; color: var(--brume); }
+  .summary-list :global(.summary-empty) { list-style: none; margin-left: -1.2rem; }
+  .summary-count { font-size: 0.9rem; color: var(--petale); }
+  .summary-totals { display: grid; gap: 0.3rem; border-top: 1px solid rgb(214 226 245 / 0.2); padding-top: var(--space-2); }
+  .summary-totals div { display: flex; justify-content: space-between; }
+  .summary-total { font-family: var(--font-display); font-size: var(--step-2); }
+  .summary-note { display: grid; gap: 0.4rem; font-size: 0.9rem; color: var(--brume); }
+  .summary-note textarea { background: rgb(255 255 255 / 0.08); border: 1px solid rgb(214 226 245 / 0.3); border-radius: 1rem; padding: 0.75rem; color: var(--blanc); resize: vertical; }
+  .summary-note textarea::placeholder { color: rgb(214 226 245 / 0.6); }
+  .summary-hint { font-size: 0.85rem; color: var(--brume); }
+  .summary :focus-visible { outline-color: var(--petale); }
+  .summary .btn[aria-disabled='false'] + .summary-hint { display: none; }
+  @media (max-width: 900px) { .composer-grid { grid-template-columns: 1fr; } .summary { position: static; } }
+</style>

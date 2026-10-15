@@ -1,0 +1,71 @@
+---
+import Legal from '../layouts/Legal.astro';
+import Todo from '../components/Todo.astro';
+import { site } from '../data/site';
+const l = site.legal;
+const d = site.delivery;
+---
+<Legal title="Conditions générales de vente" description="Conditions de vente à distance des soins Saramaya-kin commandés via WhatsApp.">
+  <h2>1. Objet et champ d’application</h2>
+  <p>Les présentes conditions générales de vente (CGV) régissent les ventes de produits cosmétiques conclues à distance entre <Todo value={l.owner} />, <Todo value={l.status} />, SIRET <Todo value={l.siret} />, <Todo value={l.address} /> (ci-après « le Vendeur ») et toute personne physique agissant à des fins non professionnelles (ci-après « le Client »).</p>
+  <p>Le site {site.url.replace('https://', '')} présente les produits. La commande est conclue par échange de messages sur WhatsApp. Les CGV en vigueur au jour de la commande s’appliquent ; elles sont accessibles à tout moment sur cette page et peuvent être envoyées sur demande.</p>
+  <p>Le Client déclare être majeur et avoir la capacité de contracter, ou disposer de l’autorisation de son représentant légal.</p>
+
+  <h2>2. Produits</h2>
+  <p>Les caractéristiques essentielles des produits (description, contenance, composition indicative, précautions d’emploi) figurent sur chaque fiche produit. Les photographies sont aussi fidèles que possible mais n’ont pas de valeur contractuelle. La liste INCI figurant sur l’emballage fait foi. Les produits sont proposés dans la limite des stocks disponibles.</p>
+  <p>Les produits sont des cosmétiques à usage externe. Ils ne sont pas des médicaments et ne revendiquent aucune propriété thérapeutique.</p>
+
+  <h2>3. Prix</h2>
+  <p>Les prix sont indiqués en euros, toutes taxes comprises (<Todo value={l.vat} />), hors frais de livraison. Les frais de livraison sont {d.fee}. Le prix applicable est celui affiché le jour de la commande. Une remise de {site.bundleDiscount.percent} % s’applique automatiquement à partir de {site.bundleDiscount.minItems} produits commandés ensemble. Les offres promotionnelles indiquent leur date de fin.</p>
+
+  <h2>4. Commande</h2>
+  <ol>
+    <li>Le Client sélectionne ses produits sur le site et envoie sa sélection par WhatsApp, ou décrit directement sa demande par message.</li>
+    <li>Le Vendeur répond par un récapitulatif écrit : produits, quantités, prix unitaires, remise éventuelle, frais de livraison, prix total, délai de livraison et moyens de paiement. Ce récapitulatif rappelle le lien vers les présentes CGV.</li>
+    <li>Le Client vérifie le récapitulatif, peut le corriger, puis l’accepte expressément par écrit (par exemple « Je confirme ma commande avec obligation de paiement »).</li>
+    <li>Le contrat est conclu à la réception de cette acceptation. Le Vendeur confirme la commande sur un support durable (message WhatsApp et, sur demande, e-mail récapitulatif).</li>
+  </ol>
+  <p>Le Vendeur peut refuser une commande en cas de litige antérieur de paiement ou de demande anormale.</p>
+
+  <h2>5. Paiement</h2>
+  <p>Le paiement est exigible à la commande, par {d.paymentMethods}. Aucune donnée bancaire n’est collectée sur le site ni demandée par message : ne communiquez jamais votre numéro de carte par WhatsApp. La commande est préparée après réception du paiement.</p>
+
+  <h2>6. Livraison</h2>
+  <p>Les produits sont livrés en {d.zone}, à l’adresse indiquée par le Client, {d.delay}. En l’absence de date convenue, la livraison intervient au plus tard 30 jours après la conclusion du contrat. En cas de retard, le Client peut résoudre le contrat dans les conditions des articles L216-6 et suivants du Code de la consommation. Les risques de perte ou d’endommagement sont transférés au Client à la prise de possession des produits. Détails sur la page <a href="/livraison-retours">livraison et retours</a>.</p>
+
+  <h2 id="retractation">7. Droit de rétractation</h2>
+  <p>Conformément aux articles L221-18 et suivants du Code de la consommation, le Client dispose de 14 jours à compter de la réception des produits pour exercer son droit de rétractation, sans avoir à se justifier.</p>
+  <p>Pour l’exercer, le Client adresse au Vendeur une déclaration dénuée d’ambiguïté (message WhatsApp ou e-mail à <a href={`mailto:${site.email}`}>{site.email}</a>), ou le formulaire ci-dessous. Il renvoie ensuite les produits dans les 14 jours suivant sa déclaration. Les frais de retour sont à la charge du Client.</p>
+  <p>Le Vendeur rembourse la totalité des sommes versées, y compris les frais de livraison initiaux (sur la base du mode de livraison standard), dans les 14 jours suivant la réception de la déclaration. Il peut différer le remboursement jusqu’à la récupération des produits ou la preuve de leur expédition. Le remboursement utilise le même moyen de paiement, sauf accord du Client.</p>
+  <div class="box">
+    <p><strong>Exception</strong> : conformément à l’article L221-28, 5° du Code de la consommation, le droit de rétractation ne peut pas être exercé pour les produits descellés par le Client après la livraison et qui ne peuvent pas être renvoyés pour des raisons d’hygiène ou de protection de la santé (flacon, pot ou opercule ouvert). Les produits renvoyés doivent donc être intacts et dans leur emballage d’origine.</p>
+  </div>
+  <h3>Formulaire de rétractation</h3>
+  <p>(À compléter et renvoyer uniquement si vous souhaitez vous rétracter.)</p>
+  <p>À l’attention de <Todo value={l.owner} />, <Todo value={l.address} />, {site.email} :<br />
+  Je vous notifie par la présente ma rétractation du contrat portant sur la vente du bien ci-dessous :<br />
+  Commandé le / reçu le :<br />
+  Nom du consommateur :<br />
+  Adresse du consommateur :<br />
+  Signature du consommateur (uniquement en cas de notification sur papier) :<br />
+  Date :</p>
+
+  <h2>8. Garanties légales</h2>
+  <p>Le Vendeur est tenu de la garantie légale de conformité (articles L217-3 à L217-20 du Code de la consommation) et de la garantie des vices cachés (articles 1641 à 1649 du Code civil).</p>
+  <div class="box">
+    <p>Le consommateur dispose d’un délai de deux ans à compter de la délivrance du bien pour obtenir la mise en œuvre de la garantie légale de conformité en cas d’apparition d’un défaut de conformité. Durant ce délai, il n’est tenu d’établir que l’existence du défaut, et non sa date d’apparition. La garantie légale de conformité emporte obligation de réparer ou de remplacer le bien ; à défaut, le consommateur peut obtenir une réduction du prix ou la résolution du contrat. Le consommateur peut aussi, pendant deux ans à compter de la découverte du défaut, agir au titre de la garantie des vices cachés (articles 1641 et suivants du Code civil) et choisir entre la résolution de la vente ou une réduction du prix.</p>
+  </div>
+  <p>En cas de produit endommagé à la réception, merci d’envoyer une photo sur WhatsApp dans les meilleurs délais pour un remplacement ou un remboursement.</p>
+
+  <h2>9. Responsabilité et précautions</h2>
+  <p>Le Client s’engage à lire les précautions d’emploi et à réaliser un test de tolérance avant la première utilisation. Le Vendeur ne saurait être tenu responsable d’une utilisation non conforme aux indications du produit.</p>
+
+  <h2>10. Données personnelles</h2>
+  <p>Les données nécessaires au traitement de la commande sont traitées conformément à notre <a href="/confidentialite">politique de confidentialité</a>.</p>
+
+  <h2 id="mediation">11. Réclamations et médiation</h2>
+  <p>Pour toute réclamation, contactez-nous sur WhatsApp ou à {site.email}. Nous répondons sous 7 jours ouvrés. Conformément aux articles L612-1 et suivants du Code de la consommation, si la réclamation écrite n’a pas abouti, le Client peut recourir gratuitement au médiateur de la consommation : <Todo value={l.mediator.name} />. Liste des médiateurs agréés : <a href={l.mediator.url}>{l.mediator.url.replace('https://', '')}</a>.</p>
+
+  <h2>12. Droit applicable</h2>
+  <p>Les présentes CGV sont soumises au droit français. À défaut de résolution amiable, le litige sera porté devant la juridiction compétente selon les règles de droit commun. Le Client consommateur peut saisir, à son choix, la juridiction du lieu où il demeurait au moment de la conclusion du contrat ou de la survenance du fait dommageable.</p>
+</Legal>

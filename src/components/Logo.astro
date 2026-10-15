@@ -1,0 +1,54 @@
+---
+/**
+ * Saramaya-kin mark: a khatam (eight-pointed zellige star) holding a rose bud,
+ * followed by the wordmark set in Fraunces italic.
+ */
+interface Props {
+  wordmark?: boolean;
+  class?: string;
+  size?: number;
+}
+const { wordmark = true, class: className = '', size = 40 } = Astro.props;
+
+const R = 46;
+const r = R * Math.cos(Math.PI / 4) / Math.cos(Math.PI / 8);
+const star = Array.from({ length: 16 }, (_, i) => {
+  const a = -Math.PI / 2 + (i * Math.PI) / 8;
+  const rad = i % 2 === 0 ? R : r;
+  return `${(50 + rad * Math.cos(a)).toFixed(2)},${(50 + rad * Math.sin(a)).toFixed(2)}`;
+}).join(' ');
+---
+<span class:list={['logo', className]}>
+  <svg class="logo-mark" viewBox="0 0 100 100" width={size} height={size} aria-hidden="true">
+    <polygon class="logo-star" points={star} pathLength="1" />
+    <polygon class="logo-star logo-star--inner" points={star} pathLength="1" transform="rotate(22.5 50 50) scale(.62) translate(30.6 30.6)" />
+    <path class="logo-bud" d="M50 34c7 6 9 12 9 17a9 9 0 0 1-18 0c0-5 2-11 9-17Z" />
+    <path class="logo-stem" d="M50 60v10" />
+  </svg>
+  {wordmark && <span class="logo-word">Saramaya<span class="logo-kin">-kin</span></span>}
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 0.6rem; color: inherit; }
+  .logo-mark { flex: none; overflow: visible; }
+  .logo-star { fill: none; stroke: currentColor; stroke-width: 3; stroke-linejoin: round; }
+  .logo-star--inner { stroke-width: 2.4; opacity: 0.55; }
+  .logo-bud { fill: var(--damas); }
+  .logo-stem { stroke: var(--damas); stroke-width: 3; stroke-linecap: round; }
+  .logo-word {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.55rem;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  }
+  .logo-kin { font-style: normal; font-variation-settings: 'SOFT' 0, 'opsz' 72; color: var(--damas); }
+  :global(.on-dark) .logo-kin { color: var(--petale); }
+
+  :global(.js) .logo--draw .logo-star { stroke-dasharray: 1; stroke-dashoffset: 1; animation: logo-draw 1.6s var(--ease-out) 0.2s forwards; }
+  :global(.js) .logo--draw .logo-star--inner { animation-delay: 0.6s; }
+  :global(.js) .logo--draw .logo-bud { transform-origin: 50px 60px; transform: scale(0); animation: logo-bloom 0.9s var(--ease-out) 1.2s forwards; }
+  @keyframes logo-draw { to { stroke-dashoffset: 0; } }
+  @keyframes logo-bloom { to { transform: scale(1); } }
+</style>

@@ -1,0 +1,199 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Icon from '../../components/Icon.astro';
+import { products, related, formatPrice, discountPercent, typeLabels, type Product } from '../../lib/catalog';
+import { productImage } from '../../lib/images';
+import { waLink } from '../../lib/whatsapp';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+
+const { product: p } = Astro.props as { product: Product };
+const off = discountPercent(p.price, p.compareAt);
+const others = related(p);
+const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' : 'argan';
+const rangeLinks = p.ranges.map((r) => ({ href: `/${r}`, label: r === 'argan' ? 'Gamme argan' : 'Gamme rose' }));
+const og = await getImage({ src: productImage(p.image), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.name,
+  description: p.description,
+  image: new URL(og.src, site.url).href,
+  brand: { '@type': 'Brand', name: site.name },
+  category: typeLabels[p.type],
+  offers: {
+    '@type': 'Offer',
+    url: `${site.url}/produit/${p.slug}`,
+    priceCurrency: 'EUR',
+    price: (p.price / 100).toFixed(2),
+    availability: p.soldOut ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+    areaServed: 'FR',
+  },
+};
+---
+<Base title={p.name} description={`${p.tagline}. ${formatPrice(p.price)}, commande sur WhatsApp.`} image={og.src} jsonLd={jsonLd}>
+  <article class:list={['product', `product--${tone}`]}>
+    <div class="container product-grid">
+      <div class="product-media">
+        <div class="product-arch arch" data-tilt>
+          <Image src={productImage(p.image)} alt={p.name} widths={[480, 800, 1100]} sizes="(max-width: 900px) 90vw, 45vw" loading="eager" fetchpriority="high" />
+          {p.soldOut && <span class="product-flag">Épuisé</span>}
+          {!p.soldOut && off > 0 && <span class="product-flag product-flag--promo">-{off} %</span>}
+        </div>
+      </div>
+
+      <div class="product-info">
+        <nav aria-label="Fil d’Ariane" class="crumbs">
+          <a href="/">Accueil</a> <span aria-hidden="true">/</span>
+          <a href={rangeLinks[0].href}>{rangeLinks[0].label}</a> <span aria-hidden="true">/</span>
+          <span aria-current="page">{p.name}</span>
+        </nav>
+        <ul role="list" class="chips">
+          {rangeLinks.map((r) => <li><a href={r.href}>{r.label}</a></li>)}
+          <li><span>{typeLabels[p.type]}</span></li>
+          {p.organic && <li><span class="chip-bio">Certifié bio</span></li>}
+        </ul>
+        <h1 data-split="load">{p.name}</h1>
+        <p class="lede">{p.tagline}</p>
+        <p class="product-price">
+          <span>{formatPrice(p.price)}</span>
+          {p.compareAt && <s>{formatPrice(p.compareAt)}</s>}
+          <small>prix TTC à l’unité</small>
+        </p>
+
+        {p.soldOut ? (
+          <div class="product-actions">
+            <p class="soldout-note">Ce soin est momentanément épuisé.</p>
+            <a class="btn" href={waLink(`prévenez-moi quand « ${p.name} » sera de nouveau disponible.`)} target="_blank" rel="noopener">
+              <Icon name="whatsapp" /> Me prévenir de son retour
+            </a>
+          </div>
+        ) : (
+          <div class="product-actions">
+            <button type="button" class:list={['btn', tone === 'rose' && 'btn--rose']} data-add={p.slug} data-magnetic>
+              <Icon name="plus" /> Ajouter à ma sélection
+            </button>
+            <a class="btn btn--ghost" href={waLink(`je souhaite commander : 1 × ${p.name} (${formatPrice(p.price)}).`)} target="_blank" rel="noopener">
+              <Icon name="whatsapp" /> Commander ce soin seul
+            </a>
+          </div>
+        )}
+        <p class="product-reassure">-{site.bundleDiscount.percent} % dès {site.bundleDiscount.minItems} produits. Livraison en {site.delivery.zone}, frais confirmés avant paiement.</p>
+
+        <div class="product-desc">
+          <p>{p.description}</p>
+        </div>
+
+        {p.benefits.length > 0 && (
+          <section class="benefits" aria-labelledby="benefits-title">
+            <h2 id="benefits-title">Ce que vous allez aimer</h2>
+            <ul role="list">
+              {p.benefits.map((b) => <li>{b}</li>)}
+            </ul>
+          </section>
+        )}
+
+        <div class="details">
+          <details open>
+            <summary>Conseils d’utilisation</summary>
+            <p>{p.usage}</p>
+          </details>
+          <details>
+            <summary>Composition</summary>
+            <p>{p.composition}</p>
+            <p class="small">Liste indicative. La liste INCI complète figure sur l’emballage du produit et fait foi.</p>
+          </details>
+          <details>
+            <summary>Précautions d’emploi</summary>
+            <ul>
+              {p.essentialOil && <li>Ne pas appliquer pure sur la peau : diluer dans une huile végétale. Ne pas ingérer.</li>}
+              {p.essentialOil && <li>Déconseillée aux femmes enceintes ou allaitantes, aux jeunes enfants, et aux personnes asthmatiques ou épileptiques sans avis médical.</li>}
+              <li>Usage externe uniquement.</li>
+              <li>Faites un essai sur une petite zone de peau (pli du coude) 48 h avant la première utilisation.</li>
+              <li>Évitez le contour des yeux et les muqueuses. En cas de contact, rincez abondamment à l’eau claire.</li>
+              <li>Cessez l’utilisation en cas de rougeur ou d’irritation.</li>
+              <li>Tenir hors de portée des enfants. Conserver à l’abri de la chaleur et de la lumière.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Livraison et retours</summary>
+            <p>Livraison en {site.delivery.zone}, {site.delivery.delay}. Vous disposez de 14 jours pour changer d’avis sur un produit non ouvert. <a href="/livraison-retours">Tout savoir sur la livraison et les retours</a>.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  {others.length > 0 && (
+    <section class="section related" aria-labelledby="related-title">
+      <div class="container">
+        <h2 id="related-title" data-split>À associer dans votre rituel</h2>
+        <ul role="list" class="related-grid">
+          {others.map((o) => <li><ProductCard product={o} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .product { padding-block: 7.5rem var(--space-5); }
+  .product--argan { background: linear-gradient(to bottom, var(--brume), var(--chaux) 60%); }
+  .product--rose { background: linear-gradient(to bottom, var(--aube), var(--chaux) 60%); }
+  .product-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .product-media { position: sticky; top: 6.5rem; }
+  .product-arch { position: relative; aspect-ratio: 4 / 5; background: var(--blanc); box-shadow: var(--shadow-lift); }
+  .product-arch :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .product-flag { position: absolute; left: 50%; bottom: 1.25rem; translate: -50% 0; background: var(--nuit); color: var(--blanc); padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; }
+  .product-flag--promo { background: var(--damas); }
+
+  .product-info { display: grid; gap: var(--space-3); padding-top: var(--space-2); }
+  .crumbs { font-size: 0.9rem; color: var(--ink-soft); }
+  .crumbs a { color: inherit; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chips a, .chips span { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: var(--blanc); text-decoration: none; }
+  .chips a:hover { background: var(--petale); }
+  .chips .chip-bio { background: var(--chaouen); color: var(--blanc); }
+  .product-info h1 { font-size: var(--step-5); }
+  .product-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem; }
+  .product-price span { font-family: var(--font-display); font-size: var(--step-4); color: var(--damas); line-height: 1; }
+  .product-price s { color: var(--ink-soft); font-size: var(--step-1); }
+  .product-price small { color: var(--ink-soft); font-size: 0.85rem; }
+  .product-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  .soldout-note { width: 100%; font-weight: 600; }
+  .product-reassure { font-size: 0.92rem; color: var(--ink-soft); }
+  .product-desc { font-size: 1.08rem; max-width: 60ch; }
+
+  .benefits { background: var(--blanc); border-radius: 2rem; padding: var(--space-3); }
+  .benefits h2 { font-size: var(--step-2); margin-bottom: var(--space-2); }
+  .benefits ul { display: grid; gap: 0.6rem; }
+  .benefits li { position: relative; padding-left: 1.75rem; }
+  .benefits li::before { content: ''; position: absolute; left: 0; top: 0.45em; width: 0.8rem; height: 0.8rem; background: var(--damas); clip-path: polygon(50% 0, 63% 37%, 100% 50%, 63% 63%, 50% 100%, 37% 63%, 0 50%, 37% 37%); }
+
+  .details { border-top: 1px solid rgb(14 26 60 / 0.14); }
+  .details details { border-bottom: 1px solid rgb(14 26 60 / 0.14); }
+  .details summary {
+    cursor: pointer; list-style: none; padding: 1.1rem 0; font-weight: 700; display: flex; justify-content: space-between; align-items: center;
+  }
+  .details summary::-webkit-details-marker { display: none; }
+  .details summary::after { content: '+'; font-family: var(--font-display); font-size: 1.6rem; font-weight: 300; line-height: 1; transition: rotate 0.4s var(--ease-out); }
+  .details details[open] summary::after { rotate: 45deg; }
+  .details details > :not(summary) { margin-bottom: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+  .details ul { padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+  .details a { color: var(--chaouen); }
+  .small { font-size: 0.88rem; }
+
+  .related h2 { margin-bottom: var(--space-4); }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: var(--space-4) var(--space-3); }
+
+  @media (max-width: 900px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .product-media { position: static; max-width: 30rem; }
+  }
+</style>

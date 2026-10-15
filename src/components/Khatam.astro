@@ -1,0 +1,20 @@
+---
+/** Decorative eight-pointed zellige star, drawn as outlines. */
+interface Props { class?: string }
+const { class: className } = Astro.props;
+const ring = (R: number) => {
+  const r = R * Math.cos(Math.PI / 4) / Math.cos(Math.PI / 8);
+  return Array.from({ length: 16 }, (_, i) => {
+    const a = -Math.PI / 2 + (i * Math.PI) / 8;
+    const d = i % 2 === 0 ? R : r;
+    return `${(100 + d * Math.cos(a)).toFixed(2)},${(100 + d * Math.sin(a)).toFixed(2)}`;
+  }).join(' ');
+};
+---
+<svg class={className} viewBox="0 0 200 200" aria-hidden="true" fill="none" stroke="currentColor" vector-effect="non-scaling-stroke">
+  <polygon points={ring(96)} stroke-width="1" vector-effect="non-scaling-stroke" />
+  <polygon points={ring(74)} stroke-width="1" vector-effect="non-scaling-stroke" transform="rotate(22.5 100 100)" />
+  <polygon points={ring(52)} stroke-width="1" vector-effect="non-scaling-stroke" />
+  <polygon points={ring(30)} stroke-width="1" vector-effect="non-scaling-stroke" transform="rotate(22.5 100 100)" />
+  <circle cx="100" cy="100" r="96" stroke-width="1" stroke-dasharray="2 6" vector-effect="non-scaling-stroke" />
+</svg>

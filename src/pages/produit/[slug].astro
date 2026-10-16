@@ -35,9 +35,10 @@ const variantData = variants.map((v) => ({
   wa: waLink(orderText(lineName(p, v), v.price)),
 }));
 
-const offer = (price: number) => ({
+const offer = (price: number, sku?: string, name?: string) => ({
   '@type': 'Offer',
-  url: `${site.url}/produit/${p.slug}`,
+  ...(sku ? { sku, name } : {}),
+  url: `${site.url}/produit/${p.slug}/`,
   priceCurrency: 'EUR',
   price: (price / 100).toFixed(2),
   availability: p.soldOut ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
@@ -51,7 +52,7 @@ const jsonLd = {
   image: new URL(og.src, site.url).href,
   brand: { '@type': 'Brand', name: site.name },
   category: typeLabels[p.type],
-  offers: multi ? variants.map((v) => offer(v.price)) : offer(v0.price),
+  offers: multi ? variants.map((v) => offer(v.price, v.slug, lineName(p, v))) : offer(v0.price),
 };
 ---
 <Base title={p.name} description={`${v0.tagline}. ${multi ? 'Dès ' : ''}${formatPrice(Math.min(...variants.map((v) => v.price)))}, commande sur WhatsApp.`} image={og.src} jsonLd={jsonLd}>
@@ -208,8 +209,9 @@ const jsonLd = {
     type V = { slug: string; price: string; compareAt: string; off: number; tagline: string; composition: string; organic: boolean; name: string; wa: string };
     const variants: V[] = JSON.parse(dataEl.textContent || '[]');
     const all = <T extends HTMLElement>(sel: string) => document.querySelectorAll<T>(sel);
-    formats.addEventListener('change', (e) => {
-      const v = variants.find((x) => x.slug === (e.target as HTMLInputElement).value);
+    const sync = () => {
+      const checked = formats.querySelector<HTMLInputElement>('input[name="format"]:checked');
+      const v = variants.find((x) => x.slug === checked?.value);
       if (!v) return;
       all('[data-variant-image]').forEach((img) => img.classList.toggle('is-active', img.dataset.variantImage === v.slug));
       all('[data-v-price]').forEach((el) => (el.textContent = v.price));
@@ -221,7 +223,10 @@ const jsonLd = {
       all('[data-v-organic]').forEach((el) => (el.hidden = !v.organic));
       all('[data-v-add]').forEach((el) => (el.dataset.add = v.slug));
       all<HTMLAnchorElement>('[data-v-wa]').forEach((el) => (el.href = v.wa));
-    });
+    };
+    formats.addEventListener('change', sync);
+    addEventListener('pageshow', sync);
+    sync();
   }
 
   // Mobile buy bar: shown once the main purchase buttons have scrolled out of view.

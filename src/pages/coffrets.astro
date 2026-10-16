@@ -116,6 +116,16 @@ const MAX = 6;
     const $ = (s: string) => form.querySelector<HTMLElement>(s)!;
     const send = $('[data-summary-send]') as HTMLAnchorElement;
 
+    const DRAFT = 'saramaya-coffret';
+    try {
+      const draft = JSON.parse(sessionStorage.getItem(DRAFT) || 'null');
+      if (draft && Array.isArray(draft.items)) {
+        const wanted = new Set(draft.items.filter((v: unknown) => typeof v === 'string').slice(0, max));
+        boxes.forEach((b) => (b.checked = wanted.has(b.value)));
+        if (typeof draft.note === 'string') note.value = draft.note.slice(0, 240);
+      }
+    } catch { /* storage unavailable */ }
+
     const update = () => {
       const picked = boxes.filter((b) => b.checked);
       boxes.forEach((b) => (b.disabled = !b.checked && picked.length >= max));
@@ -129,7 +139,7 @@ const MAX = 6;
       $('[data-summary-off-row]').hidden = !off;
       $('[data-summary-off]').textContent = `-${fmt(off)}`;
       $('[data-summary-total]').textContent = fmt(sub - off);
-      const ok = picked.length >= 2;
+      const ok = picked.length >= 2 && picked.length <= max;
       send.setAttribute('aria-disabled', String(!ok));
       const text = [
         `Bonjour ${form.dataset.brand}, je souhaite composer un coffret sur mesure :`,
@@ -139,7 +149,11 @@ const MAX = 6;
         ...(note.value.trim() ? ['', `Mot à glisser : « ${note.value.trim()} »`] : []),
       ].join('\n');
       send.href = `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`;
+      try { sessionStorage.setItem(DRAFT, JSON.stringify({ items: picked.map((b) => b.value), note: note.value })); } catch { /* ignore */ }
     };
+    send.addEventListener('click', (e) => {
+      if (send.getAttribute('aria-disabled') === 'true') e.preventDefault();
+    });
     form.addEventListener('change', update);
     note.addEventListener('input', update);
     update();

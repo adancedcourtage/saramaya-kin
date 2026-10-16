@@ -20,6 +20,8 @@ if (!reduced) {
 }
 export const scroller = { stop: () => lenis?.stop(), start: () => lenis?.start() };
 
+let menuIsOpen = false; // full-screen menu state, shared by the header and the menu
+
 /* ---------- Header ---------- */
 const header = document.querySelector<HTMLElement>('[data-header]');
 const waFloat = document.querySelector<HTMLElement>('.wa-float');
@@ -33,7 +35,7 @@ if ('IntersectionObserver' in window && ends.length) {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)));
     endInView = seen.size > 0;
-    waFloat?.classList.toggle('is-tucked', endInView || waFloat.classList.contains('is-tucked') && window.scrollY > 400);
+    if (waFloat && document.activeElement !== waFloat) waFloat.classList.toggle('is-tucked', endInView || waFloat.classList.contains('is-tucked') && window.scrollY > 400);
   }, { rootMargin: '0px 0px -20% 0px' });
   ends.forEach((el) => io.observe(el));
 }
@@ -43,13 +45,15 @@ if (header) {
     const y = window.scrollY;
     const goingDown = y > 400 && y > last;
     header.classList.toggle('is-scrolled', y > 40);
-    header.classList.toggle('is-hidden', goingDown && !document.querySelector('.menu.is-open'));
+    header.classList.toggle('is-hidden', goingDown && !menuIsOpen && !header.contains(document.activeElement));
     const overHero = !!hero && y < hero.offsetHeight * 0.75;
-    waFloat?.classList.toggle('is-tucked', goingDown || overHero || endInView);
+    if (waFloat && document.activeElement !== waFloat) waFloat.classList.toggle('is-tucked', goingDown || overHero || endInView);
     last = y;
   };
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+  header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
+  waFloat?.addEventListener('focus', () => waFloat.classList.remove('is-tucked'));
 }
 
 /* ---------- Full-screen menu ---------- */
@@ -58,7 +62,11 @@ const menuOpen = document.querySelector<HTMLButtonElement>('[data-menu-open]');
 const menuClose = document.querySelector<HTMLButtonElement>('[data-menu-close]');
 function setMenu(open: boolean) {
   if (!menu || !menuOpen) return;
+  menuIsOpen = open;
   menuOpen.setAttribute('aria-expanded', String(open));
+  // Everything outside the menu is made inert, so keyboard and screen-reader focus stays inside it.
+  document.querySelectorAll<HTMLElement>('.skip-link, [data-header], main, .site-footer, .wa-float').forEach((el) => (el.inert = open));
+  document.documentElement.style.overflow = open ? 'hidden' : '';
   if (open) {
     menu.hidden = false;
     requestAnimationFrame(() => menu.classList.add('is-open'));
@@ -76,7 +84,7 @@ menuOpen?.addEventListener('click', () => setMenu(true));
 menuClose?.addEventListener('click', () => setMenu(false));
 document.querySelectorAll('[data-menu-close-on-click]').forEach((el) => el.addEventListener('click', () => setMenu(false)));
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && menu?.classList.contains('is-open')) setMenu(false);
+  if (e.key === 'Escape' && menuIsOpen) setMenu(false);
 });
 
 /* ---------- Text split (words) ---------- */
@@ -103,7 +111,7 @@ if (!reduced) {
   /* Paragraphs whose words light up with scroll */
   document.querySelectorAll<HTMLElement>('[data-scrub-words]').forEach((el) => {
     const words = splitWords(el);
-    gsap.fromTo(words, { opacity: 0.18 }, {
+    gsap.fromTo(words, { opacity: 0.45 }, {
       opacity: 1, stagger: 0.1, ease: 'none',
       scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 45%', scrub: true },
     });
@@ -175,4 +183,4 @@ document.querySelectorAll<HTMLElement>('[data-countdown]').forEach((el) => {
 initWishlist();
 if (document.querySelector('[data-petals]') && !reduced) import('./petals').then((m) => m.initPetals());
 if (document.querySelector('[data-dawn]')) import('./dawn').then((m) => m.initDawn({ reduced }));
-if (document.querySelector('[data-scene]')) import('./scene').then((m) => m.initScene({ reduced }));
+if (document.querySelector('[data-scene]') && !reduced) import('./scene').then((m) => m.initScene({ reduced }));

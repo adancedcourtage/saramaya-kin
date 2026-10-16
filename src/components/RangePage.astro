@@ -33,7 +33,7 @@ const itemList = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: copy.seo,
-  itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/produit/${p.slug}`, name: p.name })),
+  itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/produit/${p.slug}/`, name: p.name })),
 };
 ---
 <Base title={copy.seo} description={copy.intro} headerTone="dark" jsonLd={itemList}>

@@ -11,7 +11,21 @@ const fmt = (c: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', c
 type Selection = Record<string, number>;
 
 function read(): Selection {
-  try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || '{}');
+    return raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  } catch { return {}; }
+}
+
+/** Keeps only known, available products with whole quantities between 1 and 20. */
+function sanitize(sel: Selection, items: Item[]): Selection {
+  const clean: Selection = {};
+  for (const [slug, qty] of Object.entries(sel)) {
+    const item = items.find((i) => i.slug === slug);
+    const n = Math.floor(Number(qty));
+    if (item && !item.soldOut && Number.isFinite(n) && n >= 1) clean[slug] = Math.min(20, n);
+  }
+  return clean;
 }
 function write(sel: Selection) {
   try { localStorage.setItem(KEY, JSON.stringify(sel)); } catch { /* storage unavailable: keep in memory */ }
@@ -20,7 +34,7 @@ function write(sel: Selection) {
 export function computeTotals(sel: Selection, items: Item[], discount: Data['config']['discount']) {
   const lines = Object.entries(sel)
     .map(([slug, qty]) => ({ item: items.find((i) => i.slug === slug), qty }))
-    .filter((l): l is { item: Item; qty: number } => !!l.item && l.qty > 0);
+    .filter((l): l is { item: Item; qty: number } => !!l.item && !l.item.soldOut && l.qty > 0);
   const count = lines.reduce((n, l) => n + l.qty, 0);
   const subtotal = lines.reduce((s, l) => s + l.item.price * l.qty, 0);
   const off = count >= discount.minItems ? Math.round((subtotal * discount.percent) / 100) : 0;
@@ -48,7 +62,10 @@ export function initWishlist() {
   const dialog = document.querySelector<HTMLDialogElement>('[data-wishlist]');
   if (!dataEl || !dialog) return;
   const data: Data = JSON.parse(dataEl.textContent || '{}');
-  let sel = read();
+  const stored = read();
+  let sel = sanitize(stored, data.items);
+  const removed = Object.keys(stored).length - Object.keys(sel).length;
+  if (removed > 0) write(sel);
 
   const $ = <T extends HTMLElement>(s: string) => dialog.querySelector<T>(s)!;
   const list = $('[data-wishlist-list]');
@@ -95,6 +112,14 @@ export function initWishlist() {
     send.href = buildMessage(sel, data);
   }
 
+  /** After a re-render, put focus back on the same control, or on the next sensible one if the line is gone. */
+  function refocus(selector: string) {
+    const el = list.querySelector<HTMLElement>(selector)
+      ?? list.querySelector<HTMLElement>('[data-dec]')
+      ?? dialog.querySelector<HTMLElement>('[data-wishlist-close]');
+    el?.focus();
+  }
+
   function change(slug: string, delta: number) {
     const item = data.items.find((i) => i.slug === slug);
     if (!item || (item.soldOut && delta > 0)) return;
@@ -123,9 +148,9 @@ export function initWishlist() {
       return;
     }
     const inc = target.closest<HTMLElement>('[data-inc]');
-    if (inc) return void change(inc.dataset.inc!, 1);
+    if (inc) { change(inc.dataset.inc!, 1); return refocus(`[data-inc="${inc.dataset.inc}"]`); }
     const dec = target.closest<HTMLElement>('[data-dec]');
-    if (dec) return void change(dec.dataset.dec!, -1);
+    if (dec) { change(dec.dataset.dec!, -1); return refocus(`[data-dec="${dec.dataset.dec}"]`); }
     if (target.closest('[data-wishlist-open]')) {
       dialog.showModal();
       return;
@@ -137,6 +162,7 @@ export function initWishlist() {
   dialog.addEventListener('close', () => document.documentElement.style.removeProperty('overflow'));
   dialog.addEventListener('toggle', () => { if (dialog.open) document.documentElement.style.overflow = 'hidden'; });
 
-  addEventListener('storage', (e) => { if (e.key === KEY) { sel = read(); render(); } });
+  addEventListener('storage', (e) => { if (e.key === KEY) { sel = sanitize(read(), data.items); render(); } });
   render();
+  if (removed > 0) notify('Des produits qui ne sont plus disponibles ont été retirés de votre panier.');
 }

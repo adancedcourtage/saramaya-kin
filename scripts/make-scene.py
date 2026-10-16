@@ -2,7 +2,7 @@
 Builds the hero / dawn 3D scene assets from the two source paintings.
 
 For each image in assets-src/scene/ it writes to public/scene/:
-  <name>.webp        colour image, 1600 px wide
+  <name>.webp        colour image, 1600 px wide (<name>-960.webp for phones)
   <name>-depth.png   greyscale depth map (white = near, black = far)
 
 Depth comes from Depth Anything V2 Small (ONNX) when the model is present at
@@ -55,7 +55,9 @@ def smoothstep(a, b, x):
 
 for path in sorted(SRC.glob("*.png")):
     img = Image.open(path).convert("RGB")
-    img.resize((1600, round(1600 * img.height / img.width)), Image.LANCZOS).save(OUT / f"{path.stem}.webp", quality=82, method=6)
+    # desktop and phone versions of the colour image
+    for width, suffix in ((1600, ""), (960, "-960")):
+        img.resize((width, round(width * img.height / img.width)), Image.LANCZOS).save(OUT / f"{path.stem}{suffix}.webp", quality=70, method=6)
 
     w, h = 768, round(768 * img.height / img.width)
     small = img.resize((w, h), Image.LANCZOS)

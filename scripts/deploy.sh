@@ -15,6 +15,10 @@ else
   export BASE_PATH="/${repo}" SITE_ORIGIN="https://${owner}.github.io"
 fi
 
+if grep -q "whatsapp: '33600000000'" src/data/site.ts; then
+  echo "ATTENTION : le numéro WhatsApp est encore le numéro factice (src/data/site.ts). Les commandes n'arriveront nulle part." >&2
+fi
+
 npm run build
 npm run check:links
 touch dist/.nojekyll

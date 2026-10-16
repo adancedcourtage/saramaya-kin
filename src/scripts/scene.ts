@@ -120,7 +120,10 @@ export function initScene({ reduced }: { reduced: boolean }) {
     new Promise<Texture>((resolve, reject) =>
       loader.load(url, (t) => { t.minFilter = LinearFilter; t.generateMipmaps = false; resolve(t); }, undefined, reject),
     );
-  const { a, ad, b, bd } = host.dataset;
+  const { ad, bd } = host.dataset;
+  // phones get the 960 px versions of the paintings
+  const a = mobile ? host.dataset.aSmall : host.dataset.a;
+  const b = mobile ? host.dataset.bSmall : host.dataset.b;
 
   const resize = () => {
     const w = host.clientWidth, h = host.clientHeight;

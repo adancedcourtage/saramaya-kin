@@ -39,13 +39,15 @@ const steps = [
   <div class="story" data-story>
   <div class="story-bg" aria-hidden="true">
    <div class="story-bg-inner">
-    <img class="story-fallback" src={asset('/scene/rose-maroc.webp')} alt="" width="1600" height="1067" fetchpriority="high" decoding="async" />
+    <img class="story-fallback" src={asset('/scene/rose-maroc-960.webp')} srcset={`${asset('/scene/rose-maroc-960.webp')} 960w, ${asset('/scene/rose-maroc.webp')} 1600w`} sizes="100vw" alt="" width="1600" height="1067" fetchpriority="high" decoding="async" />
     <div
       class="story-scene"
       data-scene
       data-a={asset('/scene/rose-maroc.webp')}
+      data-a-small={asset('/scene/rose-maroc-960.webp')}
       data-ad={asset('/scene/rose-maroc-depth.png')}
       data-b={asset('/scene/argan-maroc.webp')}
+      data-b-small={asset('/scene/argan-maroc-960.webp')}
       data-bd={asset('/scene/argan-maroc-depth.png')}
     ></div>
    </div>

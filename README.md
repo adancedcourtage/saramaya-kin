@@ -51,29 +51,21 @@ npm run check:links  # vérifie liens internes, ancres et liens WhatsApp
 npm run deploy       # publie sur GitHub Pages
 ```
 
-## Mise en ligne sur GitHub Pages
+## Mise en ligne
 
-Dépôt : https://github.com/adancedcourtage/saramaya-kin
+Site : https://saramaya-kin.com (GitHub Pages, HTTPS forcé). `www.saramaya-kin.com` et l’ancienne adresse `adancedcourtage.github.io/saramaya-kin/` redirigent vers le domaine.
 
-Le site est publié sur la branche `gh-pages` (Settings > Pages > « Deploy from a branch », branche `gh-pages`, dossier `/`).
+Dépôt : https://github.com/adancedcourtage/saramaya-kin. Le site publié vit sur la branche `gh-pages`.
 
 ```bash
 npm run deploy
 ```
 
-La commande construit le site, vérifie les liens et publie sur https://adancedcourtage.github.io/saramaya-kin/.
+La commande construit le site pour saramaya-kin.com, vérifie les liens et publie. Pensez aussi à `git push` pour sauvegarder le code source sur `main`.
 
-### Brancher le domaine saramaya-kin.com
+DNS chez Namecheap (Advanced DNS) : 4 enregistrements `A` sur `@` vers `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, et un `CNAME` `www` vers `adancedcourtage.github.io.`.
 
-1. Achetez le domaine (il n'était pas enregistré au 15 octobre 2026).
-2. Chez le registraire, créez 4 enregistrements `A` vers `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, et un `CNAME` `www` vers `adancedcourtage.github.io`.
-3. Publiez avec le domaine :
-
-```bash
-CUSTOM_DOMAIN=saramaya-kin.com npm run deploy
-```
-
-4. Dans Settings > Pages, cochez « Enforce HTTPS » dès que GitHub le propose.
+Sans domaine personnalisé (par exemple pour un test) : `CUSTOM_DOMAIN= npm run deploy` publie sous `adancedcourtage.github.io/saramaya-kin/`.
 
 ## Structure
 

@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 # Builds the site and publishes dist/ to the gh-pages branch (GitHub Pages, "Deploy from a branch").
-#   npm run deploy                                  -> https://<owner>.github.io/<repo>/
-#   CUSTOM_DOMAIN=saramaya-kin.com npm run deploy   -> https://saramaya-kin.com/ (once DNS points to GitHub)
+#   npm run deploy                 -> https://saramaya-kin.com/ (DNS at Namecheap points to GitHub Pages)
+#   CUSTOM_DOMAIN= npm run deploy  -> https://<owner>.github.io/<repo>/ (no custom domain)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 remote=$(git remote get-url origin)
 repo=$(basename -s .git "$remote")
 owner=$(echo "$remote" | sed -E 's#.*github.com[:/]([^/]+)/.*#\1#')
+
+CUSTOM_DOMAIN="${CUSTOM_DOMAIN-saramaya-kin.com}"
 
 if [[ -n "${CUSTOM_DOMAIN:-}" ]]; then
   export BASE_PATH="" SITE_ORIGIN="https://${CUSTOM_DOMAIN}"

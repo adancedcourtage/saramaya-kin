@@ -120,10 +120,14 @@ export function initScene({ reduced }: { reduced: boolean }) {
     new Promise<Texture>((resolve, reject) =>
       loader.load(url, (t) => { t.minFilter = LinearFilter; t.generateMipmaps = false; resolve(t); }, undefined, reject),
     );
-  const { ad, bd } = host.dataset;
-  // phones get the 960 px versions of the paintings
-  const a = mobile ? host.dataset.aSmall : host.dataset.a;
-  const b = mobile ? host.dataset.bSmall : host.dataset.b;
+  // Phones held upright get dedicated portrait paintings; other phones the 960 px landscape versions.
+  const d = host.dataset;
+  const portrait = mobile && innerHeight > innerWidth * 1.1 && !!d.aPortrait;
+  const a = portrait ? d.aPortrait : mobile ? d.aSmall : d.a;
+  const b = portrait ? d.bPortrait : mobile ? d.bSmall : d.b;
+  const ad = portrait ? d.adPortrait : d.ad;
+  const bd = portrait ? d.bdPortrait : d.bd;
+  if (portrait) uniforms.uFocus.value.set(0.5, 0.5);
 
   const resize = () => {
     const w = host.clientWidth, h = host.clientHeight;

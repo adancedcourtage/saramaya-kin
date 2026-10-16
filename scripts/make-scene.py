@@ -26,12 +26,13 @@ OUT = ROOT / "public" / "scene"
 OUT.mkdir(parents=True, exist_ok=True)
 
 MODEL = Path.home() / ".cache" / "saramaya-models" / "depth-anything-v2-small" / "model.onnx"
-session = new_session("isnet-general-use")
 depth_model = None
+session = None
 if MODEL.exists():
     import onnxruntime as ort
 
-    depth_model = ort.InferenceSession(str(MODEL), providers=["CoreMLExecutionProvider", "CPUExecutionProvider"])
+    depth_model = ort.InferenceSession(str(MODEL), providers=["CPUExecutionProvider"])
+session = None if depth_model else new_session("isnet-general-use")  # only needed for the fallback
 
 
 def model_depth(img, w, h):
@@ -55,11 +56,13 @@ def smoothstep(a, b, x):
 
 for path in sorted(SRC.glob("*.png")):
     img = Image.open(path).convert("RGB")
-    # desktop and phone versions of the colour image
-    for width, suffix in ((1600, ""), (960, "-960")):
+    # landscape paintings: desktop + phone sizes; portrait paintings (phones held upright): one size
+    sizes = ((900, ""),) if img.height > img.width else ((1600, ""), (960, "-960"))
+    for width, suffix in sizes:
         img.resize((width, round(width * img.height / img.width)), Image.LANCZOS).save(OUT / f"{path.stem}{suffix}.webp", quality=70, method=6)
 
-    w, h = 768, round(768 * img.height / img.width)
+    w = 512 if img.height > img.width else 768
+    h = round(w * img.height / img.width)
     small = img.resize((w, h), Image.LANCZOS)
     rgb = np.asarray(small, dtype=np.float32) / 255.0
     y = np.linspace(0, 1, h)[:, None] * np.ones((1, w))

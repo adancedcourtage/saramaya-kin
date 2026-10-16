@@ -12,8 +12,8 @@ export const site = {
     'Soins à l’huile d’argan et à la rose de Damas, façonnés au Maroc et livrés en France. Commande simple et conseillée sur WhatsApp.',
 
   // International format without "+" or spaces, e.g. 33612345678
-  whatsapp: '33600000000', // À COMPLÉTER
-  whatsappDisplay: '06 00 00 00 00', // À COMPLÉTER
+  whatsapp: '33768223888',
+  whatsappDisplay: '07 68 22 38 88',
   email: 'contact@saramaya-kin.com', // À COMPLÉTER
 
   // Multi-product discount applied in the WhatsApp order summary

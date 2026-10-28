@@ -414,6 +414,316 @@
       "organic": false,
       "essentialOil": true,
       "soldOut": false
+    },
+    {
+      "slug": "gel-douche-kinto",
+      "name": "Gel douche Kinto",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-07.jpg",
+      "tagline": "Gel douche clarifiant Final Kinto, 1 litre",
+      "description": "Le gel douche clarifiant Final Kinto, texture gel rose à micro-grains. Nettoyant, exfoliant, gommant et hydratant : il lave, lisse et laisse la peau nette.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-papaya",
+      "name": "Gel douche gommant Papaya",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-08.jpg",
+      "tagline": "Scrub shower gel à la papaye, 7 White",
+      "description": "Gel douche gommant à la papaye de la gamme 7 White, texture onctueuse à grains. Nettoyant, exfoliant et hydratant pour une peau lisse et éclatante.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-succes-white",
+      "name": "Gel douche Succès White",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-09.jpg",
+      "tagline": "Gel douche gommant correcteur, 1 litre",
+      "description": "Gel douche gommant Succès White, texture rose à micro-grains. Il nettoie, exfolie et hydrate pour un teint plus uniforme.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-blood-orange",
+      "name": "Gel douche Blood Orange Blossom",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-10.jpg",
+      "tagline": "Gel douche à l’orange sanguine, 1000 ml",
+      "description": "Gel douche Blood Orange Blossom, parfum fruité d’orange sanguine. Nettoyant, exfoliant et hydratant pour une douche vitaminée.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-24k-gold",
+      "name": "Gel douche 24K Gold & Glutathione",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-12.jpg",
+      "tagline": "Exfoliating shower gel doré, 7 White",
+      "description": "Gel douche exfoliant 24K Gold & Glutathione de la gamme 7 White, texture dorée nacrée. Il nettoie, gomme et hydrate pour une peau lumineuse.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-vitamine-c",
+      "name": "Gel douche Vitamine C, curcuma et collagène",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-13.jpg",
+      "tagline": "Shower gel SK Duchess Glow",
+      "description": "Gel douche SK Duchess Glow à la vitamine C, au curcuma et au collagène. Nettoyant, exfoliant et hydratant pour une peau éclatante.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-retinol",
+      "name": "Gel douche Retinol",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-19.jpg",
+      "tagline": "Body wash au rétinol, 1000 ml",
+      "description": "Body wash au rétinol, texture gel à grains. Nettoyant, exfoliant et hydratant pour une peau lisse et douce.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-clonovate",
+      "name": "Gel douche Clonovate",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-20.jpg",
+      "tagline": "Gel douche glutathion et collagène, vitamines C et E",
+      "description": "Gel douche Clonovate au glutathion, au collagène et aux vitamines C et E. Nettoyant, exfoliant et hydratant.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-bio-white",
+      "name": "Gel douche gommant Bio White",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 2500,
+      "compareAt": null,
+      "image": "corps-21.jpg",
+      "tagline": "Gel gommant aux extraits de plantes, 1 litre",
+      "description": "Gel douche gommant Bio White aux extraits de plantes et grains exfoliants. Il nettoie, gomme et hydrate visage et corps.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "duo-peau-de-lune",
+      "name": "Duo Peau de lune",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 4000,
+      "compareAt": null,
+      "image": "corps-14.jpg",
+      "tagline": "Gel douche 1000 ml et lait corps 400 ml, Proxima Florale Plus",
+      "description": "Le duo Peau de lune de Proxima : le gel douche shower scrub qui gomme les impuretés en douceur, puis le lait corps assorti qui nourrit et parfume. Vendus ensemble.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Gel douche gommant 1000 ml",
+        "Lait corps 400 ml assorti",
+        "Gomme les impuretés en douceur",
+        "Peau douce, nourrie et parfumée"
+      ],
+      "usage": "Sous la douche, masser le gel sur peau mouillée puis rincer. Sur peau sèche, appliquer le lait et masser jusqu’à pénétration.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "lait-corps-collagen",
+      "name": "Lait corps Collagen",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 1500,
+      "compareAt": null,
+      "image": "corps-15.jpg",
+      "tagline": "Body lotion rétinol et niacinamide, Leadr, 500 ml",
+      "description": "Le lait corps Collagen de Leadr au rétinol et à la niacinamide. Il hydrate les peaux sèches, ravive les peaux ternes et laisse un fini doux non gras.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Hydrate les peaux sèches",
+        "Ravive l’éclat des peaux ternes",
+        "Fini doux, non gras",
+        "Flacon pompe de 500 ml"
+      ],
+      "usage": "Appliquer sur peau propre et sèche, masser jusqu’à pénétration complète. Matin et soir.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "gel-douche-glow-recharge",
+      "name": "Gel douche Glow Recharge",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 4000,
+      "compareAt": null,
+      "image": "corps-17.jpg",
+      "tagline": "Sérum de douche exfoliant à l’orange sanguine, Bismid",
+      "description": "Le Glow Recharge de Bismid, sérum de douche exfoliant à l’orange sanguine, à la vitamine C et à la niacinamide. Il énergise, exfolie et illumine la peau.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Nettoie la peau en douceur",
+        "Exfolie et gomme les cellules mortes",
+        "Hydrate et laisse la peau douce",
+        "Grand flacon de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
+    },
+    {
+      "slug": "creme-douche-golden-glow",
+      "name": "Crème de douche Golden Glow",
+      "ranges": [
+        "corps"
+      ],
+      "type": "corps",
+      "price": 1500,
+      "compareAt": null,
+      "image": "corps-18.jpg",
+      "tagline": "Shower cream au lait de chèvre, 1000 ml",
+      "description": "La crème de douche Golden Glow enrichie au lait de chèvre, à la vitamine C et à la niacinamide. Une texture crémeuse qui lave en douceur et laisse la peau souple.",
+      "composition": "Liste complète des ingrédients (INCI) imprimée sur l’emballage, envoyée sur simple demande sur WhatsApp.",
+      "benefits": [
+        "Texture crème, douce pour la peau",
+        "Enrichie au lait de chèvre",
+        "Peau souple et hydratée",
+        "Grand flacon pompe de 1 litre"
+      ],
+      "usage": "Appliquer sur peau mouillée, masser en mouvements circulaires puis rincer abondamment. Éviter le contour des yeux.",
+      "organic": false,
+      "essentialOil": false,
+      "soldOut": false
     }
   ],
   "coffrets": [

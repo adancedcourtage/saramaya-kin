@@ -3,7 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Icon from '../../components/Icon.astro';
-import { products, related, formatPrice, discountPercent, typeLabels, variantsOf, lineName, type Product } from '../../lib/catalog';
+import { products, related, formatPrice, discountPercent, typeLabels, variantsOf, lineName, type Product, rangeInfo } from '../../lib/catalog';
 import { productImage } from '../../lib/images';
 import { waLink } from '../../lib/whatsapp';
 import { site } from '../../data/site';
@@ -18,7 +18,7 @@ const v0 = variants[0];
 const multi = variants.length > 1;
 const others = related(p);
 const tone = p.ranges.includes('rose') && !p.ranges.includes('argan') ? 'rose' : 'argan';
-const rangeLinks = p.ranges.map((r) => ({ href: `/${r}`, label: r === 'argan' ? 'Gamme argan' : 'Gamme rose' }));
+const rangeLinks = p.ranges.map((r) => rangeInfo[r]);
 const og = await getImage({ src: productImage(v0.image), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
 
 const orderText = (name: string, price: number) => `je souhaite commander : 1 × ${name} (${formatPrice(price)}).`;

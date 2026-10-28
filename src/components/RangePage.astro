@@ -25,6 +25,13 @@ const copy = {
     image: 'collection-gamme-rose.jpg',
     other: { href: '/argan', label: 'Découvrir la gamme argan' },
   },
+  corps: {
+    title: 'Le rituel du hammam',
+    seo: 'Soins du corps',
+    intro: 'Gels douche, laits et crèmes pour le corps. Nettoyer, exfolier, hydrater : le geste du hammam, chez vous, sous la douche.',
+    image: 'corps-10.jpg',
+    other: { href: '/rose', label: 'Découvrir la gamme rose' },
+  },
 }[range];
 
 const list = byRange(range).sort((a, b) => Number(a.soldOut) - Number(b.soldOut));
@@ -97,6 +104,7 @@ const itemList = {
   .range-hero { position: relative; overflow: hidden; isolation: isolate; padding-block: 9rem var(--space-5); }
   .range-hero--argan { background: radial-gradient(60% 70% at 85% 30%, rgb(47 95 179 / 0.6), transparent 70%), var(--nuit); }
   .range-hero--rose { background: radial-gradient(60% 70% at 85% 30%, rgb(232 120 155 / 0.45), transparent 70%), linear-gradient(160deg, var(--nuit-2), var(--damas-deep)); }
+  .range-hero--corps { background: radial-gradient(55% 65% at 85% 30%, rgb(232 120 155 / 0.4), transparent 70%), radial-gradient(60% 70% at 10% 90%, rgb(47 95 179 / 0.55), transparent 70%), var(--nuit); }
   .range-hero :global(.range-star) { position: absolute; width: 46rem; left: -16rem; top: -14rem; color: rgb(247 201 214 / 0.12); z-index: -1; }
   .range-hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-5); align-items: end; }
   .range-hero-copy { display: grid; gap: var(--space-3); }

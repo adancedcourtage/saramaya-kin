@@ -18,6 +18,7 @@ const featured = featuredSlugs.map((s) => products.find((p) => p.slug === s)).fi
 const promo = promoProduct();
 const argan = byRange('argan');
 const rose = byRange('rose');
+const corps = byRange('corps');
 const coffret = coffrets.find((c) => !c.soldOut) ?? coffrets[0];
 
 const assurances = [
@@ -104,8 +105,8 @@ const steps = [
   <section class="worlds" id="mondes" aria-labelledby="mondes-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="mondes-title" data-split>Deux gammes, un même rituel</h2>
-        <p class="lede" data-reveal>L’argan nourrit et répare, la rose apaise et illumine. Choisissez votre point de départ.</p>
+        <h2 id="mondes-title" data-split>Trois gammes, un même rituel</h2>
+        <p class="lede" data-reveal>L’argan nourrit et répare, la rose apaise et illumine, le hammam purifie. Choisissez votre point de départ.</p>
       </div>
     </div>
     <div class="worlds-split">
@@ -125,6 +126,15 @@ const steps = [
           <h3>La rose de Damas</h3>
           <p>Eau florale, huiles, crèmes et savons aux pétales de Kelaat M’Gouna.</p>
           <span class="world-cta">Explorer la gamme rose</span>
+        </div>
+      </a>
+      <a class="world world--corps on-dark" href="/soins-du-corps">
+        <Image src={productImage('corps-13.jpg')} alt="" widths={[600, 900, 1200]} sizes="(max-width: 800px) 100vw, 40vw" class="world-img" />
+        <div class="world-copy">
+          <p class="world-count">{corps.length} soins</p>
+          <h3>Le rituel du hammam</h3>
+          <p>Gels douche, laits et crèmes pour nettoyer, exfolier et hydrater.</p>
+          <span class="world-cta">Explorer les soins du corps</span>
         </div>
       </a>
     </div>
@@ -368,6 +378,7 @@ const steps = [
   .world:hover :global(.world-img) { transform: scale(1.05); }
   .world::after { content: ''; position: absolute; inset: 0; z-index: -1; }
   .world--argan::after { background: linear-gradient(to top, rgb(14 26 60 / 0.92) 10%, rgb(23 40 90 / 0.35) 55%, transparent); }
+  .world--corps::after { background: linear-gradient(to top, rgb(14 26 60 / 0.92) 10%, rgb(143 33 71 / 0.35) 55%, transparent); }
   .world--rose::after { background: linear-gradient(to top, rgb(143 33 71 / 0.92) 10%, rgb(184 50 94 / 0.3) 55%, transparent); }
   .world-copy { padding: clamp(1.5rem, 4vw, 3rem); display: grid; gap: 0.5rem; max-width: 30rem; }
   .world-copy h3 { font-size: var(--step-4); }

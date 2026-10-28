@@ -1,7 +1,7 @@
 import catalog from '../data/catalog.json';
 import { site } from '../data/site';
 
-export type Range = 'argan' | 'rose';
+export type Range = 'argan' | 'rose' | 'corps';
 export type ProductType = 'huile' | 'visage' | 'corps' | 'cheveux';
 
 /** A purchasable format of a product (size or texture), with its own price and photo. */
@@ -52,6 +52,13 @@ export interface Coffret {
 
 export const products = catalog.products as Product[];
 export const coffrets = catalog.coffrets as Coffret[];
+
+/** Where each range lives and how it is named in links and breadcrumbs. */
+export const rangeInfo: Record<Range, { href: string; label: string }> = {
+  argan: { href: '/argan', label: 'Gamme argan' },
+  rose: { href: '/rose', label: 'Gamme rose' },
+  corps: { href: '/soins-du-corps', label: 'Soins du corps' },
+};
 
 export const typeLabels: Record<ProductType, string> = {
   huile: 'Huiles',
